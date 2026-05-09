@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Gray Pay - Wallet & Bill Payments</title>
+    <title>Gray Pay - Mining & Withdrawals</title>
     <style>
         * {
             margin: 0;
@@ -81,10 +81,6 @@
             font-size: 14px;
         }
 
-        .input-group {
-            margin-bottom: 15px;
-        }
-
         input, select {
             width: 100%;
             padding: 14px;
@@ -94,6 +90,7 @@
             color: #ffffff;
             font-size: 16px;
             outline: none;
+            margin-bottom: 15px;
         }
 
         input:focus, select:focus {
@@ -118,7 +115,6 @@
             color: #ffffff;
         }
 
-        /* Balance Card */
         .balance-card {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             border-radius: 24px;
@@ -186,7 +182,6 @@
             opacity: 0.9;
         }
 
-        /* Two buttons side by side */
         .double-buttons {
             display: flex;
             gap: 15px;
@@ -198,7 +193,6 @@
             margin-top: 0;
         }
 
-        /* Services Grid */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -231,7 +225,6 @@
             color: #9ca3af;
         }
 
-        /* Bottom Tabs */
         .bottom-tabs {
             position: fixed;
             bottom: 0;
@@ -279,7 +272,6 @@
             max-width: 350px;
         }
 
-        /* Loading Overlay */
         .loading-overlay {
             display: none;
             position: fixed;
@@ -294,10 +286,25 @@
             flex-direction: column;
         }
 
+        .notification-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #1f1f1f;
+            border-radius: 20px;
+            padding: 25px;
+            z-index: 3000;
+            width: 85%;
+            max-width: 350px;
+            text-align: center;
+            border: 1px solid #10b981;
+        }
+
         .text-center { text-align: center; }
         .mt-20 { margin-top: 20px; }
-        .mb-20 { margin-bottom: 20px; }
         .error-text { color: #ef4444; font-size: 12px; margin-top: 5px; }
+        .mb-10 { margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -310,7 +317,7 @@
         </div>
         <div class="logo">GRAY PAY</div>
         <div class="welcome-text">Welcome!</div>
-        <div class="welcome-text">Get your account ready and instantly start buying, selling airtime and data online and start paying all your bills in cheaper price.</div>
+        <div class="welcome-text">Create your account and get welcome bonus. Start mining every hour and withdraw your earnings anytime.</div>
         <button class="btn btn-primary" onclick="showSignup()" style="margin-top: 30px;">Get Started</button>
     </div>
 
@@ -322,15 +329,10 @@
         </div>
         <div class="logo">GRAY PAY</div>
         <input type="text" id="firstname" placeholder="First Name">
-        <br><br>
         <input type="text" id="surname" placeholder="Surname">
-        <br><br>
         <input type="email" id="signupEmail" placeholder="Email Address">
-        <br><br>
         <input type="password" id="signupPassword" placeholder="Password (min 8 characters)">
-        <br><br>
         <input type="password" id="confirmPassword" placeholder="Confirm Password">
-        <br><br>
         <div id="signupError" class="error-text"></div>
         <div class="welcome-text" style="font-size: 11px;">Any further actions indicates that you agree with our terms & conditions!</div>
         <button class="btn btn-primary" onclick="handleSignup()">Create account</button>
@@ -347,9 +349,7 @@
         <h2>Welcome Back!</h2>
         <div class="welcome-text">Log in to your account to continue</div>
         <input type="email" id="loginEmail" placeholder="Your Email">
-        <br><br>
         <input type="password" id="loginPassword" placeholder="Password">
-        <br><br>
         <div class="text-center" style="margin-top: 5px;"><span style="color:#10b981; cursor:pointer;" onclick="alert('Contact support to reset password: graypay423492@gmail.com')">Forgot password?</span></div>
         <div id="loginError" class="error-text"></div>
         <button class="btn btn-primary" onclick="handleLogin()">Sign In</button>
@@ -366,71 +366,37 @@
             </div>
         </div>
 
-        <!-- Balance Card -->
         <div class="balance-card">
             <div class="greeting">Hi, <span id="dashboardName">User</span></div>
-            
             <div class="balance-row">
                 <span class="balance-label">Available Balance</span>
                 <button class="withdraw-btn-small" onclick="showWithdrawPage()">Withdraw</button>
             </div>
-            
             <div class="balance-amount">₦<span id="dashboardBalance">0</span></div>
-            
             <div class="target-label">Daily spend target</div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="spendProgress"></div>
-            </div>
+            <div class="progress-bar"><div class="progress-fill" id="spendProgress"></div></div>
             <div class="target-value">₦<span id="spendTarget">200000</span></div>
         </div>
 
-        <!-- Mining & Withdraw side by side -->
         <div class="double-buttons">
             <button class="btn btn-primary" onclick="startMining()">⛏️ Mining</button>
             <button class="btn btn-primary" onclick="showWithdrawPage()">💸 Withdraw</button>
         </div>
 
-        <!-- More Services Row 1 -->
         <div class="services-grid">
-            <div class="service-item" onclick="openWhatsApp()">
-                <div class="service-icon">🛡️</div>
-                <div class="service-label">Support</div>
-            </div>
-            <div class="service-item" onclick="openWhatsApp()">
-                <div class="service-icon">👥</div>
-                <div class="service-label">Group</div>
-            </div>
-            <div class="service-item" onclick="startMining()">
-                <div class="service-icon">⛏️</div>
-                <div class="service-label">Earn</div>
-            </div>
-            <div class="service-item" onclick="showProfile()">
-                <div class="service-icon">👤</div>
-                <div class="service-label">Profile</div>
-            </div>
+            <div class="service-item" onclick="openWhatsApp()"><div class="service-icon">🛡️</div><div class="service-label">Support</div></div>
+            <div class="service-item" onclick="openWhatsApp()"><div class="service-icon">👥</div><div class="service-label">Group</div></div>
+            <div class="service-item" onclick="startMining()"><div class="service-icon">⛏️</div><div class="service-label">Earn</div></div>
+            <div class="service-item" onclick="showProfile()"><div class="service-icon">👤</div><div class="service-label">Profile</div></div>
         </div>
 
-        <!-- More Services Row 2 -->
         <div class="services-grid">
-            <div class="service-item" onclick="showBuyPBC()">
-                <div class="service-icon">💳</div>
-                <div class="service-label">Buy PBC</div>
-            </div>
-            <div class="service-item" onclick="alert('Watch feature coming soon')">
-                <div class="service-icon">📺</div>
-                <div class="service-label">Watch</div>
-            </div>
-            <div class="service-item" onclick="showBuyAirtime()">
-                <div class="service-icon">📱</div>
-                <div class="service-label">Airtime</div>
-            </div>
-            <div class="service-item" onclick="showBuyData()">
-                <div class="service-icon">🌐</div>
-                <div class="service-label">Data</div>
-            </div>
+            <div class="service-item" onclick="showBuyPBC()"><div class="service-icon">💳</div><div class="service-label">Buy PBC</div></div>
+            <div class="service-item" onclick="alert('Watch feature coming soon')"><div class="service-icon">📺</div><div class="service-label">Watch</div></div>
+            <div class="service-item" onclick="showBuyAirtime()"><div class="service-icon">📱</div><div class="service-label">Airtime</div></div>
+            <div class="service-item" onclick="showBuyData()"><div class="service-icon">🌐</div><div class="service-label">Data</div></div>
         </div>
 
-        <!-- Bottom Tabs -->
         <div class="bottom-tabs">
             <div class="tab active" onclick="switchTab('wallet')">Wallet</div>
             <div class="tab" onclick="switchTab('social')">Social</div>
@@ -438,8 +404,6 @@
             <div class="tab" onclick="switchTab('profile')">Profile</div>
         </div>
     </div>
-
-    <div id="dynamicContent"></div>
 </div>
 
 <!-- Help Modal -->
@@ -478,12 +442,17 @@
     function showSignup() { showScreen('signupScreen'); }
     function showLogin() { showScreen('loginScreen'); }
 
-    function showDashboard() {
+    function updateDashboard() {
         if (!currentUser) return;
         document.getElementById('dashboardName').innerText = currentUser.firstname;
         document.getElementById('dashboardBalance').innerText = currentUser.balance;
         let percent = (currentUser.balance / 200000) * 100;
         document.getElementById('spendProgress').style.width = Math.min(percent, 100) + '%';
+    }
+
+    function showDashboard() {
+        if (!currentUser) return;
+        updateDashboard();
         showScreen('dashboardScreen');
     }
 
@@ -518,13 +487,21 @@
             balance: 200000,
             miningActive: false,
             miningEndTime: null,
-            transactions: [{ type: 'Bonus', amount: 200000, date: new Date().toISOString(), status: 'Success' }]
+            hasSeenBonus: false,
+            transactions: [{ type: 'Bonus', amount: 200000, date: new Date().toLocaleString(), status: 'Success' }]
         };
         users.push(newUser);
         saveUsers();
         currentUser = newUser;
-        alert('Welcome to Gray Pay! You have a welcome bonus of ₦200,000 on your dashboard.');
+        
         showDashboard();
+        
+        // Show welcome bonus notification on dashboard (first time only)
+        if (!currentUser.hasSeenBonus) {
+            currentUser.hasSeenBonus = true;
+            saveUsers();
+            showNotification('Welcome to Gray Pay! You have a welcome bonus of ₦200,000 on your dashboard.');
+        }
     }
 
     // ========== LOGIN ==========
@@ -540,53 +517,95 @@
         showDashboard();
     }
 
+    // ========== NOTIFICATION ==========
+    function showNotification(message) {
+        let notification = document.createElement('div');
+        notification.className = 'notification-popup';
+        notification.innerHTML = `
+            <p style="margin-bottom: 20px;">${message}</p>
+            <button class="btn btn-primary" onclick="this.parentElement.remove()">Close</button>
+        `;
+        document.body.appendChild(notification);
+    }
+
     // ========== PROFILE ==========
     function showProfile() {
-        let content = document.getElementById('dynamicContent');
-        content.innerHTML = `
-            <div id="profileScreen" class="screen active" style="display:block;">
-                <div class="header">
-                    <button class="back-btn" onclick="closeDynamic()">←</button>
-                    <button class="help-btn" onclick="showHelpOptions()">❓ You Need Help?</button>
-                </div>
-                <div class="logo">Profile</div>
-                <div style="background:#1f1f1f; padding:15px; border-radius:12px; margin-bottom:15px;">Full Name: ${currentUser.firstname} ${currentUser.surname}</div>
-                <div style="background:#1f1f1f; padding:15px; border-radius:12px; margin-bottom:15px;">Email: ${currentUser.email}</div>
-                <div style="background:#1f1f1f; padding:15px; border-radius:12px; margin-bottom:15px;">Password: ********</div>
-                <button class="btn" onclick="logout()">Log Out</button>
-            </div>`;
+        if (!currentUser) return;
+        // Hide all screens first
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        content.style.display = 'block';
+        
+        // Create profile view
+        let profileDiv = document.createElement('div');
+        profileDiv.id = 'profileView';
+        profileDiv.className = 'screen active';
+        profileDiv.style.display = 'block';
+        profileDiv.style.padding = '20px';
+        profileDiv.innerHTML = `
+            <div class="header">
+                <button class="back-btn" onclick="goBackToDashboard()">←</button>
+                <button class="help-btn" onclick="showHelpOptions()">❓ You Need Help?</button>
+            </div>
+            <div class="logo">Profile</div>
+            <div style="background:#1f1f1f; padding:15px; border-radius:12px; margin-bottom:15px;">Full Name: ${currentUser.firstname} ${currentUser.surname}</div>
+            <div style="background:#1f1f1f; padding:15px; border-radius:12px; margin-bottom:15px;">Email: ${currentUser.email}</div>
+            <div style="background:#1f1f1f; padding:15px; border-radius:12px; margin-bottom:15px;">Password: ********</div>
+            <button class="btn btn-primary" onclick="logout()">Log Out</button>
+        `;
+        document.querySelector('.app-container').appendChild(profileDiv);
+    }
+
+    function goBackToDashboard() {
+        // Remove any extra views
+        let profileView = document.getElementById('profileView');
+        if (profileView) profileView.remove();
+        let withdrawView = document.getElementById('withdrawView');
+        if (withdrawView) withdrawView.remove();
+        let airtimeView = document.getElementById('airtimeView');
+        if (airtimeView) airtimeView.remove();
+        let dataView = document.getElementById('dataView');
+        if (dataView) dataView.remove();
+        let pbcView = document.getElementById('pbcView');
+        if (pbcView) pbcView.remove();
+        let historyView = document.getElementById('historyView');
+        if (historyView) historyView.remove();
+        
+        showDashboard();
     }
 
     function logout() {
         currentUser = null;
+        goBackToDashboard();
         showWelcome();
-        closeDynamic();
     }
 
     // ========== WITHDRAW ==========
     function showWithdrawPage() {
+        if (!currentUser) return;
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        
         let banks = ['Access Bank', 'GTBank', 'First Bank', 'Zenith Bank', 'UBA', 'WEMA Bank', 'Polaris Bank', 'Fidelity Bank', 'Sterling Bank', 'PalmPay', 'Opay', 'Moniepoint', 'Kuda Bank'];
         let bankOptions = banks.map(b => `<option>${b}</option>`).join('');
-        let content = document.getElementById('dynamicContent');
-        content.innerHTML = `
-            <div id="withdrawScreen" class="screen active">
-                <div class="header">
-                    <button class="back-btn" onclick="closeDynamic()">←</button>
-                    <button class="help-btn" onclick="showHelpOptions()">❓ You Need Help?</button>
-                </div>
-                <h2>Transfer To Bank</h2>
-                <input type="text" id="accName" placeholder="Account Name"><br><br>
-                <input type="text" id="accNumber" placeholder="Account Number"><br><br>
-                <select id="bankName">${bankOptions}</select><br><br>
-                <input type="number" id="withdrawAmount" placeholder="Amount"><br><br>
-                <input type="text" id="pbcCode" placeholder="PBC Code (4234)"><br><br>
-                <div style="background:#1f1f1f; padding:10px; border-radius:12px;">Available Balance: ₦${currentUser.balance}</div><br>
-                <button class="btn btn-primary" onclick="processWithdraw()">Submit</button>
-            </div>`;
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        content.style.display = 'block';
+        
+        let withdrawDiv = document.createElement('div');
+        withdrawDiv.id = 'withdrawView';
+        withdrawDiv.className = 'screen active';
+        withdrawDiv.style.display = 'block';
+        withdrawDiv.style.padding = '20px';
+        withdrawDiv.innerHTML = `
+            <div class="header">
+                <button class="back-btn" onclick="goBackToDashboard()">←</button>
+                <button class="help-btn" onclick="showHelpOptions()">❓ You Need Help?</button>
+            </div>
+            <h2>Transfer To Bank</h2>
+            <input type="text" id="accName" placeholder="Account Name">
+            <input type="text" id="accNumber" placeholder="Account Number">
+            <select id="bankName">${bankOptions}</select>
+            <input type="number" id="withdrawAmount" placeholder="Amount">
+            <input type="text" id="pbcCode" placeholder="PBC Code (4234)">
+            <div style="background:#1f1f1f; padding:10px; border-radius:12px; margin-bottom:15px;">Available Balance: ₦${currentUser.balance}</div>
+            <button class="btn btn-primary" onclick="processWithdraw()">Submit</button>
+        `;
+        document.querySelector('.app-container').appendChild(withdrawDiv);
     }
 
     function processWithdraw() {
@@ -598,31 +617,36 @@
 
         showLoading('Processing withdrawal...', 15000, () => {
             currentUser.balance -= amount;
-            currentUser.transactions.unshift({ type: 'Withdrawal', amount: amount, date: new Date().toISOString(), status: 'Success' });
+            currentUser.transactions.unshift({ type: 'Withdrawal', amount: amount, date: new Date().toLocaleString(), status: 'Success' });
             saveUsers();
             alert(`Transaction Successful! You withdrew ₦${amount}`);
-            closeDynamic();
-            showDashboard();
+            goBackToDashboard();
+            updateDashboard();
         });
     }
 
     // ========== BUY AIRTIME ==========
     function showBuyAirtime() {
-        let content = document.getElementById('dynamicContent');
-        content.innerHTML = `
-            <div id="airtimeScreen" class="screen active">
-                <div class="header">
-                    <button class="back-btn" onclick="closeDynamic()">←</button>
-                    <button class="help-btn" onclick="showHelpOptions()">❓ You Need Help?</button>
-                </div>
-                <h2>Buy Airtime</h2>
-                <input type="text" id="phoneNumber" placeholder="Phone Number"><br><br>
-                <input type="number" id="airtimeAmount" placeholder="Amount"><br><br>
-                <input type="text" id="airtimeCode" placeholder="PBC Code (4234)"><br><br>
-                <button class="btn btn-primary" onclick="processAirtime()">Buy Airtime</button>
-            </div>`;
+        if (!currentUser) return;
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        content.style.display = 'block';
+        
+        let airtimeDiv = document.createElement('div');
+        airtimeDiv.id = 'airtimeView';
+        airtimeDiv.className = 'screen active';
+        airtimeDiv.style.display = 'block';
+        airtimeDiv.style.padding = '20px';
+        airtimeDiv.innerHTML = `
+            <div class="header">
+                <button class="back-btn" onclick="goBackToDashboard()">←</button>
+                <button class="help-btn" onclick="showHelpOptions()">❓ You Need Help?</button>
+            </div>
+            <h2>Buy Airtime</h2>
+            <input type="text" id="phoneNumber" placeholder="Phone Number">
+            <input type="number" id="airtimeAmount" placeholder="Amount">
+            <input type="text" id="airtimeCode" placeholder="PBC Code (4234)">
+            <button class="btn btn-primary" onclick="processAirtime()">Buy Airtime</button>
+        `;
+        document.querySelector('.app-container').appendChild(airtimeDiv);
     }
 
     function processAirtime() {
@@ -635,37 +659,42 @@
         
         showLoading('Processing airtime purchase...', 10000, () => {
             currentUser.balance -= amount;
-            currentUser.transactions.unshift({ type: 'Airtime Purchase', amount: amount, phone: phone, date: new Date().toISOString(), status: 'Success' });
+            currentUser.transactions.unshift({ type: 'Airtime Purchase', amount: amount, phone: phone, date: new Date().toLocaleString(), status: 'Success' });
             saveUsers();
             alert(`Airtime of ₦${amount} sent to ${phone} successfully!`);
-            closeDynamic();
-            showDashboard();
+            goBackToDashboard();
+            updateDashboard();
         });
     }
 
     // ========== BUY DATA ==========
     function showBuyData() {
-        let content = document.getElementById('dynamicContent');
-        content.innerHTML = `
-            <div id="dataScreen" class="screen active">
-                <div class="header">
-                    <button class="back-btn" onclick="closeDynamic()">←</button>
-                    <button class="help-btn" onclick="showHelpOptions()">❓ You Need Help?</button>
-                </div>
-                <h2>Buy Data</h2>
-                <input type="text" id="dataPhone" placeholder="Phone Number"><br><br>
-                <select id="dataPlan">
-                    <option value="500">500MB - ₦500</option>
-                    <option value="1000">1GB - ₦1000</option>
-                    <option value="2000">2GB - ₦2000</option>
-                    <option value="5000">5GB - ₦5000</option>
-                    <option value="10000">10GB - ₦10000</option>
-                </select><br><br>
-                <input type="text" id="dataCode" placeholder="PBC Code (4234)"><br><br>
-                <button class="btn btn-primary" onclick="processData()">Buy Data</button>
-            </div>`;
+        if (!currentUser) return;
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        content.style.display = 'block';
+        
+        let dataDiv = document.createElement('div');
+        dataDiv.id = 'dataView';
+        dataDiv.className = 'screen active';
+        dataDiv.style.display = 'block';
+        dataDiv.style.padding = '20px';
+        dataDiv.innerHTML = `
+            <div class="header">
+                <button class="back-btn" onclick="goBackToDashboard()">←</button>
+                <button class="help-btn" onclick="showHelpOptions()">❓ You Need Help?</button>
+            </div>
+            <h2>Buy Data</h2>
+            <input type="text" id="dataPhone" placeholder="Phone Number">
+            <select id="dataPlan">
+                <option value="500">500MB - ₦500</option>
+                <option value="1000">1GB - ₦1000</option>
+                <option value="2000">2GB - ₦2000</option>
+                <option value="5000">5GB - ₦5000</option>
+                <option value="10000">10GB - ₦10000</option>
+            </select>
+            <input type="text" id="dataCode" placeholder="PBC Code (4234)">
+            <button class="btn btn-primary" onclick="processData()">Buy Data</button>
+        `;
+        document.querySelector('.app-container').appendChild(dataDiv);
     }
 
     function processData() {
@@ -681,48 +710,58 @@
         
         showLoading('Processing data purchase...', 10000, () => {
             currentUser.balance -= amount;
-            currentUser.transactions.unshift({ type: 'Data Purchase', amount: amount, plan: planName, phone: phone, date: new Date().toISOString(), status: 'Success' });
+            currentUser.transactions.unshift({ type: 'Data Purchase', amount: amount, plan: planName, phone: phone, date: new Date().toLocaleString(), status: 'Success' });
             saveUsers();
             alert(`${planName} sent to ${phone} successfully!`);
-            closeDynamic();
-            showDashboard();
+            goBackToDashboard();
+            updateDashboard();
         });
     }
 
     // ========== BUY PBC ==========
     function showBuyPBC() {
-        let content = document.getElementById('dynamicContent');
-        content.innerHTML = `
-            <div id="pbcScreen" class="screen active">
-                <div class="header">
-                    <button class="back-btn" onclick="closeDynamic()">←</button>
-                    <button class="help-btn" onclick="showHelpOptions()">❓ You Need Help?</button>
-                </div>
-                <h2>Buy PBC</h2>
-                <div style="background:#1f1f1f; padding:10px; border-radius:12px; margin-bottom:20px;">Amount: ₦7,000 (Fixed)</div>
-                <input type="text" id="fullNamePBC" placeholder="Full Name"><br><br>
-                <input type="email" id="emailPBC" placeholder="Email Address"><br><br>
-                <button id="payBtn" class="btn" disabled onclick="processPBC()">Pay</button>
-            </div>`;
-        document.getElementById('dynamicContent').style.display = 'block';
+        if (!currentUser) return;
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        
+        let pbcDiv = document.createElement('div');
+        pbcDiv.id = 'pbcView';
+        pbcDiv.className = 'screen active';
+        pbcDiv.style.display = 'block';
+        pbcDiv.style.padding = '20px';
+        pbcDiv.innerHTML = `
+            <div class="header">
+                <button class="back-btn" onclick="goBackToDashboard()">←</button>
+                <button class="help-btn" onclick="showHelpOptions()">❓ You Need Help?</button>
+            </div>
+            <h2>Buy PBC</h2>
+            <div style="background:#1f1f1f; padding:10px; border-radius:12px; margin-bottom:20px;">Amount: ₦7,000 (Fixed)</div>
+            <input type="text" id="fullNamePBC" placeholder="Full Name">
+            <input type="email" id="emailPBC" placeholder="Email Address">
+            <button id="payBtnPBC" class="btn" disabled onclick="processPBC()">Pay</button>
+        `;
+        document.querySelector('.app-container').appendChild(pbcDiv);
+        
         let nameInp = document.getElementById('fullNamePBC');
         let emailInp = document.getElementById('emailPBC');
-        let btn = document.getElementById('payBtn');
-        function checkFields() { btn.disabled = !(nameInp.value && emailInp.value); btn.style.opacity = btn.disabled ? '0.5' : '1'; }
-        nameInp.addEventListener('input', checkFields);
-        emailInp.addEventListener('input', checkFields);
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        let btn = document.getElementById('payBtnPBC');
+        function checkFields() { 
+            btn.disabled = !(nameInp && nameInp.value && emailInp && emailInp.value); 
+            btn.style.opacity = btn.disabled ? '0.5' : '1';
+        }
+        if (nameInp) nameInp.addEventListener('input', checkFields);
+        if (emailInp) emailInp.addEventListener('input', checkFields);
     }
 
     function processPBC() {
         showLoading('Processing your request...', 10000, () => {
             alert('Proceed to Bank Transfer:\nBank: Paga\nAccount Number: 2778715377\nAccount Name: Ahmed Isah\nAmount: ₦7,000\n\nSend payment and we will email you code 4234.');
-            closeDynamic();
+            goBackToDashboard();
         });
     }
 
     // ========== MINING ==========
     function startMining() {
+        if (!currentUser) return;
         if (currentUser.miningActive) { alert('Mining already active!'); return; }
         currentUser.miningActive = true;
         let endTime = Date.now() + 24 * 60 * 60 * 1000;
@@ -738,30 +777,43 @@
                 currentUser.miningActive = false;
                 saveUsers();
                 alert('Mining complete! You earned ₦200,000!');
-                showDashboard();
+                updateDashboard();
                 return;
             }
             let added = Math.floor(200000 / 24);
             currentUser.balance += added;
             saveUsers();
-            showDashboard();
+            updateDashboard();
         }, 3600000);
     }
 
     // ========== TRANSACTION HISTORY ==========
     function showTransactionHistory() {
-        let history = currentUser.transactions.map(t => `<div style="padding:10px; border-bottom:1px solid #333; cursor:pointer;" onclick="alert('Details: ${t.type} on ${t.date}\\nAmount: ₦${t.amount}\\nStatus: ${t.status}')">${t.type}: ₦${t.amount} - ${t.status}</div>`).join('');
-        let content = document.getElementById('dynamicContent');
-        content.innerHTML = `<div id="historyScreen" class="screen active"><div class="header"><button class="back-btn" onclick="closeDynamic()">←</button><button class="help-btn" onclick="showHelpOptions()">❓</button></div><h2>Transactions</h2>${history || 'No transactions yet'}</div>`;
+        if (!currentUser) return;
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        content.style.display = 'block';
+        
+        let historyHtml = currentUser.transactions.map(t => `<div style="padding:10px; border-bottom:1px solid #333; cursor:pointer; background:#1f1f1f; margin-bottom:5px; border-radius:8px;" onclick="alert('Details: ${t.type} on ${t.date}\\nAmount: ₦${t.amount}\\nStatus: ${t.status}')">${t.type}: ₦${t.amount} - ${t.status}</div>`).join('');
+        
+        let historyDiv = document.createElement('div');
+        historyDiv.id = 'historyView';
+        historyDiv.className = 'screen active';
+        historyDiv.style.display = 'block';
+        historyDiv.style.padding = '20px';
+        historyDiv.innerHTML = `
+            <div class="header">
+                <button class="back-btn" onclick="goBackToDashboard()">←</button>
+                <button class="help-btn" onclick="showHelpOptions()">❓</button>
+            </div>
+            <h2>Transaction History</h2>
+            ${historyHtml || '<div style="text-align:center;">No transactions yet</div>'}
+        `;
+        document.querySelector('.app-container').appendChild(historyDiv);
     }
 
-    // ========== HELP ==========
+    // ========== HELP & LOADING ==========
     function showHelpOptions() { document.getElementById('helpModal').style.display = 'flex'; }
     function closeHelpModal() { document.getElementById('helpModal').style.display = 'none'; }
 
-    // ========== LOADING ==========
     function showLoading(msg, ms, callback) {
         let loader = document.getElementById('loadingOverlay');
         document.getElementById('loadingMessage').innerText = msg;
@@ -772,13 +824,6 @@
         }, ms);
     }
 
-    function closeDynamic() {
-        document.getElementById('dynamicContent').innerHTML = '';
-        document.getElementById('dynamicContent').style.display = 'none';
-        if (currentUser) showDashboard();
-        else showWelcome();
-    }
-    
     function switchTab(tab) { alert(`Switched to ${tab} tab`); }
 </script>
 </body>
