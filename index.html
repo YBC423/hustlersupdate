@@ -266,81 +266,48 @@
         if(!currentUser || !currentUser.miningActive) return false;
         
         let now = Date.now();
-        let claimedAnything = false;
+        let claimed = false;
         
-        // Check if mining period is over
+        // Check if 24 hours mining period is complete
         if(now >= currentUser.miningEnd) {
-            let totalEarned = 200000;
-            let alreadyClaimed = currentUser.miningClaimed || 0;
-            let remaining = totalEarned - alreadyClaimed;
-            
+            let remaining = 200000 - (currentUser.miningClaimed || 0);
             if(remaining > 0) {
                 currentUser.balance += remaining;
-                currentUser.miningClaimed = totalEarned;
-                
-                currentUser.transactions.unshift({
-                    id: 'TXN' + Date.now(),
-                    type: 'Mining Complete',
-                    amount: remaining,
-                    date: new Date().toLocaleString(),
-                    dateObj: new Date(),
-                    status: 'Success',
-                    fullDetails: {
-                        transactionType: 'Mining Reward',
-                        amount: remaining,
-                        note: '24-hour mining completed!'
-                    }
-                });
+                currentUser.miningClaimed = 200000;
+                currentUser.miningActive = false;
                 saveUsers();
                 showMiningNotification(remaining, 'complete');
-                claimedAnything = true;
+                updateDashboard();
             }
-            
-            currentUser.miningActive = false;
-            saveUsers();
-            return claimedAnything;
+            return true;
         }
         
-        // Calculate FULL HOURS passed since last claim
-        let lastClaim = currentUser.lastClaimTime || currentUser.miningStart;
-        let hoursPassed = Math.floor((now - lastClaim) / (60 * 60 * 1000));
+        // Calculate based on hours since mining STARTED, not lastClaim
+        let miningStart = currentUser.miningStart;
+        let totalHoursSinceStart = Math.floor((now - miningStart) / (60 * 60 * 1000));
+        let claimedHours = Math.floor((currentUser.miningClaimed || 0) / (200000 / 24));
+        let hoursToClaim = totalHoursSinceStart - claimedHours;
         
-        // Only claim if at least 1 FULL hour has passed
-        if(hoursPassed >= 1) {
-            let hourlyRate = Math.floor(200000 / 24);
-            let reward = hoursPassed * hourlyRate;
-            let totalPossible = 200000;
+        if(hoursToClaim >= 1) {
+            let hourlyRate = 200000 / 24;
+            let reward = Math.floor(hoursToClaim * hourlyRate);
             let alreadyClaimed = currentUser.miningClaimed || 0;
             
-            if(alreadyClaimed + reward > totalPossible) {
-                reward = totalPossible - alreadyClaimed;
+            if(alreadyClaimed + reward > 200000) {
+                reward = 200000 - alreadyClaimed;
             }
             
             if(reward > 0) {
                 currentUser.balance += reward;
-                currentUser.miningClaimed = (currentUser.miningClaimed || 0) + reward;
-                currentUser.lastClaimTime = now;
-                
-                currentUser.transactions.unshift({
-                    id: 'TXN' + Date.now(),
-                    type: 'Mining Reward',
-                    amount: reward,
-                    date: new Date().toLocaleString(),
-                    dateObj: new Date(),
-                    status: 'Success',
-                    fullDetails: {
-                        transactionType: 'Hourly Mining',
-                        amount: reward,
-                        note: hoursPassed + ' hour(s) of mining rewards'
-                    }
-                });
+                currentUser.miningClaimed = alreadyClaimed + reward;
                 saveUsers();
-                showMiningNotification(reward, hoursPassed);
-                claimedAnything = true;
+                showMiningNotification(reward, hoursToClaim);
+                updateDashboard();
+                claimed = true;
             }
         }
         
-        return claimedAnything;
+        return claimed;
     }
     
     function showMiningNotification(amount, hours) {
