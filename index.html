@@ -157,7 +157,7 @@
             border-radius: 12px;
             text-align: center;
             z-index: 3000;
-            animation: fadeOut 3s forwards;
+            animation: fadeOut 4s forwards;
         }
         @keyframes fadeOut {
             0% { opacity: 1; transform: translateY(0); }
@@ -242,6 +242,7 @@
     let users = [];
     let miningTimer = null;
     let firebaseAuth = null;
+    let globalMiningInterval = null;
 
     function loadUsers() { let s = localStorage.getItem('graypay_users'); if(s) users = JSON.parse(s); }
     function saveUsers() { localStorage.setItem('graypay_users', JSON.stringify(users)); }
@@ -262,9 +263,10 @@
 
     // ========== FIXED MINING FUNCTIONS ==========
     function checkAndClaimMiningRewards() {
-        if(!currentUser || !currentUser.miningActive) return;
+        if(!currentUser || !currentUser.miningActive) return false;
         
         let now = Date.now();
+        let claimedAnything = false;
         
         // Check if mining period is over
         if(now >= currentUser.miningEnd) {
@@ -290,18 +292,21 @@
                     }
                 });
                 saveUsers();
-                showMiningNotification(remaining, 24);
+                showMiningNotification(remaining, 'complete');
+                claimedAnything = true;
             }
             
             currentUser.miningActive = false;
             saveUsers();
-            return;
+            return claimedAnything;
         }
         
-        // Calculate rewards based on time passed
-        let hoursPassed = Math.floor((now - (currentUser.lastClaimTime || currentUser.miningStart)) / (60 * 60 * 1000));
+        // Calculate FULL HOURS passed since last claim
+        let lastClaim = currentUser.lastClaimTime || currentUser.miningStart;
+        let hoursPassed = Math.floor((now - lastClaim) / (60 * 60 * 1000));
         
-        if(hoursPassed > 0) {
+        // Only claim if at least 1 FULL hour has passed
+        if(hoursPassed >= 1) {
             let hourlyRate = Math.floor(200000 / 24);
             let reward = hoursPassed * hourlyRate;
             let totalPossible = 200000;
@@ -331,22 +336,36 @@
                 });
                 saveUsers();
                 showMiningNotification(reward, hoursPassed);
+                claimedAnything = true;
             }
         }
+        
+        return claimedAnything;
     }
     
     function showMiningNotification(amount, hours) {
         let notif = document.createElement('div');
         notif.className = 'mining-notification';
-        notif.innerHTML = '⛏️ You earned ₦' + amount.toLocaleString() + ' from ' + hours + ' hour(s) of mining!';
+        if(hours === 'complete') {
+            notif.innerHTML = '✅ MINING COMPLETE! You earned ₦' + amount.toLocaleString() + ' total!';
+        } else {
+            notif.innerHTML = '⛏️ You earned ₦' + amount.toLocaleString() + ' from ' + hours + ' hour(s) of mining!';
+        }
         document.body.appendChild(notif);
-        setTimeout(function() { if(notif) notif.remove(); }, 3000);
+        setTimeout(function() { if(notif) notif.remove(); }, 4000);
     }
 
     function startMining() {
         if(!currentUser) return;
         if(currentUser.miningActive) { 
-            alert('Mining already active! Check back later for rewards.');
+            // Check for pending rewards when clicked
+            let claimed = checkAndClaimMiningRewards();
+            updateDashboard();
+            if(claimed) {
+                alert('⛏️ Mining rewards have been added to your balance!');
+            } else {
+                alert('Mining is active! Next reward in about 1 hour.');
+            }
             return; 
         }
         
@@ -357,7 +376,8 @@
         currentUser.miningClaimed = 0;
         saveUsers();
         
-        alert('✅ Mining started! You will earn ₦200,000 over 24 hours. Come back anytime to claim your rewards.');
+        alert('✅ Mining started! You will earn ₦200,000 over 24 hours. ₦8,333 will be added every hour.');
+        updateDashboard();
     }
 
     function updateDashboard() {
@@ -512,6 +532,10 @@
             for(let u of users) { 
                 if(u.email === saved) { 
                     currentUser = u; 
+                    // Check for missed mining rewards on page load
+                    if(currentUser.miningActive) {
+                        checkAndClaimMiningRewards();
+                    }
                     showDashboardPage(); 
                     return; 
                 } 
