@@ -307,6 +307,12 @@
     }
     
     function showMiningNotification(amount, hours) {
+        // Only show popup if dashboard page is visible
+        let dashboardPage = document.getElementById('dashboardPage');
+        let isOnDashboard = dashboardPage && !dashboardPage.classList.contains('hidden');
+        
+        if(!isOnDashboard) return; // Don't show popup on transaction history or other pages
+        
         let notif = document.createElement('div');
         notif.className = 'mining-notification';
         if(hours === 'complete') {
@@ -942,10 +948,7 @@
             historyHtml += `</div>`;
         }
         
-        let verificationWarning = '';
-        if(currentUser && !localStorage.getItem('email_verified_' + currentUser.email)) {
-            verificationWarning = `<div class="warning-box history-verify-warning" style="background:#1f1f1f; border-left-color:#fbbf24; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;"><div><strong>📧 Verify Your Email</strong><br><small style="color:#9ca3af;">Verify your email to secure your account</small></div><button class="btn" style="background:#fbbf24; color:#000; padding:8px 16px; font-size:12px;" onclick="sendVerificationEmailFirebase()">Send Email</button></div>`;
-        }
+        // Email verification warning removed from transaction history
         
         document.getElementById('dynamicContent').innerHTML = `
             <div id="historyView">
@@ -954,7 +957,6 @@
                     <button class="help-btn" onclick="showHelp()">❓</button>
                 </div>
                 <h2>Transaction history</h2>
-                ${verificationWarning}
                 ${historyHtml || '<div class="text-center" style="color:#9ca3af; padding: 40px;">No transactions yet</div>'}
             </div>
         `;
