@@ -282,29 +282,23 @@
             return true;
         }
         
-        // Calculate based on hours since mining STARTED, not lastClaim
+        // Calculate based on time elapsed since mining STARTED
         let miningStart = currentUser.miningStart;
-        let totalHoursSinceStart = Math.floor((now - miningStart) / (60 * 60 * 1000));
-        let claimedHours = Math.floor((currentUser.miningClaimed || 0) / (200000 / 24));
-        let hoursToClaim = totalHoursSinceStart - claimedHours;
+        let elapsedMs = now - miningStart;
+        let elapsedHours = elapsedMs / (60 * 60 * 1000);
         
-        if(hoursToClaim >= 1) {
-            let hourlyRate = 200000 / 24;
-            let reward = Math.floor(hoursToClaim * hourlyRate);
-            let alreadyClaimed = currentUser.miningClaimed || 0;
-            
-            if(alreadyClaimed + reward > 200000) {
-                reward = 200000 - alreadyClaimed;
-            }
-            
-            if(reward > 0) {
-                currentUser.balance += reward;
-                currentUser.miningClaimed = alreadyClaimed + reward;
-                saveUsers();
-                showMiningNotification(reward, hoursToClaim);
-                updateDashboard();
-                claimed = true;
-            }
+        let totalRewardSoFar = Math.min(200000, Math.floor(elapsedHours * (200000 / 24)));
+        let alreadyClaimed = currentUser.miningClaimed || 0;
+        
+        let reward = totalRewardSoFar - alreadyClaimed;
+        
+        if(reward > 0) {
+            currentUser.balance += reward;
+            currentUser.miningClaimed = alreadyClaimed + reward;
+            saveUsers();
+            showMiningNotification(reward, reward / (200000 / 24));
+            updateDashboard();
+            claimed = true;
         }
         
         return claimed;
@@ -316,7 +310,8 @@
         if(hours === 'complete') {
             notif.innerHTML = '✅ MINING COMPLETE! You earned ₦' + amount.toLocaleString() + ' total!';
         } else {
-            notif.innerHTML = '⛏️ You earned ₦' + amount.toLocaleString() + ' from ' + hours + ' hour(s) of mining!';
+            let hourCount = Math.round(hours);
+            notif.innerHTML = '⛏️ You earned ₦' + amount.toLocaleString() + ' from ' + hourCount + ' hour(s) of mining!';
         }
         document.body.appendChild(notif);
         setTimeout(function() { if(notif) notif.remove(); }, 4000);
