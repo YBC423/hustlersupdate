@@ -295,6 +295,8 @@
         if(reward > 0) {
             currentUser.balance += reward;
             currentUser.miningClaimed = alreadyClaimed + reward;
+            // Update lastClaimTime to fix NaN issue
+            currentUser.lastClaimTime = now;
             saveUsers();
             showMiningNotification(reward, reward / (200000 / 24));
             updateDashboard();
@@ -326,7 +328,16 @@
             if(claimed) {
                 alert('⛏️ Mining rewards have been added to your balance!');
             } else {
-                alert('Mining is active! Next reward in about 1 hour.');
+                // Calculate time until next reward
+                let lastClaim = currentUser.lastClaimTime || currentUser.miningStart;
+                let nextRewardTime = lastClaim + (60 * 60 * 1000);
+                let remainingMs = nextRewardTime - Date.now();
+                if(remainingMs > 0) {
+                    let remainingMinutes = Math.floor(remainingMs / (60 * 1000));
+                    alert('Mining is active! Next reward in about ' + remainingMinutes + ' minutes.');
+                } else {
+                    alert('Mining is active! Check again in a few moments.');
+                }
             }
             return; 
         }
@@ -352,7 +363,7 @@
             if(percent > 100) percent = 100;
             document.getElementById('progressFill').style.width = percent + '%';
             
-            // Show mining status if active with SMOOTH SCROLLING TEXT
+            // Show mining status if active
             let existingStatus = document.getElementById('miningStatusBox');
             if(currentUser.miningActive) {
                 let remainingMs = currentUser.miningEnd - Date.now();
@@ -360,10 +371,16 @@
                 let remainingMinutes = Math.floor((remainingMs % (60 * 60 * 1000)) / (60 * 1000));
                 let remainingSeconds = Math.floor((remainingMs % (60 * 1000)) / 1000);
                 
+                // Fix for NaN - use lastClaimTime or miningStart
                 let lastClaim = currentUser.lastClaimTime || currentUser.miningStart;
                 let nextRewardMs = (lastClaim + (60 * 60 * 1000)) - Date.now();
                 let nextRewardMinutes = Math.floor(nextRewardMs / (60 * 1000));
                 let nextRewardSeconds = Math.floor((nextRewardMs % (60 * 1000)) / 1000);
+                
+                if(isNaN(nextRewardMinutes)) {
+                    nextRewardMinutes = 0;
+                    nextRewardSeconds = 0;
+                }
                 if(nextRewardMs < 0) {
                     nextRewardMinutes = 0;
                     nextRewardSeconds = 0;
@@ -371,7 +388,7 @@
                 
                 let claimed = currentUser.miningClaimed || 0;
                 
-                // Create scrolling message (repeat twice for seamless loop)
+                // Create scrolling message
                 let message = ' ⛏️ MINING ACTIVE! ' + remainingHours + 'h ' + remainingMinutes + 'm ' + remainingSeconds + 's remaining | Next reward: ' + nextRewardMinutes + 'm ' + nextRewardSeconds + 's | Claimed: ₦' + claimed.toLocaleString() + ' / ₦200,000 🚀 ••• ';
                 let fullMessage = message + message;
                 
@@ -415,13 +432,10 @@
         }
     }
 
-    // ONE-TIME RECOVERY FOR MISSED PAST REWARDS
-    function recoverMissedMiningRewards() {
+    // FORCE RECOVERY FOR ALL MISSED PAST REWARDS
+    function forceRecoverAllMissedRewards() {
         if(!currentUser) return false;
         if(!currentUser.miningActive) return false;
-        
-        let recoveryKey = 'mining_recovered_' + currentUser.id;
-        if(localStorage.getItem(recoveryKey)) return false;
         
         let startTime = currentUser.miningStart;
         let now = Date.now();
@@ -433,8 +447,8 @@
         if(pending > 0) {
             currentUser.balance += pending;
             currentUser.miningClaimed = totalEarned;
+            currentUser.lastClaimTime = now;
             saveUsers();
-            localStorage.setItem(recoveryKey, 'true');
             showMiningNotification(pending, pending / (200000 / 24));
             updateDashboard();
             return true;
@@ -473,7 +487,7 @@
         }, duration);
     }
 
-    // ========== SIGNUP (NO POPUP - GOES STRAIGHT TO DASHBOARD) ==========
+    // ========== SIGNUP ==========
     function signup() {
         let fn = document.getElementById('signupFirstname').value.trim();
         let sn = document.getElementById('signupSurname').value.trim();
@@ -487,7 +501,6 @@
         let newUser = { id: Date.now(), firstname: fn, surname: sn, email: em, password: pw, balance: 200000, miningActive: false, miningEnd: null, miningStart: null, lastClaimTime: null, miningClaimed: 0, transactions: [{ type: 'Bonus', amount: 200000, date: new Date().toLocaleString(), status: 'Success', fullDetails: { transactionType: 'Bonus', sender: 'Gray Pay', recipient: fn + ' ' + sn, amount: 200000, note: 'Welcome bonus' } }] };
         users.push(newUser); saveUsers(); currentUser = newUser; localStorage.setItem('graypay_current', em);
         
-        // Send Firebase verification email in background (NO POPUP)
         if(window.sendVerificationEmailInBackground) {
             window.sendVerificationEmailInBackground(em, pw);
         }
@@ -508,8 +521,8 @@
             localStorage.setItem('graypay_current', em); 
             showSplashLoading(() => {
                 showDashboardPage();
-                // Run recovery for missed past rewards
-                recoverMissedMiningRewards();
+                // FORCE RECOVER ALL MISSED REWARDS
+                forceRecoverAllMissedRewards();
             });
             return; 
         }
@@ -523,11 +536,9 @@
             for(let u of users) { 
                 if(u.email === saved) { 
                     currentUser = u; 
-                    // Check for missed mining rewards on page load
                     if(currentUser.miningActive) {
                         checkAndClaimMiningRewards();
-                        // Also run recovery for any missed past rewards
-                        recoverMissedMiningRewards();
+                        forceRecoverAllMissedRewards();
                     }
                     showDashboardPage(); 
                     return; 
@@ -547,7 +558,6 @@
         document.getElementById('dynamicContent').innerHTML = `<div id="profileView"><div class="header"><button class="back-btn" onclick="closeDynamic()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><div class="logo">Profile</div><div class="info-box">Full Name: ${currentUser.firstname} ${currentUser.surname}</div><div class="info-box">Email: ${currentUser.email}</div><div class="info-box">Password: ********</div><button class="btn" onclick="logout()">Log Out</button></div>`;
         showPage('dashboardPage'); document.getElementById('dashboardPage').classList.add('hidden'); document.getElementById('profileView').style.display = 'block'; document.getElementById('profileView').style.padding = '20px';
         
-        // Add email verification warning if not verified
         setTimeout(() => {
             const profileView = document.getElementById('profileView');
             if(profileView && currentUser && !localStorage.getItem('email_verified_' + currentUser.email)) {
@@ -932,7 +942,6 @@
             historyHtml += `</div>`;
         }
         
-        // Add verification warning to history
         let verificationWarning = '';
         if(currentUser && !localStorage.getItem('email_verified_' + currentUser.email)) {
             verificationWarning = `<div class="warning-box history-verify-warning" style="background:#1f1f1f; border-left-color:#fbbf24; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;"><div><strong>📧 Verify Your Email</strong><br><small style="color:#9ca3af;">Verify your email to secure your account</small></div><button class="btn" style="background:#fbbf24; color:#000; padding:8px 16px; font-size:12px;" onclick="sendVerificationEmailFirebase()">Send Email</button></div>`;
@@ -1109,24 +1118,14 @@
         if(popup) popup.remove();
     }
 
-    // ========== SEND VERIFICATION EMAIL (NO POPUP) ==========
     window.sendVerificationEmailFirebase = function() {
         let em = currentUser ? currentUser.email : '';
         if(!em) { alert('No email found'); return; }
-        
-        // Store that verification was sent
         localStorage.setItem('verification_sent_' + em, 'true');
-        
-        // This is where you would integrate Firebase to actually send email
-        // For now, it shows a message that email was sent
         alert('📧 Verification email has been sent to ' + em + '\n\nPlease check your inbox and click the verification link.');
-        
-        // Simulate email sent - user can click verify button in email
-        // In production, Firebase would handle this
     };
     
     window.sendVerificationEmailInBackground = function(email, password) {
-        // Store that verification was sent (no popup)
         localStorage.setItem('verification_sent_' + email, 'true');
         console.log('Verification email would be sent to: ' + email);
     };
