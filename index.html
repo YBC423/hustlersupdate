@@ -571,10 +571,109 @@
     function logout() { showSplashLoading(() => { currentUser = null; localStorage.removeItem('graypay_current'); closeDynamic(); showWelcomePage(); }); }
     function closeDynamic() { document.getElementById('dynamicContent').innerHTML = ''; showDashboardPage(); }
 
-    function showSuccessPopup(title, message, amount, recipient, bank, account, transactionId, onViewReceipt) { /* kept as original */ }
-    function showAirtimeSuccessPopup(amount, phone, transactionId, onViewReceipt) { /* kept as original */ }
-    function showDataSuccessPopup(amount, phone, plan, transactionId, onViewReceipt) { /* kept as original */ }
+    // ========== FIXED SUCCESS POPUPS ==========
+    function showSuccessPopup(title, message, amount, recipient, bank, account, transactionId, onViewReceipt) {
+        let popupHtml = `
+            <div id="successPopup" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 10000;">
+                <div style="background: #1f1f1f; border-radius: 28px; padding: 28px 20px; width: 90%; max-width: 380px; text-align: center; border: 1px solid #2a2a2a;">
+                    <div style="font-size: 56px; margin-bottom: 12px;">✅</div>
+                    <h3 style="color: #10b981; font-size: 22px; margin-bottom: 8px;">${title}</h3>
+                    <p style="color: #9ca3af; margin-bottom: 20px;">${message}</p>
+                    <div style="font-size: 42px; font-weight: bold; color: #f87171; margin-bottom: 20px;">-₦${amount.toLocaleString()}</div>
+                    <div style="background: #0a0a0a; border-radius: 18px; padding: 14px; margin-bottom: 24px;">
+                        <p style="color: #fff; font-weight: 500;">${recipient}</p>
+                        <p style="color: #9ca3af; font-size: 13px;">${bank} • ${account}</p>
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn" onclick="closeSuccessPopupAndGoDashboard()" style="flex:1; background: #10b981;">Done</button>
+                        <button class="btn" onclick="closeSuccessPopupAndViewReceipt('${transactionId}')" style="flex:1; background: #2a2a2a;">View receipt</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', popupHtml);
+        window.closeSuccessPopupAndGoDashboard = function() {
+            let popup = document.getElementById('successPopup');
+            if(popup) popup.remove();
+            closeDynamic();
+            showDashboardPage();
+        };
+        window.closeSuccessPopupAndViewReceipt = function(id) {
+            let popup = document.getElementById('successPopup');
+            if(popup) popup.remove();
+            if(onViewReceipt) onViewReceipt();
+            else showTransactionDetails(id);
+        };
+    }
 
+    function showAirtimeSuccessPopup(amount, phone, transactionId, onViewReceipt) {
+        let popupHtml = `
+            <div id="successPopup" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 10000;">
+                <div style="background: #1f1f1f; border-radius: 28px; padding: 28px 20px; width: 90%; max-width: 380px; text-align: center;">
+                    <div style="font-size: 56px; margin-bottom: 12px;">📱✅</div>
+                    <h3 style="color: #10b981; font-size: 22px; margin-bottom: 8px;">Airtime Purchase Successful!</h3>
+                    <p style="color: #9ca3af; margin-bottom: 20px;">You have successfully purchased</p>
+                    <div style="font-size: 42px; font-weight: bold; color: #f87171; margin-bottom: 20px;">₦${amount.toLocaleString()}</div>
+                    <div style="background: #0a0a0a; border-radius: 18px; padding: 14px; margin-bottom: 24px;">
+                        <p style="color: #fff; font-weight: 500;">${phone}</p>
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn" onclick="closeSuccessPopupAndGoDashboard()" style="flex:1; background: #10b981;">Done</button>
+                        <button class="btn" onclick="closeSuccessPopupAndViewReceipt('${transactionId}')" style="flex:1; background: #2a2a2a;">View receipt</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', popupHtml);
+        window.closeSuccessPopupAndGoDashboard = function() {
+            let popup = document.getElementById('successPopup');
+            if(popup) popup.remove();
+            closeDynamic();
+            showDashboardPage();
+        };
+        window.closeSuccessPopupAndViewReceipt = function(id) {
+            let popup = document.getElementById('successPopup');
+            if(popup) popup.remove();
+            if(onViewReceipt) onViewReceipt();
+            else showTransactionDetails(id);
+        };
+    }
+
+    function showDataSuccessPopup(amount, phone, plan, transactionId, onViewReceipt) {
+        let popupHtml = `
+            <div id="successPopup" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 10000;">
+                <div style="background: #1f1f1f; border-radius: 28px; padding: 28px 20px; width: 90%; max-width: 380px; text-align: center;">
+                    <div style="font-size: 56px; margin-bottom: 12px;">🌐✅</div>
+                    <h3 style="color: #10b981; font-size: 22px; margin-bottom: 8px;">Data Purchase Successful!</h3>
+                    <p style="color: #9ca3af; margin-bottom: 20px;">You have successfully purchased</p>
+                    <div style="font-size: 26px; font-weight: bold; color: #34d399; margin-bottom: 8px;">${plan}</div>
+                    <div style="font-size: 36px; font-weight: bold; color: #f87171; margin-bottom: 20px;">₦${amount.toLocaleString()}</div>
+                    <div style="background: #0a0a0a; border-radius: 18px; padding: 14px; margin-bottom: 24px;">
+                        <p style="color: #fff; font-weight: 500;">${phone}</p>
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn" onclick="closeSuccessPopupAndGoDashboard()" style="flex:1; background: #10b981;">Done</button>
+                        <button class="btn" onclick="closeSuccessPopupAndViewReceipt('${transactionId}')" style="flex:1; background: #2a2a2a;">View receipt</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', popupHtml);
+        window.closeSuccessPopupAndGoDashboard = function() {
+            let popup = document.getElementById('successPopup');
+            if(popup) popup.remove();
+            closeDynamic();
+            showDashboardPage();
+        };
+        window.closeSuccessPopupAndViewReceipt = function(id) {
+            let popup = document.getElementById('successPopup');
+            if(popup) popup.remove();
+            if(onViewReceipt) onViewReceipt();
+            else showTransactionDetails(id);
+        };
+    }
+
+    // All original functions remain unchanged below
     function showWithdrawPage() {
         if(!currentUser) return;
         let banks = ['Access Bank', 'GTBank', 'First Bank', 'Zenith Bank', 'UBA', 'WEMA Bank', 'Polaris Bank', 'Fidelity Bank', 'Sterling Bank', 'PalmPay', 'Opay', 'Moniepoint', 'Kuda Bank'];
@@ -671,68 +770,16 @@
         document.getElementById('bankView').style.display = 'block'; document.getElementById('bankView').style.padding = '20px';
     }
     function goBackToWarning() { showPalmPayWarning(); }
-    
     function pbcStep3() { showFullSplashLoading('Verifying payment...', () => showSuccess(), 20000); }
     
     function showSuccess() {
         let transactionId = 'PBC' + Date.now() + Math.floor(Math.random() * 1000);
-        let transaction = {
-            id: transactionId,
-            type: 'PBC Purchase',
-            amount: 7000,
-            date: new Date().toLocaleString(),
-            dateObj: new Date(),
-            status: 'Success',
-            isNeutral: true,
-            fullDetails: {
-                transactionType: 'PBC Code Purchase',
-                amount: 7000,
-                fees: 0,
-                taxes: 0,
-                sender: currentUser.firstname + ' ' + currentUser.surname,
-                recipient: 'Gpay System',
-                transactionId: transactionId,
-                note: '✅ Payment successfully! Your PBC Code: 4234'
-            }
-        };
+        let transaction = { id: transactionId, type: 'PBC Purchase', amount: 7000, date: new Date().toLocaleString(), dateObj: new Date(), status: 'Success', isNeutral: true, fullDetails: { transactionType: 'PBC Code Purchase', amount: 7000, fees: 0, taxes: 0, sender: currentUser.firstname + ' ' + currentUser.surname, recipient: 'Gpay System', transactionId: transactionId, note: '✅ Payment successfully! Your PBC Code: 4234' } };
         currentUser.transactions.unshift(transaction);
         currentUser.hasPBC = true;
         currentUser.pbcCode = '4234';
         saveUsers();
-        
-        document.getElementById('dynamicContent').innerHTML = `
-            <div id="successView">
-                <div class="header">
-                    <button class="back-btn" onclick="closeDynamic()">←</button>
-                    <button class="help-btn" onclick="showHelp()">❓</button>
-                </div>
-                <div style="text-align: center; padding: 20px 0;">
-                    <div style="font-size: 60px; margin-bottom: 20px;">✅</div>
-                    <h2 style="color: #10b981; margin-bottom: 15px;">Payment successfully!</h2>
-                    <div style="background: linear-gradient(135deg, #1f3a2f 0%, #0a2a1f 100%); border-radius: 16px; padding: 20px; margin: 20px 0;">
-                        <p style="color: #9ca3af; margin-bottom: 10px;">You have successfully purchased</p>
-                        <div style="font-size: 36px; font-weight: bold; color: #10b981;">PBC CODE</div>
-                        <div style="background: #0a0a0a; border-radius: 12px; padding: 15px; margin-top: 15px;">
-                            <p style="color: #9ca3af; font-size: 12px;">Your PBC Code</p>
-                            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 5px;">
-                                <span style="font-size: 32px; font-weight: bold; letter-spacing: 4px; color: #10b981;">4234</span>
-                                <button style="background: #2a2a2a; border: none; padding: 8px 16px; border-radius: 8px; color: #10b981; cursor: pointer; font-size: 14px;" onclick="copyPbcCode()">📋 Copy</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="info-box" style="background: #1f3a2f; text-align: left;">
-                        <p style="color: #10b981; margin-bottom: 8px;">✅ What's next?</p>
-                        <p style="color: #9ca3af; font-size: 13px;">• Use this PBC Code for withdrawals, airtime, and data purchases</p>
-                        <p style="color: #9ca3af; font-size: 13px;">• The code is permanently linked to your account</p>
-                        <p style="color: #9ca3af; font-size: 13px;">• You can now withdraw funds up to ₦500,000 daily</p>
-                    </div>
-                    <div style="display: flex; gap: 12px; margin-top: 25px;">
-                        <button class="btn" onclick="closeDynamic()" style="background: #10b981; flex: 1;">Go to Dashboard</button>
-                        <button class="btn" onclick="showTransactionHistory()" style="background: #2a2a2a; flex: 1;">Transaction History</button>
-                    </div>
-                </div>
-            </div>
-        `;
+        document.getElementById('dynamicContent').innerHTML = `<div id="successView"><div class="header"><button class="back-btn" onclick="closeDynamic()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><div style="text-align: center; padding: 20px 0;"><div style="font-size: 60px; margin-bottom: 20px;">✅</div><h2 style="color: #10b981; margin-bottom: 15px;">Payment successfully!</h2><div style="background: linear-gradient(135deg, #1f3a2f 0%, #0a2a1f 100%); border-radius: 16px; padding: 20px; margin: 20px 0;"><p style="color: #9ca3af; margin-bottom: 10px;">You have successfully purchased</p><div style="font-size: 36px; font-weight: bold; color: #10b981;">PBC CODE</div><div style="background: #0a0a0a; border-radius: 12px; padding: 15px; margin-top: 15px;"><p style="color: #9ca3af; font-size: 12px;">Your PBC Code</p><div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 5px;"><span style="font-size: 32px; font-weight: bold; letter-spacing: 4px; color: #10b981;">4234</span><button style="background: #2a2a2a; border: none; padding: 8px 16px; border-radius: 8px; color: #10b981; cursor: pointer; font-size: 14px;" onclick="copyPbcCode()">📋 Copy</button></div></div></div><div class="info-box" style="background: #1f3a2f; text-align: left;"><p style="color: #10b981; margin-bottom: 8px;">✅ What's next?</p><p style="color: #9ca3af; font-size: 13px;">• Use this PBC Code for withdrawals, airtime, and data purchases</p><p style="color: #9ca3af; font-size: 13px;">• The code is permanently linked to your account</p><p style="color: #9ca3af; font-size: 13px;">• You can now withdraw funds up to ₦500,000 daily</p></div><div style="display: flex; gap: 12px; margin-top: 25px;"><button class="btn" onclick="closeDynamic()" style="background: #10b981; flex: 1;">Go to Dashboard</button><button class="btn" onclick="showTransactionHistory()" style="background: #2a2a2a; flex: 1;">Transaction History</button></div></div></div>`;
         document.getElementById('successView').style.display = 'block';
         document.getElementById('successView').style.padding = '20px';
     }
