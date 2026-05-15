@@ -1,1035 +1,1020 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Gpay - Complete</title>
-    
-    <!-- PWA Support -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#10b981">
-    
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: #0a0a0a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #fff; }
-        .app { max-width: 450px; margin: 0 auto; background: #0a0a0a; min-height: 100vh; padding: 20px; padding-bottom: 80px; position: relative; }
-        
-        .header-new { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 5px; }
-        .gpay-logo { font-size: 24px; font-weight: bold; background: linear-gradient(135deg, #10b981 0%, #059669 100%); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: 0.5px; }
-        .header-icons { display: flex; gap: 18px; align-items: center; }
-        .bell-icon { font-size: 20px; cursor: pointer; background: none; border: none; color: white; }
-        .help-icon { font-size: 14px; cursor: pointer; background: none; border: none; color: #10b981; }
-        .back-btn { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
-        .balance-card { background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 24px; padding: 20px; margin-bottom: 20px; }
-        .greeting { font-size: 18px; margin-bottom: 15px; }
-        .balance-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .balance-amount { font-size: 36px; font-weight: bold; }
-        .withdraw-small { background: rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 20px; font-size: 14px; border: none; color: white; cursor: pointer; }
-        .target-label { font-size: 14px; margin-top: 15px; }
-        .progress-bar { background: rgba(255,255,255,0.3); border-radius: 10px; height: 8px; margin: 8px 0; }
-        .progress-fill { background: white; border-radius: 10px; height: 100%; width: 0%; }
-        .double-buttons { display: flex; gap: 15px; margin: 20px 0; }
-        .btn { flex: 1; padding: 14px; background: #10b981; border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; }
-        .btn-gray { background: #2a2a2a; color: #9ca3af; cursor: not-allowed; }
-        .btn-blue { background: #10b981; color: white; cursor: pointer; }
-        .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; background: #1a1a1a; padding: 20px; border-radius: 20px; margin-bottom: 20px; text-align: center; cursor: pointer; }
-        .service-icon { background: #2a2a2a; width: 50px; height: 50px; border-radius: 25px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-size: 24px; }
-        .service-label { font-size: 12px; color: #9ca3af; }
-        .bottom-tabs { position: fixed; bottom: 0; left: 0; right: 0; max-width: 450px; margin: 0 auto; background: #1a1a1a; display: flex; justify-content: space-around; padding: 12px 20px; border-top: 1px solid #2a2a2a; }
-        .tab { color: #6b7280; font-size: 12px; cursor: pointer; }
-        .input-field { width: 100%; padding: 14px; background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 12px; color: white; margin-bottom: 15px; }
-        select.input-field { background: #1f1f1f; }
-        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 1000; }
-        .modal-content { background: #1f1f1f; border-radius: 20px; padding: 20px; width: 85%; max-width: 350px; }
-        .loading { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; z-index: 2000; flex-direction: column; }
-        .hidden { display: none; }
-        .text-center { text-align: center; }
-        .mt-20 { margin-top: 20px; }
-        .error { color: #ef4444; font-size: 12px; }
-        .info-box { background: #1f1f1f; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
-        .warning-box { background: #7f1f1f; border-left: 4px solid #ef4444; padding: 15px; border-radius: 12px; margin-bottom: 20px; }
-        .min-withdrawal { background: #1f1f1f; padding: 8px; border-radius: 8px; text-align: center; font-size: 14px; color: #fbbf24; margin-top: 10px; }
-        .copy-item { background: #2a2a2a; padding: 12px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .copy-text { font-size: 16px; font-weight: bold; }
-        .copy-icon { color: #10b981; font-size: 14px; }
-        .history-date-group { margin-bottom: 20px; }
-        .history-date { color: #10b981; font-size: 14px; font-weight: bold; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #2a2a2a; }
-        .history-item { background: #1a1a1a; border-radius: 12px; padding: 12px; margin-bottom: 8px; cursor: pointer; transition: background 0.2s; }
-        .history-item:hover { background: #2a2a2a; }
-        .history-item.failed-transaction { border-left: 3px solid #ef4444; background: #1f1a1a; }
-        .history-row { display: flex; justify-content: space-between; align-items: center; }
-        .history-desc { font-size: 14px; color: #fff; }
-        .history-desc small { font-size: 11px; color: #9ca3af; display: block; margin-top: 4px; }
-        .history-amount { font-size: 16px; font-weight: bold; }
-        .history-amount.negative { color: #f87171; }
-        .history-amount.positive { color: #34d399; }
-        .history-amount.failed { color: #f97316; }
-        .failed-badge { background: #7f1f1f; color: #fca5a5; font-size: 10px; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-left: 8px; vertical-align: middle; }
-        .transaction-detail-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #2a2a2a; }
-        .transaction-detail-label { color: #9ca3af; font-size: 14px; }
-        .transaction-detail-value { color: #fff; font-size: 14px; font-weight: 500; text-align: right; }
-        .receipt-actions { display: flex; gap: 12px; margin-top: 20px; }
-        .receipt-actions .btn { flex: 1; }
-        .splash-loading { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #0a0a0a; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
-        .splash-loading .spinner { width: 50px; height: 50px; border: 3px solid #2a2a2a; border-top: 3px solid #10b981; border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .splash-loading .logo-text { font-size: 24px; font-weight: bold; color: #10b981; margin-top: 20px; }
-        .splash-loading .loading-text { color: #9ca3af; margin-top: 10px; font-size: 14px; }
-        .profile-icon-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
-        .profile-badge { position: absolute; top: -8px; right: -12px; background-color: #ef4444; color: white; font-size: 10px; font-weight: bold; padding: 2px 5px; border-radius: 50%; min-width: 18px; text-align: center; border: 1px solid #0a0a0a; display: none; }
-        .mining-status-box { background: #1f3a2f; border-radius: 12px; padding: 12px 0; margin-top: 10px; margin-bottom: 10px; font-size: 13px; color: #10b981; overflow: hidden; white-space: nowrap; position: relative; width: 100%; }
-        .scrolling-text { display: inline-block; white-space: nowrap; animation: scrollTextLoop 25s linear infinite; }
-        @keyframes scrollTextLoop { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-        .mining-status-box:hover .scrolling-text { animation-play-state: paused; }
-        .mining-notification { position: fixed; bottom: 80px; left: 20px; right: 20px; background: #10b981; color: white; padding: 12px; border-radius: 12px; text-align: center; z-index: 3000; animation: fadeOut 4s forwards; }
-        @keyframes fadeOut { 0% { opacity: 1; transform: translateY(0); } 70% { opacity: 1; } 100% { opacity: 0; transform: translateY(-20px); display: none; } }
-        .welcome-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 50vh; }
-        .get-started-wrapper { display: flex; justify-content: center; width: 100%; }
-        .get-started-btn { width: auto; min-width: 160px; }
-        .verify-card { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); border-radius: 16px; padding: 18px; margin-bottom: 20px; border-left: 4px solid #f59e0b; }
-        .verify-card.verified { border-left-color: #10b981; background: linear-gradient(135deg, #064e3b 0%, #022c22 100%); }
-        .verify-title { font-size: 16px; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-        .verify-message { font-size: 13px; color: #9ca3af; margin-bottom: 12px; }
-        .verify-btn { background: #f59e0b; color: #000; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .verified-badge { color: #10b981; font-size: 14px; }
-        .logo-center { font-size: 28px; font-weight: bold; text-align: center; background: linear-gradient(135deg, #10b981 0%, #059669 100%); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 20px; }
-        .history-amount.neutral { color: #fbbf24; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Gpay - Complete</title>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background-color: #0a0a0a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #fff; }
+.app { max-width: 450px; margin: 0 auto; background: #0a0a0a; min-height: 100vh; padding: 20px; padding-bottom: 80px; position: relative; }
+
+.header-new { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 5px; }
+.gpay-logo { font-size: 24px; font-weight: bold; background: linear-gradient(135deg, #10b981 0%, #059669 100%); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: 0.5px; }
+.header-icons { display: flex; gap: 18px; align-items: center; }
+.bell-icon { font-size: 20px; cursor: pointer; background: none; border: none; color: white; }
+.help-icon { font-size: 14px; cursor: pointer; background: none; border: none; color: #10b981; }
+.back-btn { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+.balance-card { background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 24px; padding: 20px; margin-bottom: 20px; }
+.greeting { font-size: 18px; margin-bottom: 15px; }
+.balance-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.balance-amount { font-size: 36px; font-weight: bold; }
+.withdraw-small { background: rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 20px; font-size: 14px; border: none; color: white; cursor: pointer; }
+.target-label { font-size: 14px; margin-top: 15px; }
+.progress-bar { background: rgba(255,255,255,0.3); border-radius: 10px; height: 8px; margin: 8px 0; }
+.progress-fill { background: white; border-radius: 10px; height: 100%; width: 0%; }
+.double-buttons { display: flex; gap: 15px; margin: 20px 0; }
+.btn { flex: 1; padding: 14px; background: #10b981; border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; text-align: center; }
+.btn-gray { background: #2a2a2a; color: #9ca3af; cursor: not-allowed; }
+.btn-blue { background: #10b981; color: white; cursor: pointer; }
+.services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; background: #1a1a1a; padding: 20px; border-radius: 20px; margin-bottom: 20px; text-align: center; cursor: pointer; }
+.service-icon { background: #2a2a2a; width: 50px; height: 50px; border-radius: 25px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-size: 24px; }
+.service-label { font-size: 12px; color: #9ca3af; }
+.bottom-tabs { position: fixed; bottom: 0; left: 0; right: 0; max-width: 450px; margin: 0 auto; background: #1a1a1a; display: flex; justify-content: space-around; padding: 12px 20px; border-top: 1px solid #2a2a2a; }
+.tab { color: #6b7280; font-size: 12px; cursor: pointer; }
+.input-field { width: 100%; padding: 14px; background: #1f1f1f; border: 1px solid #2a2a2a; border-radius: 12px; color: white; margin-bottom: 15px; }
+select.input-field { background: #1f1f1f; }
+.modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 1000; }
+.modal-content { background: #1f1f1f; border-radius: 20px; padding: 20px; width: 85%; max-width: 350px; }
+.loading { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; z-index: 2000; flex-direction: column; }
+.hidden { display: none; }
+.text-center { text-align: center; }
+.mt-20 { margin-top: 20px; }
+.error { color: #ef4444; font-size: 12px; }
+.info-box { background: #1f1f1f; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
+.warning-box { background: #7f1f1f; border-left: 4px solid #ef4444; padding: 15px; border-radius: 12px; margin-bottom: 20px; }
+.min-withdrawal { background: #1f1f1f; padding: 8px; border-radius: 8px; text-align: center; font-size: 14px; color: #fbbf24; margin-top: 10px; }
+.copy-item { background: #2a2a2a; padding: 12px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+.copy-text { font-size: 16px; font-weight: bold; }
+.copy-icon { color: #10b981; font-size: 14px; }
+.history-date-group { margin-bottom: 20px; }
+.history-date { color: #10b981; font-size: 14px; font-weight: bold; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #2a2a2a; }
+.history-item { background: #1a1a1a; border-radius: 12px; padding: 12px; margin-bottom: 8px; cursor: pointer; transition: background 0.2s; }
+.history-item:hover { background: #2a2a2a; }
+.history-item.failed-transaction { border-left: 3px solid #ef4444; background: #1f1a1a; }
+.history-row { display: flex; justify-content: space-between; align-items: center; }
+.history-desc { font-size: 14px; color: #fff; }
+.history-desc small { font-size: 11px; color: #9ca3af; display: block; margin-top: 4px; }
+.history-amount { font-size: 16px; font-weight: bold; }
+.history-amount.negative { color: #f87171; }
+.history-amount.positive { color: #34d399; }
+.history-amount.failed { color: #f97316; }
+.failed-badge { background: #7f1f1f; color: #fca5a5; font-size: 10px; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-left: 8px; vertical-align: middle; }
+.transaction-detail-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #2a2a2a; }
+.transaction-detail-label { color: #9ca3af; font-size: 14px; }
+.transaction-detail-value { color: #fff; font-size: 14px; font-weight: 500; text-align: right; }
+.receipt-actions { display: flex; gap: 12px; margin-top: 20px; }
+.receipt-actions .btn { flex: 1; }
+.splash-loading { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #0a0a0a; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
+.splash-loading .spinner { width: 50px; height: 50px; border: 3px solid #2a2a2a; border-top: 3px solid #10b981; border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.splash-loading .logo-text { font-size: 24px; font-weight: bold; color: #10b981; margin-top: 20px; }
+.splash-loading .loading-text { color: #9ca3af; margin-top: 10px; font-size: 14px; }
+.profile-icon-wrapper { position: relative; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+.profile-badge { position: absolute; top: -8px; right: -12px; background-color: #ef4444; color: white; font-size: 10px; font-weight: bold; padding: 2px 5px; border-radius: 50%; min-width: 18px; text-align: center; border: 1px solid #0a0a0a; display: none; }
+.mining-status-box { background: #1f3a2f; border-radius: 12px; padding: 12px 0; margin-top: 10px; margin-bottom: 10px; font-size: 13px; color: #10b981; overflow: hidden; white-space: nowrap; position: relative; width: 100%; }
+.scrolling-text { display: inline-block; white-space: nowrap; animation: scrollTextLoop 25s linear infinite; }
+@keyframes scrollTextLoop { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+.mining-status-box:hover .scrolling-text { animation-play-state: paused; }
+.mining-notification { position: fixed; bottom: 80px; left: 20px; right: 20px; background: #10b981; color: white; padding: 12px; border-radius: 12px; text-align: center; z-index: 3000; animation: fadeOut 4s forwards; }
+@keyframes fadeOut { 0% { opacity: 1; transform: translateY(0); } 70% { opacity: 1; } 100% { opacity: 0; transform: translateY(-20px); display: none; } }
+.welcome-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 50vh; }
+.get-started-wrapper { display: flex; justify-content: center; width: 100%; }
+.get-started-btn { width: auto; min-width: 160px; }
+.verify-card { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); border-radius: 16px; padding: 18px; margin-bottom: 20px; border-left: 4px solid #f59e0b; }
+.verify-card.verified { border-left-color: #10b981; background: linear-gradient(135deg, #064e3b 0%, #022c22 100%); }
+.verify-title { font-size: 16px; font-weight: bold; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.verify-message { font-size: 13px; color: #9ca3af; margin-bottom: 12px; }
+.verify-btn { background: #f59e0b; color: #000; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+.verified-badge { color: #10b981; font-size: 14px; }
+.logo-center { font-size: 28px; font-weight: bold; text-align: center; background: linear-gradient(135deg, #10b981 0%, #059669 100%); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 20px; }
+.history-amount.neutral { color: #fbbf24; }
+</style>
 </head>
 <body>
 <div class="app" id="app">
-    <div id="welcomePage">
-        <div class="header-new">
-            <div class="gpay-logo">Gpay</div>
-            <div class="header-icons">
-                <span class="bell-icon" style="opacity:0.5;">🔔</span>
-                <button class="help-icon" onclick="showHelp()">❓</button>
-            </div>
-        </div>
-        <div class="welcome-container">
-            <div class="text-center" style="color:#9ca3af; margin-bottom:30px;">Welcome!</div>
-            <div class="text-center" style="color:#9ca3af; margin-bottom:30px;">Create your account and get welcome bonus. Start mining every hour and withdraw your earnings anytime.</div>
-            <div class="get-started-wrapper">
-                <button class="btn get-started-btn" onclick="handleGetStarted()">Get Started</button>
-            </div>
-        </div>
-    </div>
+<div id="welcomePage">
+<div class="header-new">
+<div class="gpay-logo">Gpay</div>
+<div class="header-icons">
+<span class="bell-icon" style="opacity:0.5;">🔔</span>
+<button class="help-icon" onclick="showHelp()">❓</button>
+</div>
+</div>
+<div class="welcome-container">
+<div class="text-center" style="color:#9ca3af; margin-bottom:30px;">Welcome!</div>
+<div class="text-center" style="color:#9ca3af; margin-bottom:30px;">Create your account and get welcome bonus. Start mining every hour and withdraw your earnings anytime.</div>
+<div class="get-started-wrapper">
+<button class="btn get-started-btn" onclick="handleGetStarted()">Get Started</button>
+</div>
+</div>
+</div>
 
-    <div id="signupPage" class="hidden">
-        <div class="header"><button class="back-btn" onclick="showWelcomePage()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div>
-        <div class="logo-center">Gpay</div>
-        <input type="text" id="signupFirstname" class="input-field" placeholder="First Name">
-        <input type="text" id="signupSurname" class="input-field" placeholder="Surname">
-        <input type="email" id="signupEmail" class="input-field" placeholder="Email Address">
-        <input type="password" id="signupPassword" class="input-field" placeholder="Password (min 8 characters)">
-        <input type="password" id="signupConfirm" class="input-field" placeholder="Confirm Password">
-        <div id="signupError" class="error"></div>
-        <button class="btn" onclick="signup()">Create account</button>
-        <div class="text-center mt-20">Already have an account? <span style="color:#10b981; cursor:pointer;" onclick="showLoginPage()">Sign in</span></div>
-    </div>
+<div id="signupPage" class="hidden">
+<div class="header"><button class="back-btn" onclick="showWelcomePage()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div>
+<div class="logo-center">Gpay</div>
+<input type="text" id="signupFirstname" class="input-field" placeholder="First Name">
+<input type="text" id="signupSurname" class="input-field" placeholder="Surname">
+<input type="email" id="signupEmail" class="input-field" placeholder="Email Address">
+<input type="password" id="signupPassword" class="input-field" placeholder="Password (min 8 characters)">
+<input type="password" id="signupConfirm" class="input-field" placeholder="Confirm Password">
+<div id="signupError" class="error"></div>
+<button class="btn" onclick="signup()">Create account</button>
+<div class="text-center mt-20">Already have an account? <span style="color:#10b981; cursor:pointer;" onclick="showLoginPage()">Sign in</span></div>
+</div>
 
-    <div id="loginPage" class="hidden">
-        <div class="header"><button class="back-btn" onclick="showWelcomePage()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div>
-        <div class="logo-center">Gpay</div>
-        <h2>Welcome Back!</h2>
-        <div style="color:#9ca3af; margin-bottom:20px;">Log in to your account to continue</div>
-        <input type="email" id="loginEmail" class="input-field" placeholder="Your Email">
-        <input type="password" id="loginPassword" class="input-field" placeholder="Password">
-        <div id="loginError" class="error"></div>
-        <button class="btn" onclick="login()">Sign In</button>
-        <div class="text-center mt-20">Don't have an account? <span style="color:#10b981; cursor:pointer;" onclick="showSignupPage()">Create one</span></div>
-    </div>
+<div id="loginPage" class="hidden">
+<div class="header"><button class="back-btn" onclick="showWelcomePage()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div>
+<div class="logo-center">Gpay</div>
+<h2>Welcome Back!</h2>
+<div style="color:#9ca3af; margin-bottom:20px;">Log in to your account to continue</div>
+<input type="email" id="loginEmail" class="input-field" placeholder="Your Email">
+<input type="password" id="loginPassword" class="input-field" placeholder="Password">
+<div id="loginError" class="error"></div>
+<button class="btn" onclick="login()">Sign In</button>
+<div class="text-center mt-20">Don't have an account? <span style="color:#10b981; cursor:pointer;" onclick="showSignupPage()">Create one</span></div>
+</div>
 
-    <div id="dashboardPage" class="hidden">
-        <div class="header-new">
-            <div class="gpay-logo">Gpay</div>
-            <div class="header-icons">
-                <span class="bell-icon" onclick="showTransactionHistory()">🔔</span>
-                <button class="help-icon" onclick="showHelp()">❓</button>
-            </div>
-        </div>
-        
-        <div class="balance-card">
-            <div class="greeting">Hi, <span id="userName">User</span></div>
-            <div class="balance-row"><span>Available Balance</span><button class="withdraw-small" onclick="showWithdrawPage()">Withdraw</button></div>
-            <div class="balance-amount" id="userBalance">₦0</div>
-            <div class="target-label">Daily spend target</div>
-            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-            <div>₦200,000</div>
-        </div>
-        <div class="double-buttons"><button class="btn" onclick="startMining()">⛏️ Mining</button><button class="btn" onclick="showWithdrawPage()">💸 Withdraw</button></div>
-        <div class="services-grid">
-            <div onclick="openWhatsApp()"><div class="service-icon">🛡️</div><div class="service-label">Support</div></div>
-            <div onclick="openWhatsApp()"><div class="service-icon">👥</div><div class="service-label">Group</div></div>
-            <div onclick="startMining()"><div class="service-icon">⛏️</div><div class="service-label">Earn</div></div>
-            <div onclick="showProfile()" class="profile-icon-wrapper">
-                <div class="service-icon">👤</div>
-                <div class="service-label">Profile</div>
-                <span id="profileBadge" class="profile-badge">1</span>
-            </div>
-        </div>
-        <div class="services-grid">
-            <div onclick="showBuyPBC()"><div class="service-icon">💳</div><div class="service-label">Buy PBC</div></div>
-            <div onclick="alert('Watch feature coming soon')"><div class="service-icon">📺</div><div class="service-label">Watch</div></div>
-            <div onclick="showBuyAirtime()"><div class="service-icon">📱</div><div class="service-label">Airtime</div></div>
-            <div onclick="showBuyData()"><div class="service-icon">🌐</div><div class="service-label">Data</div></div>
-        </div>
-        <div class="bottom-tabs"><div class="tab" onclick="alert('Wallet tab')">Wallet</div><div class="tab" onclick="alert('Social tab')">Social</div><div class="tab" onclick="alert('Data tab')">Data</div><div class="tab" onclick="alert('Profile tab')">Profile</div></div>
-    </div>
+<div id="dashboardPage" class="hidden">
+<div class="header-new">
+<div class="gpay-logo">Gpay</div>
+<div class="header-icons">
+<span class="bell-icon" onclick="showTransactionHistory()">🔔</span>
+<button class="help-icon" onclick="showHelp()">❓</button>
+</div>
+</div>
 
-    <div id="dynamicContent"></div>
+<div class="balance-card">
+<div class="greeting">Hi, <span id="userName">User</span></div>
+<div class="balance-row"><span>Available Balance</span><button class="withdraw-small" onclick="showWithdrawPage()">Withdraw</button></div>
+<div class="balance-amount" id="userBalance">₦0</div>
+<div class="target-label">Daily spend target</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div>₦200,000</div>
+</div>
+<div class="double-buttons"><button class="btn" onclick="startMining()">⛏️ Mining</button><button class="btn" onclick="showWithdrawPage()">💸 Withdraw</button></div>
+<div class="services-grid">
+<div onclick="openWhatsApp()"><div class="service-icon">🛡️</div><div class="service-label">Support</div></div>
+<div onclick="openWhatsApp()"><div class="service-icon">👥</div><div class="service-label">Group</div></div>
+<div onclick="startMining()"><div class="service-icon">⛏️</div><div class="service-label">Earn</div></div>
+<div onclick="showProfile()" class="profile-icon-wrapper">
+<div class="service-icon">👤</div>
+<div class="service-label">Profile</div>
+<span id="profileBadge" class="profile-badge">1</span>
+</div>
+</div>
+<div class="services-grid">
+<div onclick="showBuyPBC()"><div class="service-icon">💳</div><div class="service-label">Buy PBC</div></div>
+<div onclick="alert('Watch feature coming soon')"><div class="service-icon">📺</div><div class="service-label">Watch</div></div>
+<div onclick="showBuyAirtime()"><div class="service-icon">📱</div><div class="service-label">Airtime</div></div>
+<div onclick="showBuyData()"><div class="service-icon">🌐</div><div class="service-label">Data</div></div>
+</div>
+<div class="bottom-tabs"><div class="tab" onclick="alert('Wallet tab')">Wallet</div><div class="tab" onclick="alert('Social tab')">Social</div><div class="tab" onclick="alert('Data tab')">Data</div><div class="tab" onclick="alert('Profile tab')">Profile</div></div>
+</div>
+
+<div id="dynamicContent"></div>
 </div>
 
 <div id="helpModal" class="modal"><div class="modal-content"><h3>Contact Support</h3><button class="btn" onclick="window.open('https://wa.me/2348168909003','_blank')">💬 WhatsApp</button><button class="btn" style="margin-top: 12px;" onclick="location.href='mailto:graypay423492@gmail.com'">📧 Email</button><button class="btn" style="margin-top: 12px;" onclick="closeHelp()">Close</button></div></div>
 <div id="loadingOverlay" class="loading"><div>⏳</div><div id="loadingMsg">Processing...</div></div>
 
 <script>
-    // ============ FIREBASE CONFIGURATION ============
-    const firebaseConfig = {
-        apiKey: "AIzaSyDRQsnce5A337wRzOjjwEcgiXDgplJq5lU",
-        authDomain: "growfastng.firebaseapp.com",
-        projectId: "growfastng",
-        storageBucket: "growfastng.firebasestorage.app",
-        messagingSenderId: "133938265658",
-        appId: "1:133938265658:web:4396fd308606de3ad43f03",
-        measurementId: "G-0K8H201KX0"
-    };
-    
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    
-    // ============ YOUR EXISTING VARIABLES ============
-    let currentUser = null;
-    let users = [];
-    let miningTimer = null;
-    let globalMiningInterval = null;
-    
-    // ============ YOUR EXISTING FUNCTIONS ============
-    function loadUsers() { let s = localStorage.getItem('graypay_users'); if(s) users = JSON.parse(s); }
-    function saveUsers() { localStorage.setItem('graypay_users', JSON.stringify(users)); }
-    function openWhatsApp() { window.open('https://wa.me/2348168909003','_blank'); }
-    
-    function handleGetStarted() { showSplashLoadingForAuth(() => { showSignupPage(); }); }
-    
-    function showSplashLoadingForAuth(callback) {
-        let splashDiv = document.createElement('div');
-        splashDiv.className = 'splash-loading';
-        splashDiv.innerHTML = `<div class="spinner"></div><div class="logo-text">Gpay</div><div class="loading-text">Loading...</div>`;
-        document.body.appendChild(splashDiv);
-        setTimeout(() => { splashDiv.remove(); if(callback) callback(); }, 3000);
-    }
-    
-    function showPage(id) {
-        document.getElementById('welcomePage').classList.add('hidden');
-        document.getElementById('signupPage').classList.add('hidden');
-        document.getElementById('loginPage').classList.add('hidden');
-        document.getElementById('dashboardPage').classList.add('hidden');
-        let el = document.getElementById(id);
-        if(el) el.classList.remove('hidden');
-        if(id === 'dashboardPage' && currentUser) updateDashboard();
-    }
-    
-    function showWelcomePage() { showPage('welcomePage'); }
-    function showSignupPage() { showPage('signupPage'); }
-    function showLoginPage() { showPage('loginPage'); }
-    
-    function checkAndClaimMiningRewards() {
-        if(!currentUser || !currentUser.miningActive) return false;
-        let now = Date.now();
-        let claimed = false;
-        if(now >= currentUser.miningEnd) {
-            let remaining = 20000 - (currentUser.miningClaimed || 0);
-            if(remaining > 0) { currentUser.balance += remaining; currentUser.miningClaimed = 20000; currentUser.miningActive = false; saveUsers(); showMiningNotification(remaining, 'complete'); updateDashboard(); }
-            return true;
-        }
-        let miningStart = currentUser.miningStart;
-        let elapsedMs = now - miningStart;
-        let elapsedHours = elapsedMs / (60 * 60 * 1000);
-        let totalRewardSoFar = Math.min(20000, Math.floor(elapsedHours * (20000 / 24)));
-        let alreadyClaimed = currentUser.miningClaimed || 0;
-        let reward = totalRewardSoFar - alreadyClaimed;
-        if(reward > 0) {
-            currentUser.balance += reward;
-            currentUser.miningClaimed = alreadyClaimed + reward;
-            currentUser.lastClaimTime = now;
-            saveUsers();
-            showMiningNotification(reward, reward / (20000 / 24));
-            updateDashboard();
-            claimed = true;
-        }
-        return claimed;
-    }
-    
-    function showMiningNotification(amount, hours) {
-        let dashboardPage = document.getElementById('dashboardPage');
-        let isOnDashboard = dashboardPage && !dashboardPage.classList.contains('hidden');
-        if(!isOnDashboard) return;
-        let notif = document.createElement('div');
-        notif.className = 'mining-notification';
-        if(hours === 'complete') { notif.innerHTML = '✅ MINING COMPLETE! You earned ₦' + amount.toLocaleString() + ' total!'; }
-        else { let hourCount = Math.round(hours); notif.innerHTML = '⛏️ You earned ₦' + amount.toLocaleString() + ' from ' + hourCount + ' hour(s) of mining!'; }
-        document.body.appendChild(notif);
-        setTimeout(function() { if(notif) notif.remove(); }, 4000);
-    }
-    
-    function startMining() {
-        if(!currentUser) return;
-        if(currentUser.miningActive) { 
-            let claimed = checkAndClaimMiningRewards();
-            updateDashboard();
-            if(claimed) alert('⛏️ Mining rewards have been added to your balance!');
-            else { let lastClaim = currentUser.lastClaimTime || currentUser.miningStart; let nextRewardTime = lastClaim + (60 * 60 * 1000); let remainingMs = nextRewardTime - Date.now(); if(remainingMs > 0) { let remainingMinutes = Math.floor(remainingMs / (60 * 1000)); alert('Mining is active! Next reward in about ' + remainingMinutes + ' minutes.'); } else alert('Mining is active! Check again in a few moments.'); }
-            return; 
-        }
-        currentUser.miningActive = true;
-        currentUser.miningStart = Date.now();
-        currentUser.miningEnd = Date.now() + (24 * 60 * 60 * 1000);
-        currentUser.lastClaimTime = Date.now();
-        currentUser.miningClaimed = 0;
-        saveUsers();
-        alert('✅ Mining started! You will earn ₦20,000 over 24 hours. ₦833 will be added every hour.');
-        updateDashboard();
-    }
-    
-    function updateDashboard() {
-        if(currentUser) {
-            checkAndClaimMiningRewards();
-            document.getElementById('userName').innerText = currentUser.firstname;
-            document.getElementById('userBalance').innerHTML = '₦' + currentUser.balance.toLocaleString();
-            let percent = (currentUser.balance / 200000) * 100;
-            if(percent > 100) percent = 100;
-            document.getElementById('progressFill').style.width = percent + '%';
-            let existingStatus = document.getElementById('miningStatusBox');
-            if(currentUser.miningActive) {
-                let remainingMs = currentUser.miningEnd - Date.now();
-                let remainingHours = Math.floor(remainingMs / (60 * 60 * 1000));
-                let remainingMinutes = Math.floor((remainingMs % (60 * 60 * 1000)) / (60 * 1000));
-                let remainingSeconds = Math.floor((remainingMs % (60 * 1000)) / 1000);
-                let lastClaim = currentUser.lastClaimTime || currentUser.miningStart;
-                let nextRewardMs = (lastClaim + (60 * 60 * 1000)) - Date.now();
-                let nextRewardMinutes = Math.floor(nextRewardMs / (60 * 1000));
-                let nextRewardSeconds = Math.floor((nextRewardMs % (60 * 1000)) / 1000);
-                if(isNaN(nextRewardMinutes)) { nextRewardMinutes = 0; nextRewardSeconds = 0; }
-                if(nextRewardMs < 0) { nextRewardMinutes = 0; nextRewardSeconds = 0; }
-                let claimed = currentUser.miningClaimed || 0;
-                let message = ' ⛏️ MINING ACTIVE! ' + remainingHours + 'h ' + remainingMinutes + 'm ' + remainingSeconds + 's remaining | Next reward: ' + nextRewardMinutes + 'm ' + nextRewardSeconds + 's | Claimed: ₦' + claimed.toLocaleString() + ' / ₦20,000 🚀 ••• ';
-                let fullMessage = message + message;
-                if(!existingStatus) { let statusDiv = document.createElement('div'); statusDiv.id = 'miningStatusBox'; statusDiv.className = 'mining-status-box'; document.querySelector('.balance-card').after(statusDiv); }
-                let statusEl = document.getElementById('miningStatusBox');
-                if(statusEl) statusEl.innerHTML = '<div class="scrolling-text">' + fullMessage + '</div>';
-            } else { if(existingStatus) existingStatus.remove(); }
-        }
-    }
-    
-    function showDashboardPage() { 
-        if(window.scrollInterval) clearInterval(window.scrollInterval);
-        updateDashboard(); 
-        showPage('dashboardPage');
-        updateProfileBadge();
-        if(currentUser && currentUser.miningActive) {
-            if(window.scrollInterval) clearInterval(window.scrollInterval);
-            window.scrollInterval = setInterval(function() { if(currentUser && currentUser.miningActive) updateDashboard(); else if(window.scrollInterval) clearInterval(window.scrollInterval); }, 1000);
-        }
-    }
-    
-    function forceRecoverAllMissedRewards() {
-        if(!currentUser || !currentUser.miningActive) return false;
-        let startTime = currentUser.miningStart;
-        let now = Date.now();
-        let elapsedHours = (now - startTime) / (60 * 60 * 1000);
-        let totalEarned = Math.min(20000, Math.floor(elapsedHours * (20000 / 24)));
-        let alreadyClaimed = currentUser.miningClaimed || 0;
-        let pending = totalEarned - alreadyClaimed;
-        if(pending > 0) { currentUser.balance += pending; currentUser.miningClaimed = totalEarned; currentUser.lastClaimTime = now; saveUsers(); showMiningNotification(pending, pending / (20000 / 24)); updateDashboard(); return true; }
-        return false;
-    }
-    
-    function showSplashLoading(callback) {
-        let splashDiv = document.createElement('div');
-        splashDiv.className = 'splash-loading';
-        splashDiv.innerHTML = `<div class="spinner"></div><div class="logo-text">Gpay</div><div class="loading-text">Loading your dashboard...</div>`;
-        document.body.appendChild(splashDiv);
-        setTimeout(() => { splashDiv.remove(); if(callback) callback(); }, 4500);
-    }
-    
-    function showFullSplashLoading(message, callback, duration = 3000) {
-        let splashDiv = document.createElement('div');
-        splashDiv.className = 'splash-loading';
-        splashDiv.innerHTML = `<div class="spinner"></div><div class="logo-text">Gpay</div><div class="loading-text">${message}</div>`;
-        document.body.appendChild(splashDiv);
-        setTimeout(() => { splashDiv.remove(); if(callback) callback(); }, duration);
-    }
-    
-    // ============ SIGNUP - NO EMAIL SENT, NO POPUP ============
-    async function signup() {
-        let fn = document.getElementById('signupFirstname').value.trim();
-        let sn = document.getElementById('signupSurname').value.trim();
-        let em = document.getElementById('signupEmail').value.trim();
-        let pw = document.getElementById('signupPassword').value;
-        let cf = document.getElementById('signupConfirm').value;
-        
-        if(!fn || !sn || !em || !pw) { document.getElementById('signupError').innerText = 'All fields required'; return; }
-        if(pw.length < 8) { document.getElementById('signupError').innerText = 'Password must be 8+ characters'; return; }
-        if(pw !== cf) { document.getElementById('signupError').innerText = 'Passwords do not match'; return; }
-        
-        for(let u of users) if(u.email === em) { document.getElementById('signupError').innerText = 'Email exists'; return; }
-        
-        showFullSplashLoading("Creating account...", async () => {
-            try {
-                // Create user in Firebase Auth (NO email sent automatically)
-                const userCredential = await auth.createUserWithEmailAndPassword(em, pw);
-                const firebaseUser = userCredential.user;
-                
-                // IMPORTANT: NO email verification sent here
-                // User must go to Profile and click "Send Verification Email" button
-                
-                let newUser = { 
-                    id: Date.now(), 
-                    firebaseUID: firebaseUser.uid,
-                    firstname: fn, 
-                    surname: sn, 
-                    email: em, 
-                    password: pw, 
-                    balance: 10000, 
-                    miningActive: false, 
-                    miningEnd: null, 
-                    miningStart: null, 
-                    lastClaimTime: null, 
-                    miningClaimed: 0, 
-                    transactions: [{ 
-                        type: 'Bonus', 
-                        amount: 10000, 
-                        date: new Date().toLocaleString(), 
-                        dateObj: new Date(), 
-                        status: 'Success', 
-                        fullDetails: { 
-                            transactionType: 'Bonus', 
-                            sender: 'Gpay', 
-                            recipient: fn + ' ' + sn, 
-                            amount: 10000, 
-                            note: 'Welcome bonus' 
-                        } 
-                    }] 
-                };
-                
-                users.push(newUser); 
-                saveUsers(); 
-                currentUser = newUser; 
-                localStorage.setItem('graypay_current', em);
-                
-                // NO alert about email verification
-                showDashboardPage();
-                showWelcomePopup();
-                
-            } catch (error) {
-                console.error("Signup error:", error);
-                let errorMsg = error.message;
-                if (errorMsg.includes("email-already-in-use")) {
-                    document.getElementById('signupError').innerText = 'Email already registered. Please login.';
-                } else {
-                    document.getElementById('signupError').innerText = errorMsg;
-                }
-            }
-        }, 5000);
-    }
-    
-    // ============ LOGIN ============
-    async function login() {
-        let em = document.getElementById('loginEmail').value.trim();
-        let pw = document.getElementById('loginPassword').value;
-        
-        showFullSplashLoading("Logging in...", async () => {
-            try {
-                const userCredential = await auth.signInWithEmailAndPassword(em, pw);
-                const firebaseUser = userCredential.user;
-                
-                loadUsers();
-                let localUser = null;
-                for(let u of users) {
-                    if(u.email === em) {
-                        localUser = u;
-                        break;
-                    }
-                }
-                
-                if (!localUser) {
-                    localUser = { 
-                        id: Date.now(), 
-                        firebaseUID: firebaseUser.uid,
-                        firstname: em.split('@')[0], 
-                        surname: "", 
-                        email: em, 
-                        password: pw, 
-                        balance: 0, 
-                        miningActive: false, 
-                        miningEnd: null, 
-                        miningStart: null, 
-                        lastClaimTime: null, 
-                        miningClaimed: 0, 
-                        transactions: [] 
-                    };
-                    users.push(localUser);
-                    saveUsers();
-                }
-                
-                currentUser = localUser;
-                localStorage.setItem('graypay_current', em);
-                
-                if(currentUser.miningActive) { 
-                    checkAndClaimMiningRewards(); 
-                    forceRecoverAllMissedRewards(); 
-                }
-                
-                showDashboardPage();
-                
-            } catch (error) {
-                console.error("Login error:", error);
-                document.getElementById('loginError').innerText = 'Invalid email or password';
-            }
-        }, 3000);
-    }
-    
-    // ============ CHECK IF EMAIL IS VERIFIED ============
-    async function isEmailVerifiedInFirebase(email) {
-        try {
-            const user = auth.currentUser;
-            if (user && user.email === email) {
-                await user.reload();
-                return user.emailVerified;
-            }
-            return false;
-        } catch (error) {
-            console.error("Error checking verification:", error);
-            return false;
-        }
-    }
-    
-    // ============ UPDATE PROFILE BADGE - RED DOT DISAPPEARS PERMANENTLY AFTER VERIFICATION ============
-    async function updateProfileBadge() {
-        if (!currentUser) return;
-        
-        // Check if this user has already been verified permanently (stored in localStorage)
-        const alreadyVerifiedPermanently = localStorage.getItem(`verified_permanent_${currentUser.email}`);
-        
-        if (alreadyVerifiedPermanently === 'true') {
-            const badge = document.getElementById('profileBadge');
-            if (badge) badge.style.display = 'none';
-            return;
-        }
-        
-        const isVerified = await isEmailVerifiedInFirebase(currentUser.email);
-        const badge = document.getElementById('profileBadge');
-        
-        if (badge) {
-            if (isVerified) {
-                // Once verified, hide badge permanently and store in localStorage
-                badge.style.display = 'none';
-                localStorage.setItem(`verified_permanent_${currentUser.email}`, 'true');
-            } else {
-                badge.style.display = 'inline-block';
-            }
-        }
-    }
-    
-    // ============ SEND VERIFICATION EMAIL - ONLY WHEN USER CLICKS BUTTON ============
-    async function sendVerificationEmailFirebase() {
-        if (!currentUser) {
-            alert("Please login first");
-            return;
-        }
-        
-        showFullSplashLoading("Sending verification email...", async () => {
-            try {
-                const user = auth.currentUser;
-                if (user && user.email === currentUser.email) {
-                    await user.sendEmailVerification();
-                    alert(`✅ Verification email sent to ${currentUser.email}\n\nPlease check your inbox and click the verification link.\n\nAfter verifying, come back to your profile to see the verified status.`);
-                } else {
-                    const userCredential = await auth.signInWithEmailAndPassword(currentUser.email, currentUser.password);
-                    const firebaseUser = userCredential.user;
-                    await firebaseUser.sendEmailVerification();
-                    alert(`✅ Verification email sent to ${currentUser.email}\n\nPlease check your inbox and click the verification link.`);
-                }
-                
-                if (window.renderProfileContent) {
-                    setTimeout(() => window.renderProfileContent(), 2000);
-                }
-            } catch (error) {
-                console.error("Error sending verification:", error);
-                alert(`❌ Failed to send verification email: ${error.message}\n\nPlease check your internet connection.`);
-            }
-        }, 3000);
-    }
-    
-    // ============ PROFILE PAGE ============
-    function showProfile() {
-        if(!currentUser) return;
-        
-        let badge = document.getElementById('profileBadge');
-        if(badge) badge.style.display = 'none';
-        localStorage.setItem('profile_notification_seen', 'true');
-        
-        async function renderProfileContent() {
-            let isVerified = await isEmailVerifiedInFirebase(currentUser.email);
-            
-            let verificationHtml = isVerified ? 
-                `<div class="verify-card verified">
-                    <div class="verify-title"><span>✅</span> <span class="verified-badge">Email Verified</span></div>
-                    <div class="verify-message">Your email has been successfully verified. Your account is secure.</div>
-                </div>` : 
-                `<div class="verify-card">
-                    <div class="verify-title"><span>⚠️</span> Email Verification Required</div>
-                    <div class="verify-message">Verify your email to secure your account and unlock all features.</div>
-                    <button class="verify-btn" onclick="sendVerificationEmailFirebase()">📧 Send Verification Email</button>
-                </div>`;
-            
-            document.getElementById('dynamicContent').innerHTML = `
-                <div id="profileView">
-                    <div class="header">
-                        <button class="back-btn" onclick="closeDynamic()">←</button>
-                        <button class="help-btn" onclick="showHelp()">❓</button>
-                    </div>
-                    <div class="logo-center">Gpay</div>
-                    <div class="info-box">Full Name: ${currentUser.firstname} ${currentUser.surname}</div>
-                    <div class="info-box">Email: ${currentUser.email}</div>
-                    <div class="info-box">Password: ********</div>
-                    ${verificationHtml}
-                    <button class="btn" onclick="logout()">Log Out</button>
-                </div>`;
-            
-            showPage('dashboardPage'); 
-            document.getElementById('dashboardPage').classList.add('hidden'); 
-            document.getElementById('profileView').style.display = 'block'; 
-            document.getElementById('profileView').style.padding = '20px';
-        }
-        
-        renderProfileContent();
-        window.renderProfileContent = renderProfileContent;
-    }
-    
-    // ============ LOGOUT ============
-    async function logout() {
-        await auth.signOut();
-        showSplashLoading(() => { 
-            currentUser = null; 
-            localStorage.removeItem('graypay_current'); 
-            closeDynamic(); 
-            showWelcomePage(); 
-        });
-    }
-    
-    function closeDynamic() { document.getElementById('dynamicContent').innerHTML = ''; showDashboardPage(); }
-    
-    // ============ AUTO LOGIN ============
-    async function autoLogin() { 
-        loadUsers(); 
-        let saved = localStorage.getItem('graypay_current'); 
-        if(saved) { 
-            for(let u of users) { 
-                if(u.email === saved) { 
-                    currentUser = u; 
-                    try {
-                        const firebaseUser = auth.currentUser;
-                        if (firebaseUser && firebaseUser.email === saved) {
-                            await firebaseUser.reload();
-                        }
-                    } catch(e) {}
-                    
-                    if(currentUser.miningActive) { 
-                        checkAndClaimMiningRewards(); 
-                        forceRecoverAllMissedRewards(); 
-                    } 
-                    showDashboardPage(); 
-                    return; 
-                } 
-            } 
-        } 
-        showWelcomePage(); 
-    }
-    
-    // ============ WITHDRAWAL ============
-    function showWithdrawPage() {
-        if(!currentUser) return;
-        let banks = ['Access Bank', 'GTBank', 'First Bank', 'Zenith Bank', 'UBA', 'WEMA Bank', 'Polaris Bank', 'Fidelity Bank', 'Sterling Bank', 'PalmPay', 'Opay', 'Moniepoint', 'Kuda Bank'];
-        let opts = banks.map(b => `<option>${b}</option>`).join('');
-        document.getElementById('dynamicContent').innerHTML = `<div id="withdrawView"><div class="header"><button class="back-btn" onclick="closeDynamic()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><h2>Transfer To Bank</h2><input type="text" id="accName" class="input-field" placeholder="Account Name"><input type="text" id="accNumber" class="input-field" placeholder="Account Number"><select id="bankName" class="input-field">${opts}</select><input type="number" id="withdrawAmount" class="input-field" placeholder="Amount"><input type="text" id="pbcCode" class="input-field" placeholder="PBC Code (e.g., 1234)"><div class="info-box">Available: ₦${currentUser.balance}</div><div class="min-withdrawal">⚠️ Minimum withdrawal: ₦10,000</div><button class="btn" onclick="processWithdraw()">Submit</button></div>`;
-        showPage('dashboardPage'); document.getElementById('dashboardPage').classList.add('hidden'); document.getElementById('withdrawView').style.display = 'block'; document.getElementById('withdrawView').style.padding = '20px';
-    }
-    
-    function processWithdraw() {
-        let amt = parseInt(document.getElementById('withdrawAmount').value);
-        let code = document.getElementById('pbcCode').value;
-        let accName = document.getElementById('accName').value;
-        let accNumber = document.getElementById('accNumber').value;
-        let bankName = document.getElementById('bankName').value;
-        if(code !== '4234') { alert('Invalid PBC Code!'); return; }
-        if(amt < 10000) { alert('Minimum withdrawal is ₦10,000'); return; }
-        if(amt > currentUser.balance) { alert('Insufficient balance'); return; }
-        if(!accName || !accNumber) { alert('Please fill account name and number'); return; }
-        showFullSplashLoading('Processing withdrawal...', () => { 
-            currentUser.balance -= amt; 
-            let transactionId = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
-            let transaction = { id: transactionId, type: 'Withdrawal', amount: amt, date: new Date().toLocaleString(), dateObj: new Date(), status: 'Success', fullDetails: { transactionType: 'Deposit To Bank', amount: amt, fees: 10, taxes: 0.75, sender: currentUser.firstname + ' ' + currentUser.surname, recipient: accName, recipientAccount: accNumber, recipientBank: bankName, transactionId: transactionId, note: 'Sent from my Gpay account' } };
-            currentUser.transactions.unshift(transaction); saveUsers(); 
-            showSuccessPopup('Withdrawal Successful!', 'You have successfully withdrawn', amt, accName, bankName, accNumber, transactionId, () => showTransactionDetails(transactionId));
-        }, 15000);
-    }
-    
-    // ============ AIRTIME ============
-    function showBuyAirtime() {
-        if(!currentUser) return;
-        document.getElementById('dynamicContent').innerHTML = `<div id="airtimeView"><div class="header"><button class="back-btn" onclick="closeDynamic()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><h2>Buy Airtime</h2><input type="text" id="airPhone" class="input-field" placeholder="Phone Number"><select id="airNetwork" class="input-field"><option value="MTN">MTN</option><option value="Airtel">Airtel</option><option value="Glo">Glo</option><option value="9mobile">9mobile</option></select><input type="number" id="airAmount" class="input-field" placeholder="Amount"><input type="text" id="airCode" class="input-field" placeholder="PBC Code (e.g., 1234)"><button class="btn" onclick="processAirtime()">Buy Airtime</button></div>`;
-        showPage('dashboardPage'); document.getElementById('dashboardPage').classList.add('hidden'); document.getElementById('airtimeView').style.display = 'block'; document.getElementById('airtimeView').style.padding = '20px';
-    }
-    
-    function processAirtime() {
-        let code = document.getElementById('airCode').value;
-        let amt = parseInt(document.getElementById('airAmount').value);
-        let phone = document.getElementById('airPhone').value;
-        let network = document.getElementById('airNetwork').value;
-        if(code !== '4234') { alert('Invalid PBC Code!'); return; }
-        if(!phone || !amt) { alert('Fill all fields'); return; }
-        if(amt > currentUser.balance) { alert('Insufficient balance'); return; }
-        showFullSplashLoading('Processing airtime purchase...', () => { 
-            currentUser.balance -= amt; 
-            let transactionId = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
-            let transaction = { id: transactionId, type: 'Airtime', amount: amt, phone: phone, network: network, date: new Date().toLocaleString(), dateObj: new Date(), status: 'Success', fullDetails: { transactionType: 'Airtime Purchase', amount: amt, fees: 0, taxes: 0, sender: currentUser.firstname + ' ' + currentUser.surname, recipient: phone, recipientAccount: phone, recipientBank: network, transactionId: transactionId, note: 'Airtime purchase on ' + network } };
-            currentUser.transactions.unshift(transaction); saveUsers(); 
-            showAirtimeSuccessPopup(amt, phone, network, transactionId, () => showTransactionDetails(transactionId));
-        }, 10000);
-    }
-    
-    // ============ DATA ============
-    function showBuyData() {
-        if(!currentUser) return;
-        document.getElementById('dynamicContent').innerHTML = `<div id="dataView"><div class="header"><button class="back-btn" onclick="closeDynamic()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><h2>Buy Data</h2><input type="text" id="dataPhone" class="input-field" placeholder="Phone Number"><select id="dataNetwork" class="input-field"><option value="MTN">MTN</option><option value="Airtel">Airtel</option><option value="Glo">Glo</option><option value="9mobile">9mobile</option></select><select id="dataPlan" class="input-field"><option value="500">1GB - ₦500</option><option value="1000">2GB - ₦1000</option><option value="2000">5GB - ₦2000</option><option value="5000">10GB - ₦5000</option><option value="10000">20GB - ₦10000</option></select><input type="text" id="dataCode" class="input-field" placeholder="PBC Code (e.g., 1234)"><button class="btn" onclick="processData()">Buy Data</button></div>`;
-        showPage('dashboardPage'); document.getElementById('dashboardPage').classList.add('hidden'); document.getElementById('dataView').style.display = 'block'; document.getElementById('dataView').style.padding = '20px';
-    }
-    
-    function processData() {
-        let code = document.getElementById('dataCode').value;
-        let phone = document.getElementById('dataPhone').value;
-        let network = document.getElementById('dataNetwork').value;
-        let plan = document.getElementById('dataPlan');
-        let amt = parseInt(plan.value);
-        let name = plan.options[plan.selectedIndex].text;
-        if(code !== '4234') { alert('Invalid PBC Code!'); return; }
-        if(!phone) { alert('Enter phone number'); return; }
-        if(amt > currentUser.balance) { alert('Insufficient balance'); return; }
-        showFullSplashLoading('Processing data purchase...', () => { 
-            currentUser.balance -= amt; 
-            let transactionId = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
-            let transaction = { id: transactionId, type: 'Data', amount: amt, plan: name, network: network, phone: phone, date: new Date().toLocaleString(), dateObj: new Date(), status: 'Success', fullDetails: { transactionType: 'Data Purchase', amount: amt, fees: 0, taxes: 0, sender: currentUser.firstname + ' ' + currentUser.surname, recipient: phone, recipientAccount: phone, recipientBank: network, transactionId: transactionId, note: 'Data purchase - ' + name + ' on ' + network } };
-            currentUser.transactions.unshift(transaction); saveUsers(); 
-            showDataSuccessPopup(amt, phone, name, network, transactionId, () => showTransactionDetails(transactionId));
-        }, 10000);
-    }
-    
-    // ============ BUY PBC ============
-    function showBuyPBC() {
-        if(!currentUser) return;
-        document.getElementById('dynamicContent').innerHTML = `<div id="pbcView"><div class="header"><button class="back-btn" onclick="closeDynamic()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><h2>Buy PBC</h2><div class="info-box">Amount: ₦7,000 (Fixed)</div><input type="text" id="pbcName" class="input-field" placeholder="Full Name"><input type="email" id="pbcEmail" class="input-field" placeholder="Email Address"><button id="pbcPayBtn" class="btn btn-gray" disabled onclick="pbcStep1()">Pay</button></div>`;
-        showPage('dashboardPage'); document.getElementById('dashboardPage').classList.add('hidden'); document.getElementById('pbcView').style.display = 'block'; document.getElementById('pbcView').style.padding = '20px';
-        let nameInp = document.getElementById('pbcName');
-        let emailInp = document.getElementById('pbcEmail');
-        let btn = document.getElementById('pbcPayBtn');
-        function check() { if(nameInp.value && emailInp.value) { btn.disabled = false; btn.className = 'btn btn-blue'; } else { btn.disabled = true; btn.className = 'btn btn-gray'; } }
-        nameInp.addEventListener('input', check); emailInp.addEventListener('input', check);
-    }
-    
-    function pbcStep1() { showFullSplashLoading('Processing PBC purchase...', () => showPalmPayWarning(), 10000); }
-    
-    function showPalmPayWarning() {
-        document.getElementById('dynamicContent').innerHTML = `<div id="warningView"><div class="header"><button class="back-btn" onclick="goBackToPBC()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><div class="warning-box"><h2>PalmPay Service Down</h2><p>Please do not use PalmPay for payments at this time. Use other supported banks.</p></div><button class="btn" onclick="pbcStep2()">Proceed to Bank Transfer</button><button class="btn" style="margin-top: 12px;" onclick="pbcStep2()">I Understand</button></div>`;
-        document.getElementById('warningView').style.display = 'block'; document.getElementById('warningView').style.padding = '20px';
-    }
-    
-    function goBackToPBC() { showBuyPBC(); }
-    function pbcStep2() { showFullSplashLoading('Preparing bank details...', () => showBankDetails(), 5000); }
-    function copyText(txt, el) { navigator.clipboard.writeText(txt); let orig = el.innerHTML; el.innerHTML = txt + ' ✅ Copied!'; setTimeout(() => el.innerHTML = orig, 2000); }
-    
-    function showBankDetails() {
-        document.getElementById('dynamicContent').innerHTML = `<div id="bankView"><div class="header"><button class="back-btn" onclick="goBackToWarning()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><h2>Bank Transfer</h2><div class="copy-item" onclick="copyText('7000', this.querySelector('.copy-text'))"><span class="copy-text"><strong>Amount:</strong> NGN 7,000</span><span class="copy-icon">📋 Copy</span></div><div class="copy-item" onclick="copyText('2778715377', this.querySelector('.copy-text'))"><span class="copy-text"><strong>Account Number:</strong> 2778715377</span><span class="copy-icon">📋 Copy</span></div><div class="info-box"><strong>Bank Name:</strong> Paga</div><div class="info-box"><strong>Account Name:</strong> Ahmed Isah</div><p class="text-center mb-10">Transfer exact amount. Use your name as description.</p><button class="btn" onclick="pbcStep3()">I have made this bank transfer</button></div>`;
-        document.getElementById('bankView').style.display = 'block'; document.getElementById('bankView').style.padding = '20px';
-    }
-    
-    function goBackToWarning() { showPalmPayWarning(); }
-    function pbcStep3() { showFullSplashLoading('Verifying payment...', () => showFailed(), 20000); }
-    
-    function showFailed() {
-        let transactionId = 'FAILPBC' + Date.now() + Math.floor(Math.random() * 10000);
-        let failedTransaction = {
-            id: transactionId,
-            type: 'PBC Purchase Failed',
-            amount: 7000,
-            date: new Date().toLocaleString(),
-            dateObj: new Date(),
-            status: 'Failed',
-            isFailed: true,
-            fullDetails: {
-                transactionType: 'PBC Code Purchase',
-                amount: 7000,
-                fees: 0,
-                taxes: 0,
-                sender: currentUser.firstname + ' ' + currentUser.surname,
-                recipient: 'Gpay System',
-                transactionId: transactionId,
-                note: '❌ Transaction verification failed! No payment received / invalid payment method.',
-                reason: 'No payment received from you / invalid payment method'
-            }
-        };
-        currentUser.transactions.unshift(failedTransaction);
-        saveUsers();
-        
-        document.getElementById('dynamicContent').innerHTML = `
-            <div id="failedView">
-                <div class="header">
-                    <button class="back-btn" onclick="goBackToBank()">←</button>
-                    <button class="help-btn" onclick="showHelp()">❓</button>
-                </div>
-                <div style="text-align: center; padding: 20px 0;">
-                    <div style="font-size: 60px; margin-bottom: 20px;">❌</div>
-                    <h2 style="color: #ef4444; margin-bottom: 15px;">Transaction verification failed!</h2>
-                    <div style="background: #7f1f1f; border-radius: 16px; padding: 20px; margin: 20px 0; border-left: 4px solid #ef4444;">
-                        <p style="color: #fca5a5; margin-bottom: 10px;">Your payment could not be completed.</p>
-                        <p style="color: #9ca3af; font-size: 14px;">Reason: No payment received from you / invalid payment method.</p>
-                    </div>
-                    <div style="display: flex; gap: 12px; margin-top: 25px;">
-                        <button class="btn" onclick="goBackToBank()" style="background: #10b981; flex: 1;">🔄 Try again</button>
-                        <button class="btn" onclick="showHelp()" style="background: #ef4444; flex: 1;">🆘 I need help</button>
-                    </div>
-                    <div style="margin-top: 20px;">
-                        <button class="btn" onclick="showTransactionHistory()" style="background: #2a2a2a; width: 100%;">📜 View transaction history</button>
-                    </div>
-                </div>
-            </div>
-        `;
-        document.getElementById('failedView').style.display = 'block';
-        document.getElementById('failedView').style.padding = '20px';
-    }
-    
-    function goBackToBank() { showBankDetails(); }
-    
-    // ============ POPUP FUNCTIONS ============
-    function showSuccessPopup(title, message, amount, recipient, bank, account, transactionId, onViewReceipt) {
-        let popupHtml = `
-            <div id="successPopup" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 10000;">
-                <div style="background: #1f1f1f; border-radius: 28px; padding: 28px 20px; width: 90%; max-width: 380px; text-align: center; border: 1px solid #2a2a2a;">
-                    <div style="font-size: 56px; margin-bottom: 12px;">✅</div>
-                    <h3 style="color: #10b981; font-size: 22px; margin-bottom: 8px;">${title}</h3>
-                    <p style="color: #9ca3af; margin-bottom: 20px;">${message}</p>
-                    <div style="font-size: 42px; font-weight: bold; color: #f87171; margin-bottom: 20px;">-₦${amount.toLocaleString()}</div>
-                    <div style="background: #0a0a0a; border-radius: 18px; padding: 14px; margin-bottom: 24px;">
-                        <p style="color: #fff; font-weight: 500;">${recipient}</p>
-                        <p style="color: #9ca3af; font-size: 13px;">${bank} • ${account}</p>
-                    </div>
-                    <div style="display: flex; gap: 12px;">
-                        <button class="btn" onclick="closeSuccessPopupAndGoDashboard()" style="flex:1; background: #10b981;">Done</button>
-                        <button class="btn" onclick="closeSuccessPopupAndViewReceipt('${transactionId}')" style="flex:1; background: #2a2a2a;">View receipt</button>
-                    </div>
-                </div>
-            </div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', popupHtml);
-        window.closeSuccessPopupAndGoDashboard = function() {
-            let popup = document.getElementById('successPopup');
-            if(popup) popup.remove();
-            closeDynamic();
-            showDashboardPage();
-        };
-        window.closeSuccessPopupAndViewReceipt = function(id) {
-            let popup = document.getElementById('successPopup');
-            if(popup) popup.remove();
-            if(onViewReceipt) onViewReceipt();
-            else showTransactionDetails(id);
-        };
-    }
-    
-    function showAirtimeSuccessPopup(amount, phone, network, transactionId, onViewReceipt) {
-        let popupHtml = `
-            <div id="successPopup" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 10000;">
-                <div style="background: #1f1f1f; border-radius: 28px; padding: 28px 20px; width: 90%; max-width: 380px; text-align: center;">
-                    <div style="font-size: 56px; margin-bottom: 12px;">📱✅</div>
-                    <h3 style="color: #10b981; font-size: 22px; margin-bottom: 8px;">Airtime Purchase Successful!</h3>
-                    <p style="color: #9ca3af; margin-bottom: 20px;">You have successfully purchased</p>
-                    <div style="font-size: 42px; font-weight: bold; color: #f87171; margin-bottom: 20px;">₦${amount.toLocaleString()}</div>
-                    <div style="background: #0a0a0a; border-radius: 18px; padding: 14px; margin-bottom: 24px;">
-                        <p style="color: #fff; font-weight: 500;">${phone}</p>
-                        <p style="color: #9ca3af; font-size: 13px;">Network: ${network}</p>
-                    </div>
-                    <div style="display: flex; gap: 12px;">
-                        <button class="btn" onclick="closeSuccessPopupAndGoDashboard()" style="flex:1; background: #10b981;">Done</button>
-                        <button class="btn" onclick="closeSuccessPopupAndViewReceipt('${transactionId}')" style="flex:1; background: #2a2a2a;">View receipt</button>
-                    </div>
-                </div>
-            </div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', popupHtml);
-        window.closeSuccessPopupAndGoDashboard = function() {
-            let popup = document.getElementById('successPopup');
-            if(popup) popup.remove();
-            closeDynamic();
-            showDashboardPage();
-        };
-        window.closeSuccessPopupAndViewReceipt = function(id) {
-            let popup = document.getElementById('successPopup');
-            if(popup) popup.remove();
-            if(onViewReceipt) onViewReceipt();
-            else showTransactionDetails(id);
-        };
-    }
-    
-    function showDataSuccessPopup(amount, phone, plan, network, transactionId, onViewReceipt) {
-        let popupHtml = `
-            <div id="successPopup" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 10000;">
-                <div style="background: #1f1f1f; border-radius: 28px; padding: 28px 20px; width: 90%; max-width: 380px; text-align: center;">
-                    <div style="font-size: 56px; margin-bottom: 12px;">🌐✅</div>
-                    <h3 style="color: #10b981; font-size: 22px; margin-bottom: 8px;">Data Purchase Successful!</h3>
-                    <p style="color: #9ca3af; margin-bottom: 20px;">You have successfully purchased</p>
-                    <div style="font-size: 26px; font-weight: bold; color: #34d399; margin-bottom: 8px;">${plan} on ${network}</div>
-                    <div style="font-size: 36px; font-weight: bold; color: #f87171; margin-bottom: 20px;">₦${amount.toLocaleString()}</div>
-                    <div style="background: #0a0a0a; border-radius: 18px; padding: 14px; margin-bottom: 24px;">
-                        <p style="color: #fff; font-weight: 500;">${phone}</p>
-                    </div>
-                    <div style="display: flex; gap: 12px;">
-                        <button class="btn" onclick="closeSuccessPopupAndGoDashboard()" style="flex:1; background: #10b981;">Done</button>
-                        <button class="btn" onclick="closeSuccessPopupAndViewReceipt('${transactionId}')" style="flex:1; background: #2a2a2a;">View receipt</button>
-                    </div>
-                </div>
-            </div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', popupHtml);
-        window.closeSuccessPopupAndGoDashboard = function() {
-            let popup = document.getElementById('successPopup');
-            if(popup) popup.remove();
-            closeDynamic();
-            showDashboardPage();
-        };
-        window.closeSuccessPopupAndViewReceipt = function(id) {
-            let popup = document.getElementById('successPopup');
-            if(popup) popup.remove();
-            if(onViewReceipt) onViewReceipt();
-            else showTransactionDetails(id);
-        };
-    }
-    
-    // ============ TRANSACTION HISTORY ============
-    function showTransactionHistory() {
-        if(!currentUser) return;
-        let transactions = [...currentUser.transactions];
-        let groups = {};
-        transactions.forEach(t => {
-            let dateObj = t.dateObj ? new Date(t.dateObj) : new Date(t.date);
-            let today = new Date();
-            let yesterday = new Date(today);
-            yesterday.setDate(yesterday.getDate() - 1);
-            let dateKey = dateObj.toDateString() === today.toDateString() ? 'Today' : (dateObj.toDateString() === yesterday.toDateString() ? 'Yesterday' : dateObj.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }));
-            if (!groups[dateKey]) groups[dateKey] = [];
-            groups[dateKey].push(t);
-        });
-        let historyHtml = '';
-        for (let [date, items] of Object.entries(groups)) {
-            historyHtml += `<div class="history-date-group"><div class="history-date">${date}</div>`;
-            items.forEach(t => {
-                let timeStr = t.dateObj ? new Date(t.dateObj).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : new Date(t.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                let desc = '';
-                let isNegative = true;
-                let isNeutral = false;
-                let isFailed = t.status === 'Failed' || t.type === 'PBC Purchase Failed';
-                if (t.type === 'Withdrawal') desc = `You sent money to ${t.fullDetails?.recipient || 'Bank'} ${t.fullDetails?.recipientAccount ? t.fullDetails.recipientAccount.slice(0,4)+'...' : ''}`;
-                else if (t.type === 'Airtime') desc = `You bought airtime for ${t.phone} on ${t.network || ''}`;
-                else if (t.type === 'Data') desc = `You bought ${t.plan} data for ${t.phone} on ${t.network || ''}`;
-                else if (t.type === 'Bonus') { desc = `You received a welcome bonus`; isNegative = false; }
-                else if (t.type === 'Mining Reward' || t.type === 'Mining Complete') { desc = t.fullDetails?.note || `Mining reward`; isNegative = false; }
-                else if (t.type === 'PBC Purchase') { desc = `PBC Code purchased - Code: 4234`; isNegative = false; isNeutral = true; }
-                else if (t.type === 'PBC Purchase Failed') { desc = `PBC Purchase Failed - No payment received`; isNegative = false; isFailed = true; }
-                
-                let amountClass = isFailed ? 'failed' : (isNeutral ? 'neutral' : (isNegative ? 'negative' : 'positive'));
-                let amountPrefix = isFailed ? '❌ ' : (isNeutral ? '📋 ' : (isNegative ? '-₦' : '+₦'));
-                let failedBadge = isFailed ? '<span class="failed-badge">Failed</span>' : '';
-                historyHtml += `<div class="history-item ${isFailed ? 'failed-transaction' : ''}" onclick="showTransactionDetails('${t.id}')"><div class="history-row"><div class="history-desc">${desc} ${failedBadge}<small>${timeStr}</small></div><div class="history-amount ${amountClass}">${amountPrefix}${t.amount.toLocaleString()}</div></div></div>`;
-            });
-            historyHtml += `</div>`;
-        }
-        document.getElementById('dynamicContent').innerHTML = `<div id="historyView"><div class="header"><button class="back-btn" onclick="closeDynamic()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><h2>Transaction history</h2>${historyHtml || '<div class="text-center" style="color:#9ca3af; padding:40px;">No transactions yet</div>'}</div>`;
-        showPage('dashboardPage');
-        document.getElementById('dashboardPage').classList.add('hidden');
-        document.getElementById('historyView').style.display = 'block';
-        document.getElementById('historyView').style.padding = '20px';
-    }
-    
-    function showTransactionDetails(transactionId) {
-        if(!currentUser) return;
-        let transaction = currentUser.transactions.find(t => t.id == transactionId);
-        if(!transaction) { alert('Transaction not found'); return; }
-        let details = transaction.fullDetails || {};
-        let amount = details.amount || transaction.amount;
-        let dateStr = transaction.date;
-        let type = transaction.type;
-        let status = transaction.status || 'Success';
-        let fees = details.fees || 0;
-        let taxes = details.taxes || 0;
-        let sender = details.sender || currentUser.firstname + ' ' + currentUser.surname;
-        let recipient = details.recipient || (type === 'Airtime' ? transaction.phone : type === 'Data' ? transaction.phone : (type === 'Mining Reward' || type === 'Mining Complete') ? 'Mining System' : (type === 'PBC Purchase' ? 'Gpay System' : (type === 'PBC Purchase Failed' ? 'Gpay System' : 'Bank Transfer')));
-        let recipientAccount = details.recipientAccount || (type === 'Airtime' ? transaction.phone : type === 'Data' ? transaction.phone : (type === 'PBC Purchase' ? 'Gpay' : (type === 'PBC Purchase Failed' ? 'N/A' : '****')));
-        let recipientBank = details.recipientBank || (type === 'Airtime' ? (transaction.network || 'Telecom') : type === 'Data' ? (transaction.network || 'Telecom') : (type === 'Mining Reward' || type === 'Mining Complete') ? 'Gpay' : (type === 'PBC Purchase' ? 'Gpay System' : (type === 'PBC Purchase Failed' ? 'Gpay System' : 'Bank')));
-        let transId = details.transactionId || transaction.id || 'N/A';
-        let note = details.note || (type === 'Bonus' ? 'Welcome bonus from Gpay' : (type === 'Mining Reward' || type === 'Mining Complete') ? 'Earned from mining activity' : (type === 'PBC Purchase' ? '✅ Payment successfully! Your PBC Code: 4234' : (type === 'PBC Purchase Failed' ? '❌ Transaction verification failed! No payment received.' : 'Transaction via Gpay')));
-        let isPositive = (type === 'Bonus' || type === 'Mining Reward' || type === 'Mining Complete');
-        let isPBC = (type === 'PBC Purchase');
-        let isFailedTxn = (type === 'PBC Purchase Failed');
-        let amountColor = isFailedTxn ? '#f97316' : (isPositive ? '#34d399' : (isPBC ? '#fbbf24' : '#f87171'));
-        let amountSymbol = isFailedTxn ? '❌ ' : (isPositive ? '+' : (isPBC ? '📋' : '-'));
-        let detailsHtml = `<div id="transactionDetailView"><div class="header"><button class="back-btn" onclick="goBackToHistory()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><h2>Transaction details</h2><div style="text-align: center; margin: 20px 0;"><div style="font-size: 48px; font-weight: bold; color: ${amountColor};">${amountSymbol}₦${amount.toLocaleString()}.00</div><div style="color: ${isFailedTxn ? '#f97316' : '#10b981'}; margin-top: 5px;">${status}</div>${isPBC ? '<div style="color: #fbbf24; margin-top: 5px; font-size: 14px;">✅ Payment successfully!</div>' : ''}${isFailedTxn ? '<div style="color: #f97316; margin-top: 5px; font-size: 14px;">❌ Verification failed</div>' : ''}</div><div class="transaction-detail-row"><span class="transaction-detail-label">Date</span><span class="transaction-detail-value">${dateStr}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Amount</span><span class="transaction-detail-value">₦${amount.toLocaleString()}.00</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Fees</span><span class="transaction-detail-value">₦${fees.toFixed(2)}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Taxes</span><span class="transaction-detail-value">₦${taxes.toFixed(2)}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Transaction Type</span><span class="transaction-detail-value">${type}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Sender</span><span class="transaction-detail-value">${sender}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Recipient</span><span class="transaction-detail-value">${recipient}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Recipient Account</span><span class="transaction-detail-value">${recipientAccount}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Recipient Bank</span><span class="transaction-detail-value">${recipientBank}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Transaction ID</span><span class="transaction-detail-value">${transId}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Note</span><span class="transaction-detail-value">${note}</span></div>${isPBC ? `<div class="transaction-detail-row"><span class="transaction-detail-label">Your PBC Code</span><span class="transaction-detail-value" style="color: #10b981; font-size: 20px; font-weight: bold; letter-spacing: 2px;">4234 <button onclick="copyPbcCode()" style="background: #2a2a2a; border: none; padding: 4px 12px; border-radius: 6px; color: #10b981; cursor: pointer; font-size: 12px; margin-left: 8px;">📋 Copy</button></span></div>` : ''}<div class="receipt-actions"><button class="btn" onclick="shareReceipt('${transId}')">📤 Share receipt</button><button class="btn" onclick="repeatTransaction('${type}')">🔄 Repeat Transfer</button></div><div class="text-center mt-20"><span style="color: #10b981; cursor: pointer;" onclick="showHelp()">Trouble with your payment? Let us know on help center now</span></div></div>`;
-        document.getElementById('dynamicContent').innerHTML = detailsHtml;
-        showPage('dashboardPage');
-        document.getElementById('dashboardPage').classList.add('hidden');
-        document.getElementById('transactionDetailView').style.display = 'block';
-        document.getElementById('transactionDetailView').style.padding = '20px';
-    }
-    
-    function goBackToHistory() { showTransactionHistory(); }
-    
-    function shareReceipt(transactionId) {
-        let transaction = currentUser.transactions.find(t => t.id == transactionId);
-        if(transaction) { let details = transaction.fullDetails || {}; let shareText = `Gpay Transaction\nAmount: ₦${(details.amount || transaction.amount).toLocaleString()}\nType: ${transaction.type}\nDate: ${transaction.date}\nID: ${transactionId}`; navigator.clipboard.writeText(shareText); alert('Receipt copied to clipboard!'); }
-        else alert('Unable to share receipt');
-    }
-    
-    function repeatTransaction(type) { closeDynamic(); if(type === 'Withdrawal') showWithdrawPage(); else if(type === 'Airtime') showBuyAirtime(); else if(type === 'Data') showBuyData(); else showDashboardPage(); }
-    
-    function showHelp() { document.getElementById('helpModal').style.display = 'flex'; }
-    function closeHelp() { document.getElementById('helpModal').style.display = 'none'; }
-    
-    function showWelcomePopup() {
-        let popupHtml = `<div id="welcomePopup" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 3000;"><div style="background: #1f1f1f; border-radius: 20px; padding: 30px; width: 85%; max-width: 350px; text-align: center;"><div style="font-size: 50px; margin-bottom: 15px;">🎉</div><h2 style="color: #10b981; margin-bottom: 10px;">Welcome ${currentUser.firstname}!</h2><p style="color: #9ca3af; margin-bottom: 20px;">You have received</p><div style="font-size: 36px; font-weight: bold; color: #10b981; margin-bottom: 20px;">₦10,000</div><p style="color: #9ca3af; margin-bottom: 25px;">Start mining every hour and withdraw your earnings anytime!</p><button class="btn" onclick="closeWelcomePopup()" style="background: #10b981; padding: 12px 24px;">Get Started</button></div></div>`;
-        document.body.insertAdjacentHTML('beforeend', popupHtml);
-    }
-    
-    function closeWelcomePopup() { let popup = document.getElementById('welcomePopup'); if(popup) popup.remove(); }
-    function copyPbcCode() { let code = '4234'; navigator.clipboard.writeText(code); let btn = event.target; let originalText = btn.innerText; btn.innerText = '✅ Copied!'; setTimeout(() => { btn.innerText = originalText; }, 2000); }
-    
-    // ============ INITIALIZE ============
-    document.addEventListener('DOMContentLoaded', function() { 
-        loadUsers(); 
-        autoLogin(); 
-    });
-</script>
+// ============ FIREBASE CONFIGURATION ============
+const firebaseConfig = {
+apiKey: "AIzaSyDRQsnce5A337wRzOjjwEcgiXDgplJq5lU",
+authDomain: "growfastng.firebaseapp.com",
+projectId: "growfastng",
+storageBucket: "growfastng.firebasestorage.app",
+messagingSenderId: "133938265658",
+appId: "1:133938265658:web:4396fd308606de3ad43f03",
+measurementId: "G-0K8H201KX0"
+};
 
-<!-- OneSignal Push Notifications -->
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "f4bc1390-4b2e-4732-a326-4ee75eb84f54",
-    });
-  });
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+// ============ YOUR EXISTING VARIABLES ============
+let currentUser = null;
+let users = [];
+let miningTimer = null;
+let globalMiningInterval = null;
+
+// ============ YOUR EXISTING FUNCTIONS ============
+function loadUsers() { let s = localStorage.getItem('graypay_users'); if(s) users = JSON.parse(s); }
+function saveUsers() { localStorage.setItem('graypay_users', JSON.stringify(users)); }
+function openWhatsApp() { window.open('https://wa.me/2348168909003','_blank'); }
+
+function handleGetStarted() { showSplashLoadingForAuth(() => { showSignupPage(); }); }
+
+function showSplashLoadingForAuth(callback) {
+let splashDiv = document.createElement('div');
+splashDiv.className = 'splash-loading';
+splashDiv.innerHTML = `<div class="spinner"></div><div class="logo-text">Gpay</div><div class="loading-text">Loading...</div>`;
+document.body.appendChild(splashDiv);
+setTimeout(() => { splashDiv.remove(); if(callback) callback(); }, 3000);
+}
+
+function showPage(id) {
+document.getElementById('welcomePage').classList.add('hidden');
+document.getElementById('signupPage').classList.add('hidden');
+document.getElementById('loginPage').classList.add('hidden');
+document.getElementById('dashboardPage').classList.add('hidden');
+let el = document.getElementById(id);
+if(el) el.classList.remove('hidden');
+if(id === 'dashboardPage' && currentUser) updateDashboard();
+}
+
+function showWelcomePage() { showPage('welcomePage'); }
+function showSignupPage() { showPage('signupPage'); }
+function showLoginPage() { showPage('loginPage'); }
+
+function checkAndClaimMiningRewards() {
+if(!currentUser || !currentUser.miningActive) return false;
+let now = Date.now();
+let claimed = false;
+if(now >= currentUser.miningEnd) {
+let remaining = 20000 - (currentUser.miningClaimed || 0);
+if(remaining > 0) { currentUser.balance += remaining; currentUser.miningClaimed = 20000; currentUser.miningActive = false; saveUsers(); showMiningNotification(remaining, 'complete'); updateDashboard(); }
+return true;
+}
+let miningStart = currentUser.miningStart;
+let elapsedMs = now - miningStart;
+let elapsedHours = elapsedMs / (60 * 60 * 1000);
+let totalRewardSoFar = Math.min(20000, Math.floor(elapsedHours * (20000 / 24)));
+let alreadyClaimed = currentUser.miningClaimed || 0;
+let reward = totalRewardSoFar - alreadyClaimed;
+if(reward > 0) {
+currentUser.balance += reward;
+currentUser.miningClaimed = alreadyClaimed + reward;
+currentUser.lastClaimTime = now;
+saveUsers();
+showMiningNotification(reward, reward / (20000 / 24));
+updateDashboard();
+claimed = true;
+}
+return claimed;
+}
+
+function showMiningNotification(amount, hours) {
+let dashboardPage = document.getElementById('dashboardPage');
+let isOnDashboard = dashboardPage && !dashboardPage.classList.contains('hidden');
+if(!isOnDashboard) return;
+let notif = document.createElement('div');
+notif.className = 'mining-notification';
+if(hours === 'complete') { notif.innerHTML = '✅ MINING COMPLETE! You earned ₦' + amount.toLocaleString() + ' total!'; }
+else { let hourCount = Math.round(hours); notif.innerHTML = '⛏️ You earned ₦' + amount.toLocaleString() + ' from ' + hourCount + ' hour(s) of mining!'; }
+document.body.appendChild(notif);
+setTimeout(function() { if(notif) notif.remove(); }, 4000);
+}
+
+function startMining() {
+if(!currentUser) return;
+if(currentUser.miningActive) {
+let claimed = checkAndClaimMiningRewards();
+updateDashboard();
+if(claimed) alert('⛏️ Mining rewards have been added to your balance!');
+else { let lastClaim = currentUser.lastClaimTime || currentUser.miningStart; let nextRewardTime = lastClaim + (60 * 60 * 1000); let remainingMs = nextRewardTime - Date.now(); if(remainingMs > 0) { let remainingMinutes = Math.floor(remainingMs / (60 * 1000)); alert('Mining is active! Next reward in about ' + remainingMinutes + ' minutes.'); } else alert('Mining is active! Check again in a few moments.'); }
+return;
+}
+currentUser.miningActive = true;
+currentUser.miningStart = Date.now();
+currentUser.miningEnd = Date.now() + (24 * 60 * 60 * 1000);
+currentUser.lastClaimTime = Date.now();
+currentUser.miningClaimed = 0;
+saveUsers();
+alert('✅ Mining started! You will earn ₦20,000 over 24 hours. ₦833 will be added every hour.');
+updateDashboard();
+}
+
+function updateDashboard() {
+if(currentUser) {
+checkAndClaimMiningRewards();
+document.getElementById('userName').innerText = currentUser.firstname;
+document.getElementById('userBalance').innerHTML = '₦' + currentUser.balance.toLocaleString();
+let percent = (currentUser.balance / 200000) * 100;
+if(percent > 100) percent = 100;
+document.getElementById('progressFill').style.width = percent + '%';
+let existingStatus = document.getElementById('miningStatusBox');
+if(currentUser.miningActive) {
+let remainingMs = currentUser.miningEnd - Date.now();
+let remainingHours = Math.floor(remainingMs / (60 * 60 * 1000));
+let remainingMinutes = Math.floor((remainingMs % (60 * 60 * 1000)) / (60 * 1000));
+let remainingSeconds = Math.floor((remainingMs % (60 * 1000)) / 1000);
+let lastClaim = currentUser.lastClaimTime || currentUser.miningStart;
+let nextRewardMs = (lastClaim + (60 * 60 * 1000)) - Date.now();
+let nextRewardMinutes = Math.floor(nextRewardMs / (60 * 1000));
+let nextRewardSeconds = Math.floor((nextRewardMs % (60 * 1000)) / 1000);
+if(isNaN(nextRewardMinutes)) { nextRewardMinutes = 0; nextRewardSeconds = 0; }
+if(nextRewardMs < 0) { nextRewardMinutes = 0; nextRewardSeconds = 0; }
+let claimed = currentUser.miningClaimed || 0;
+let message = ' ⛏️ MINING ACTIVE! ' + remainingHours + 'h ' + remainingMinutes + 'm ' + remainingSeconds + 's remaining | Next reward: ' + nextRewardMinutes + 'm ' + nextRewardSeconds + 's | Claimed: ₦' + claimed.toLocaleString() + ' / ₦20,000 🚀 ••• ';
+let fullMessage = message + message;
+if(!existingStatus) { let statusDiv = document.createElement('div'); statusDiv.id = 'miningStatusBox'; statusDiv.className = 'mining-status-box'; document.querySelector('.balance-card').after(statusDiv); }
+let statusEl = document.getElementById('miningStatusBox');
+if(statusEl) statusEl.innerHTML = '<div class="scrolling-text">' + fullMessage + '</div>';
+} else { if(existingStatus) existingStatus.remove(); }
+}
+}
+
+function showDashboardPage() {
+if(window.scrollInterval) clearInterval(window.scrollInterval);
+updateDashboard();
+showPage('dashboardPage');
+updateProfileBadge();
+if(currentUser && currentUser.miningActive) {
+if(window.scrollInterval) clearInterval(window.scrollInterval);
+window.scrollInterval = setInterval(function() { if(currentUser && currentUser.miningActive) updateDashboard(); else if(window.scrollInterval) clearInterval(window.scrollInterval); }, 1000);
+}
+}
+
+function forceRecoverAllMissedRewards() {
+if(!currentUser || !currentUser.miningActive) return false;
+let startTime = currentUser.miningStart;
+let now = Date.now();
+let elapsedHours = (now - startTime) / (60 * 60 * 1000);
+let totalEarned = Math.min(20000, Math.floor(elapsedHours * (20000 / 24)));
+let alreadyClaimed = currentUser.miningClaimed || 0;
+let pending = totalEarned - alreadyClaimed;
+if(pending > 0) { currentUser.balance += pending; currentUser.miningClaimed = totalEarned; currentUser.lastClaimTime = now; saveUsers(); showMiningNotification(pending, pending / (20000 / 24)); updateDashboard(); return true; }
+return false;
+}
+
+function showSplashLoading(callback) {
+let splashDiv = document.createElement('div');
+splashDiv.className = 'splash-loading';
+splashDiv.innerHTML = `<div class="spinner"></div><div class="logo-text">Gpay</div><div class="loading-text">Loading your dashboard...</div>`;
+document.body.appendChild(splashDiv);
+setTimeout(() => { splashDiv.remove(); if(callback) callback(); }, 4500);
+}
+
+function showFullSplashLoading(message, callback, duration = 3000) {
+let splashDiv = document.createElement('div');
+splashDiv.className = 'splash-loading';
+splashDiv.innerHTML = `<div class="spinner"></div><div class="logo-text">Gpay</div><div class="loading-text">${message}</div>`;
+document.body.appendChild(splashDiv);
+setTimeout(() => { splashDiv.remove(); if(callback) callback(); }, duration);
+}
+
+// ============ SIGNUP - NO EMAIL SENT, NO POPUP ============
+async function signup() {
+let fn = document.getElementById('signupFirstname').value.trim();
+let sn = document.getElementById('signupSurname').value.trim();
+let em = document.getElementById('signupEmail').value.trim();
+let pw = document.getElementById('signupPassword').value;
+let cf = document.getElementById('signupConfirm').value;
+
+if(!fn || !sn || !em || !pw) { document.getElementById('signupError').innerText = 'All fields required'; return; }
+if(pw.length < 8) { document.getElementById('signupError').innerText = 'Password must be 8+ characters'; return; }
+if(pw !== cf) { document.getElementById('signupError').innerText = 'Passwords do not match'; return; }
+
+for(let u of users) if(u.email === em) { document.getElementById('signupError').innerText = 'Email exists'; return; }
+
+showFullSplashLoading("Creating account...", async () => {
+try {
+// Create user in Firebase Auth (NO email sent automatically)
+const userCredential = await auth.createUserWithEmailAndPassword(em, pw);
+const firebaseUser = userCredential.user;
+
+// IMPORTANT: NO email verification sent here
+// User must go to Profile and click "Send Verification Email" button
+
+let newUser = {
+id: Date.now(),
+firebaseUID: firebaseUser.uid,
+firstname: fn,
+surname: sn,
+email: em,
+password: pw,
+balance: 10000,
+miningActive: false,
+miningEnd: null,
+miningStart: null,
+lastClaimTime: null,
+miningClaimed: 0,
+transactions: [{
+type: 'Bonus',
+amount: 10000,
+date: new Date().toLocaleString(),
+dateObj: new Date(),
+status: 'Success',
+fullDetails: {
+transactionType: 'Bonus',
+sender: 'Gpay',
+recipient: fn + ' ' + sn,
+amount: 10000,
+note: 'Welcome bonus'
+}
+}]
+};
+
+users.push(newUser);
+saveUsers();
+currentUser = newUser;
+localStorage.setItem('graypay_current', em);
+
+// NO alert about email verification
+showDashboardPage();
+showWelcomePopup();
+
+} catch (error) {
+console.error("Signup error:", error);
+let errorMsg = error.message;
+if (errorMsg.includes("email-already-in-use")) {
+document.getElementById('signupError').innerText = 'Email already registered. Please login.';
+} else {
+document.getElementById('signupError').innerText = errorMsg;
+}
+}
+}, 5000);
+}
+
+// ============ LOGIN ============
+async function login() {
+let em = document.getElementById('loginEmail').value.trim();
+let pw = document.getElementById('loginPassword').value;
+
+showFullSplashLoading("Logging in...", async () => {
+try {
+const userCredential = await auth.signInWithEmailAndPassword(em, pw);
+const firebaseUser = userCredential.user;
+
+loadUsers();
+let localUser = null;
+for(let u of users) {
+if(u.email === em) {
+localUser = u;
+break;
+}
+}
+
+if (!localUser) {
+localUser = {
+id: Date.now(),
+firebaseUID: firebaseUser.uid,
+firstname: em.split('@')[0],
+surname: "",
+email: em,
+password: pw,
+balance: 0,
+miningActive: false,
+miningEnd: null,
+miningStart: null,
+lastClaimTime: null,
+miningClaimed: 0,
+transactions: []
+};
+users.push(localUser);
+saveUsers();
+}
+
+currentUser = localUser;
+localStorage.setItem('graypay_current', em);
+
+if(currentUser.miningActive) {
+checkAndClaimMiningRewards();
+forceRecoverAllMissedRewards();
+}
+
+showDashboardPage();
+
+} catch (error) {
+console.error("Login error:", error);
+document.getElementById('loginError').innerText = 'Invalid email or password';
+}
+}, 3000);
+}
+
+// ============ CHECK IF EMAIL IS VERIFIED ============
+async function isEmailVerifiedInFirebase(email) {
+try {
+const user = auth.currentUser;
+if (user && user.email === email) {
+await user.reload();
+return user.emailVerified;
+}
+return false;
+} catch (error) {
+console.error("Error checking verification:", error);
+return false;
+}
+}
+
+// ============ UPDATE PROFILE BADGE - RED DOT DISAPPEARS PERMANENTLY AFTER VERIFICATION ============
+async function updateProfileBadge() {
+if (!currentUser) return;
+
+// Check if this user has already been verified permanently (stored in localStorage)
+const alreadyVerifiedPermanently = localStorage.getItem(`verified_permanent_${currentUser.email}`);
+
+if (alreadyVerifiedPermanently === 'true') {
+const badge = document.getElementById('profileBadge');
+if (badge) badge.style.display = 'none';
+return;
+}
+
+const isVerified = await isEmailVerifiedInFirebase(currentUser.email);
+const badge = document.getElementById('profileBadge');
+
+if (badge) {
+if (isVerified) {
+// Once verified, hide badge permanently and store in localStorage
+badge.style.display = 'none';
+localStorage.setItem(`verified_permanent_${currentUser.email}`, 'true');
+} else {
+badge.style.display = 'inline-block';
+}
+}
+}
+
+// ============ SEND VERIFICATION EMAIL - ONLY WHEN USER CLICKS BUTTON ============
+async function sendVerificationEmailFirebase() {
+if (!currentUser) {
+alert("Please login first");
+return;
+}
+
+showFullSplashLoading("Sending verification email...", async () => {
+try {
+const user = auth.currentUser;
+if (user && user.email === currentUser.email) {
+await user.sendEmailVerification();
+alert(`✅ Verification email sent to ${currentUser.email}\n\nPlease check your inbox and click the verification link.\n\nAfter verifying, come back to your profile to see the verified status.`);
+} else {
+const userCredential = await auth.signInWithEmailAndPassword(currentUser.email, currentUser.password);
+const firebaseUser = userCredential.user;
+await firebaseUser.sendEmailVerification();
+alert(`✅ Verification email sent to ${currentUser.email}\n\nPlease check your inbox and click the verification link.`);
+}
+
+if (window.renderProfileContent) {
+setTimeout(() => window.renderProfileContent(), 2000);
+}
+} catch (error) {
+console.error("Error sending verification:", error);
+alert(`❌ Failed to send verification email: ${error.message}\n\nPlease check your internet connection.`);
+}
+}, 3000);
+}
+
+// ============ PROFILE PAGE ============
+function showProfile() {
+if(!currentUser) return;
+
+let badge = document.getElementById('profileBadge');
+if(badge) badge.style.display = 'none';
+localStorage.setItem('profile_notification_seen', 'true');
+
+async function renderProfileContent() {
+let isVerified = await isEmailVerifiedInFirebase(currentUser.email);
+
+let verificationHtml = isVerified ?
+`<div class="verify-card verified">
+<div class="verify-title"><span>✅</span> <span class="verified-badge">Email Verified</span></div>
+<div class="verify-message">Your email has been successfully verified. Your account is secure.</div>
+</div>` :
+`<div class="verify-card">
+<div class="verify-title"><span>⚠️</span> Email Verification Required</div>
+<div class="verify-message">Verify your email to secure your account and unlock all features.</div>
+<button class="verify-btn" onclick="sendVerificationEmailFirebase()">📧 Send Verification Email</button>
+</div>`;
+
+document.getElementById('dynamicContent').innerHTML = `
+<div id="profileView">
+<div class="header">
+<button class="back-btn" onclick="closeDynamic()">←</button>
+<button class="help-btn" onclick="showHelp()">❓</button>
+</div>
+<div class="logo-center">Gpay</div>
+<div class="info-box">Full Name: ${currentUser.firstname} ${currentUser.surname}</div>
+<div class="info-box">Email: ${currentUser.email}</div>
+<div class="info-box">Password: ********</div>
+${verificationHtml}
+<button class="btn" onclick="logout()">Log Out</button>
+</div>`;
+
+showPage('dashboardPage');
+document.getElementById('dashboardPage').classList.add('hidden');
+document.getElementById('profileView').style.display = 'block';
+document.getElementById('profileView').style.padding = '20px';
+}
+
+renderProfileContent();
+window.renderProfileContent = renderProfileContent;
+}
+
+// ============ LOGOUT ============
+async function logout() {
+await auth.signOut();
+showSplashLoading(() => {
+currentUser = null;
+localStorage.removeItem('graypay_current');
+closeDynamic();
+showWelcomePage();
+});
+}
+
+function closeDynamic() { document.getElementById('dynamicContent').innerHTML = ''; showDashboardPage(); }
+
+// ============ AUTO LOGIN ============
+async function autoLogin() {
+loadUsers();
+let saved = localStorage.getItem('graypay_current');
+if(saved) {
+for(let u of users) {
+if(u.email === saved) {
+currentUser = u;
+try {
+const firebaseUser = auth.currentUser;
+if (firebaseUser && firebaseUser.email === saved) {
+await firebaseUser.reload();
+}
+} catch(e) {}
+
+if(currentUser.miningActive) {
+checkAndClaimMiningRewards();
+forceRecoverAllMissedRewards();
+}
+showDashboardPage();
+return;
+}
+}
+}
+showWelcomePage();
+}
+
+// ============ WITHDRAWAL ============
+function showWithdrawPage() {
+if(!currentUser) return;
+let banks = ['Access Bank', 'GTBank', 'First Bank', 'Zenith Bank', 'UBA', 'WEMA Bank', 'Polaris Bank', 'Fidelity Bank', 'Sterling Bank', 'PalmPay', 'Opay', 'Moniepoint', 'Kuda Bank'];
+let opts = banks.map(b => `<option>${b}</option>`).join('');
+document.getElementById('dynamicContent').innerHTML = `<div id="withdrawView"><div class="header"><button class="back-btn" onclick="closeDynamic()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><h2>Transfer To Bank</h2><input type="text" id="accName" class="input-field" placeholder="Account Name"><input type="text" id="accNumber" class="input-field" placeholder="Account Number"><select id="bankName" class="input-field">${opts}</select><input type="number" id="withdrawAmount" class="input-field" placeholder="Amount"><input type="text" id="pbcCode" class="input-field" placeholder="PBC Code (e.g., 1234)"><div class="info-box">Available: ₦${currentUser.balance}</div><div class="min-withdrawal">⚠️ Minimum withdrawal: ₦10,000</div><button class="btn" onclick="processWithdraw()">Submit</button></div>`;
+showPage('dashboardPage'); document.getElementById('dashboardPage').classList.add('hidden'); document.getElementById('withdrawView').style.display = 'block'; document.getElementById('withdrawView').style.padding = '20px';
+}
+
+function processWithdraw() {
+let amt = parseInt(document.getElementById('withdrawAmount').value);
+let code = document.getElementById('pbcCode').value;
+let accName = document.getElementById('accName').value;
+let accNumber = document.getElementById('accNumber').value;
+let bankName = document.getElementById('bankName').value;
+if(code !== '4234') { alert('Invalid PBC Code!'); return; }
+if(amt < 10000) { alert('Minimum withdrawal is ₦10,000'); return; }
+if(amt > currentUser.balance) { alert('Insufficient balance'); return; }
+if(!accName || !accNumber) { alert('Please fill account name and number'); return; }
+showFullSplashLoading('Processing withdrawal...', () => {
+currentUser.balance -= amt;
+let transactionId = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
+let transaction = { id: transactionId, type: 'Withdrawal', amount: amt, date: new Date().toLocaleString(), dateObj: new Date(), status: 'Success', fullDetails: { transactionType: 'Deposit To Bank', amount: amt, fees: 10, taxes: 0.75, sender: currentUser.firstname + ' ' + currentUser.surname, recipient: accName, recipientAccount: accNumber, recipientBank: bankName, transactionId: transactionId, note: 'Sent from my Gpay account' } };
+currentUser.transactions.unshift(transaction); saveUsers();
+showSuccessPopup('Withdrawal Successful!', 'You have successfully withdrawn', amt, accName, bankName, accNumber, transactionId, () => showTransactionDetails(transactionId));
+}, 15000);
+}
+
+// ============ AIRTIME ============
+function showBuyAirtime() {
+if(!currentUser) return;
+document.getElementById('dynamicContent').innerHTML = `<div id="airtimeView"><div class="header"><button class="back-btn" onclick="closeDynamic()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><h2>Buy Airtime</h2><input type="text" id="airPhone" class="input-field" placeholder="Phone Number"><select id="airNetwork" class="input-field"><option value="MTN">MTN</option><option value="Airtel">Airtel</option><option value="Glo">Glo</option><option value="9mobile">9mobile</option></select><input type="number" id="airAmount" class="input-field" placeholder="Amount"><input type="text" id="airCode" class="input-field" placeholder="PBC Code (e.g., 1234)"><button class="btn" onclick="processAirtime()">Buy Airtime</button></div>`;
+showPage('dashboardPage'); document.getElementById('dashboardPage').classList.add('hidden'); document.getElementById('airtimeView').style.display = 'block'; document.getElementById('airtimeView').style.padding = '20px';
+}
+
+function processAirtime() {
+let code = document.getElementById('airCode').value;
+let amt = parseInt(document.getElementById('airAmount').value);
+let phone = document.getElementById('airPhone').value;
+let network = document.getElementById('airNetwork').value;
+if(code !== '4234') { alert('Invalid PBC Code!'); return; }
+if(!phone || !amt) { alert('Fill all fields'); return; }
+if(amt > currentUser.balance) { alert('Insufficient balance'); return; }
+showFullSplashLoading('Processing airtime purchase...', () => {
+currentUser.balance -= amt;
+let transactionId = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
+let transaction = { id: transactionId, type: 'Airtime', amount: amt, phone: phone, network: network, date: new Date().toLocaleString(), dateObj: new Date(), status: 'Success', fullDetails: { transactionType: 'Airtime Purchase', amount: amt, fees: 0, taxes: 0, sender: currentUser.firstname + ' ' + currentUser.surname, recipient: phone, recipientAccount: phone, recipientBank: network, transactionId: transactionId, note: 'Airtime purchase on ' + network } };
+currentUser.transactions.unshift(transaction); saveUsers();
+showAirtimeSuccessPopup(amt, phone, network, transactionId, () => showTransactionDetails(transactionId));
+}, 10000);
+}
+
+// ============ DATA ============
+function showBuyData() {
+if(!currentUser) return;
+document.getElementById('dynamicContent').innerHTML = `<div id="dataView"><div class="header"><button class="back-btn" onclick="closeDynamic()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><h2>Buy Data</h2><input type="text" id="dataPhone" class="input-field" placeholder="Phone Number"><select id="dataNetwork" class="input-field"><option value="MTN">MTN</option><option value="Airtel">Airtel</option><option value="Glo">Glo</option><option value="9mobile">9mobile</option></select><select id="dataPlan" class="input-field"><option value="500">1GB - ₦500</option><option value="1000">2GB - ₦1000</option><option value="2000">5GB - ₦2000</option><option value="5000">10GB - ₦5000</option><option value="10000">20GB - ₦10000</option></select><input type="text" id="dataCode" class="input-field" placeholder="PBC Code (e.g., 1234)"><button class="btn" onclick="processData()">Buy Data</button></div>`;
+showPage('dashboardPage'); document.getElementById('dashboardPage').classList.add('hidden'); document.getElementById('dataView').style.display = 'block'; document.getElementById('dataView').style.padding = '20px';
+}
+
+function processData() {
+let code = document.getElementById('dataCode').value;
+let phone = document.getElementById('dataPhone').value;
+let network = document.getElementById('dataNetwork').value;
+let plan = document.getElementById('dataPlan');
+let amt = parseInt(plan.value);
+let name = plan.options[plan.selectedIndex].text;
+if(code !== '4234') { alert('Invalid PBC Code!'); return; }
+if(!phone) { alert('Enter phone number'); return; }
+if(amt > currentUser.balance) { alert('Insufficient balance'); return; }
+showFullSplashLoading('Processing data purchase...', () => {
+currentUser.balance -= amt;
+let transactionId = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
+let transaction = { id: transactionId, type: 'Data', amount: amt, plan: name, network: network, phone: phone, date: new Date().toLocaleString(), dateObj: new Date(), status: 'Success', fullDetails: { transactionType: 'Data Purchase', amount: amt, fees: 0, taxes: 0, sender: currentUser.firstname + ' ' + currentUser.surname, recipient: phone, recipientAccount: phone, recipientBank: network, transactionId: transactionId, note: 'Data purchase - ' + name + ' on ' + network } };
+currentUser.transactions.unshift(transaction); saveUsers();
+showDataSuccessPopup(amt, phone, name, network, transactionId, () => showTransactionDetails(transactionId));
+}, 10000);
+}
+
+// ============ BUY PBC ============
+function showBuyPBC() {
+if(!currentUser) return;
+document.getElementById('dynamicContent').innerHTML = `<div id="pbcView"><div class="header"><button class="back-btn" onclick="closeDynamic()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><h2>Buy PBC</h2><div class="info-box">Amount: ₦7,000 (Fixed)</div><input type="text" id="pbcName" class="input-field" placeholder="Full Name"><input type="email" id="pbcEmail" class="input-field" placeholder="Email Address"><button id="pbcPayBtn" class="btn btn-gray" disabled onclick="pbcStep1()">Pay</button></div>`;
+showPage('dashboardPage'); document.getElementById('dashboardPage').classList.add('hidden'); document.getElementById('pbcView').style.display = 'block'; document.getElementById('pbcView').style.padding = '20px';
+let nameInp = document.getElementById('pbcName');
+let emailInp = document.getElementById('pbcEmail');
+let btn = document.getElementById('pbcPayBtn');
+function check() { if(nameInp.value && emailInp.value) { btn.disabled = false; btn.className = 'btn btn-blue'; } else { btn.disabled = true; btn.className = 'btn btn-gray'; } }
+nameInp.addEventListener('input', check); emailInp.addEventListener('input', check);
+}
+
+function pbcStep1() { showFullSplashLoading('Processing PBC purchase...', () => showPalmPayWarning(), 10000); }
+
+function showPalmPayWarning() {
+document.getElementById('dynamicContent').innerHTML = `<div id="warningView"><div class="header"><button class="back-btn" onclick="goBackToPBC()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><div class="warning-box"><h2>PalmPay Service Down</h2><p>Please do not use PalmPay for payments at this time. Use other supported banks.</p></div><button class="btn" onclick="pbcStep2()">Proceed to Bank Transfer</button><button class="btn" style="margin-top: 12px;" onclick="pbcStep2()">I Understand</button></div>`;
+document.getElementById('warningView').style.display = 'block'; document.getElementById('warningView').style.padding = '20px';
+}
+
+function goBackToPBC() { showBuyPBC(); }
+function pbcStep2() { showFullSplashLoading('Preparing bank details...', () => showBankDetails(), 5000); }
+function copyText(txt, el) { navigator.clipboard.writeText(txt); let orig = el.innerHTML; el.innerHTML = txt + ' ✅ Copied!'; setTimeout(() => el.innerHTML = orig, 2000); }
+
+function showBankDetails() {
+document.getElementById('dynamicContent').innerHTML = `<div id="bankView"><div class="header"><button class="back-btn" onclick="goBackToWarning()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><h2>Bank Transfer</h2><div class="copy-item" onclick="copyText('7000', this.querySelector('.copy-text'))"><span class="copy-text"><strong>Amount:</strong> NGN 7,000</span><span class="copy-icon">📋 Copy</span></div><div class="copy-item" onclick="copyText('2778715377', this.querySelector('.copy-text'))"><span class="copy-text"><strong>Account Number:</strong> 2778715377</span><span class="copy-icon">📋 Copy</span></div><div class="info-box"><strong>Bank Name:</strong> Paga</div><div class="info-box"><strong>Account Name:</strong> Ahmed Isah</div><p class="text-center mb-10">Transfer exact amount. Use your name as description.</p><button class="btn" onclick="pbcStep3()">I have made this bank transfer</button></div>`;
+document.getElementById('bankView').style.display = 'block'; document.getElementById('bankView').style.padding = '20px';
+}
+
+function goBackToWarning() { showPalmPayWarning(); }
+function pbcStep3() { showFullSplashLoading('Verifying payment...', () => showFailed(), 20000); }
+
+function showFailed() {
+let transactionId = 'FAILPBC' + Date.now() + Math.floor(Math.random() * 10000);
+let failedTransaction = {
+id: transactionId,
+type: 'PBC Purchase Failed',
+amount: 7000,
+date: new Date().toLocaleString(),
+dateObj: new Date(),
+status: 'Failed',
+isFailed: true,
+fullDetails: {
+transactionType: 'PBC Code Purchase',
+amount: 7000,
+fees: 0,
+taxes: 0,
+sender: currentUser.firstname + ' ' + currentUser.surname,
+recipient: 'Gpay System',
+transactionId: transactionId,
+note: '❌ Transaction verification failed! No payment received / invalid payment method.',
+reason: 'No payment received from you / invalid payment method'
+}
+};
+currentUser.transactions.unshift(failedTransaction);
+saveUsers();
+
+document.getElementById('dynamicContent').innerHTML = `
+<div id="failedView">
+<div class="header">
+<button class="back-btn" onclick="goBackToBank()">←</button>
+<button class="help-btn" onclick="showHelp()">❓</button>
+</div>
+<div style="text-align: center; padding: 20px 0;">
+<div style="font-size: 60px; margin-bottom: 20px;">❌</div>
+<h2 style="color: #ef4444; margin-bottom: 15px;">Transaction verification failed!</h2>
+<div style="background: #7f1f1f; border-radius: 16px; padding: 20px; margin: 20px 0; border-left: 4px solid #ef4444;">
+<p style="color: #fca5a5; margin-bottom: 10px;">Your payment could not be completed.</p>
+<p style="color: #9ca3af; font-size: 14px;">Reason: No payment received from you / invalid payment method.</p>
+</div>
+<div style="display: flex; gap: 12px; margin-top: 25px;">
+<button class="btn" onclick="goBackToBank()" style="background: #10b981; flex: 1;">🔄 Try again</button>
+<button class="btn" onclick="showHelp()" style="background: #ef4444; flex: 1;">🆘 I need help</button>
+</div>
+<div style="margin-top: 20px;">
+<button class="btn" onclick="showTransactionHistory()" style="background: #2a2a2a; width: 100%;">📜 View transaction history</button>
+</div>
+</div>
+</div>
+`;
+document.getElementById('failedView').style.display = 'block';
+document.getElementById('failedView').style.padding = '20px';
+}
+
+function goBackToBank() { showBankDetails(); }
+
+// ============ POPUP FUNCTIONS ============
+function showSuccessPopup(title, message, amount, recipient, bank, account, transactionId, onViewReceipt) {
+let popupHtml = `
+<div id="successPopup" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 10000;">
+<div style="background: #1f1f1f; border-radius: 28px; padding: 28px 20px; width: 90%; max-width: 380px; text-align: center; border: 1px solid #2a2a2a;">
+<div style="font-size: 56px; margin-bottom: 12px;">✅</div>
+<h3 style="color: #10b981; font-size: 22px; margin-bottom: 8px;">${title}</h3>
+<p style="color: #9ca3af; margin-bottom: 20px;">${message}</p>
+<div style="font-size: 42px; font-weight: bold; color: #f87171; margin-bottom: 20px;">-₦${amount.toLocaleString()}</div>
+<div style="background: #0a0a0a; border-radius: 18px; padding: 14px; margin-bottom: 24px;">
+<p style="color: #fff; font-weight: 500;">${recipient}</p>
+<p style="color: #9ca3af; font-size: 13px;">${bank} • ${account}</p>
+</div>
+<div style="display: flex; gap: 12px;">
+<button class="btn" onclick="closeSuccessPopupAndGoDashboard()" style="flex:1; background: #10b981;">Done</button>
+<button class="btn" onclick="closeSuccessPopupAndViewReceipt('${transactionId}')" style="flex:1; background: #2a2a2a;">View receipt</button>
+</div>
+</div>
+</div>
+`;
+document.body.insertAdjacentHTML('beforeend', popupHtml);
+window.closeSuccessPopupAndGoDashboard = function() {
+let popup = document.getElementById('successPopup');
+if(popup) popup.remove();
+closeDynamic();
+showDashboardPage();
+};
+window.closeSuccessPopupAndViewReceipt = function(id) {
+let popup = document.getElementById('successPopup');
+if(popup) popup.remove();
+if(onViewReceipt) onViewReceipt();
+else showTransactionDetails(id);
+};
+}
+
+function showAirtimeSuccessPopup(amount, phone, network, transactionId, onViewReceipt) {
+let popupHtml = `
+<div id="successPopup" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 10000;">
+<div style="background: #1f1f1f; border-radius: 28px; padding: 28px 20px; width: 90%; max-width: 380px; text-align: center;">
+<div style="font-size: 56px; margin-bottom: 12px;">📱✅</div>
+<h3 style="color: #10b981; font-size: 22px; margin-bottom: 8px;">Airtime Purchase Successful!</h3>
+<p style="color: #9ca3af; margin-bottom: 20px;">You have successfully purchased</p>
+<div style="font-size: 42px; font-weight: bold; color: #f87171; margin-bottom: 20px;">₦${amount.toLocaleString()}</div>
+<div style="background: #0a0a0a; border-radius: 18px; padding: 14px; margin-bottom: 24px;">
+<p style="color: #fff; font-weight: 500;">${phone}</p>
+<p style="color: #9ca3af; font-size: 13px;">Network: ${network}</p>
+</div>
+<div style="display: flex; gap: 12px;">
+<button class="btn" onclick="closeSuccessPopupAndGoDashboard()" style="flex:1; background: #10b981;">Done</button>
+<button class="btn" onclick="closeSuccessPopupAndViewReceipt('${transactionId}')" style="flex:1; background: #2a2a2a;">View receipt</button>
+</div>
+</div>
+</div>
+`;
+document.body.insertAdjacentHTML('beforeend', popupHtml);
+window.closeSuccessPopupAndGoDashboard = function() {
+let popup = document.getElementById('successPopup');
+if(popup) popup.remove();
+closeDynamic();
+showDashboardPage();
+};
+window.closeSuccessPopupAndViewReceipt = function(id) {
+let popup = document.getElementById('successPopup');
+if(popup) popup.remove();
+if(onViewReceipt) onViewReceipt();
+else showTransactionDetails(id);
+};
+}
+
+function showDataSuccessPopup(amount, phone, plan, network, transactionId, onViewReceipt) {
+let popupHtml = `
+<div id="successPopup" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 10000;">
+<div style="background: #1f1f1f; border-radius: 28px; padding: 28px 20px; width: 90%; max-width: 380px; text-align: center;">
+<div style="font-size: 56px; margin-bottom: 12px;">🌐✅</div>
+<h3 style="color: #10b981; font-size: 22px; margin-bottom: 8px;">Data Purchase Successful!</h3>
+<p style="color: #9ca3af; margin-bottom: 20px;">You have successfully purchased</p>
+<div style="font-size: 26px; font-weight: bold; color: #34d399; margin-bottom: 8px;">${plan} on ${network}</div>
+<div style="font-size: 36px; font-weight: bold; color: #f87171; margin-bottom: 20px;">₦${amount.toLocaleString()}</div>
+<div style="background: #0a0a0a; border-radius: 18px; padding: 14px; margin-bottom: 24px;">
+<p style="color: #fff; font-weight: 500;">${phone}</p>
+</div>
+<div style="display: flex; gap: 12px;">
+<button class="btn" onclick="closeSuccessPopupAndGoDashboard()" style="flex:1; background: #10b981;">Done</button>
+<button class="btn" onclick="closeSuccessPopupAndViewReceipt('${transactionId}')" style="flex:1; background: #2a2a2a;">View receipt</button>
+</div>
+</div>
+</div>
+`;
+document.body.insertAdjacentHTML('beforeend', popupHtml);
+window.closeSuccessPopupAndGoDashboard = function() {
+let popup = document.getElementById('successPopup');
+if(popup) popup.remove();
+closeDynamic();
+showDashboardPage();
+};
+window.closeSuccessPopupAndViewReceipt = function(id) {
+let popup = document.getElementById('successPopup');
+if(popup) popup.remove();
+if(onViewReceipt) onViewReceipt();
+else showTransactionDetails(id);
+};
+}
+
+// ============ TRANSACTION HISTORY ============
+function showTransactionHistory() {
+if(!currentUser) return;
+let transactions = [...currentUser.transactions];
+let groups = {};
+transactions.forEach(t => {
+let dateObj = t.dateObj ? new Date(t.dateObj) : new Date(t.date);
+let today = new Date();
+let yesterday = new Date(today);
+yesterday.setDate(yesterday.getDate() - 1);
+let dateKey = dateObj.toDateString() === today.toDateString() ? 'Today' : (dateObj.toDateString() === yesterday.toDateString() ? 'Yesterday' : dateObj.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }));
+if (!groups[dateKey]) groups[dateKey] = [];
+groups[dateKey].push(t);
+});
+let historyHtml = '';
+for (let [date, items] of Object.entries(groups)) {
+historyHtml += `<div class="history-date-group"><div class="history-date">${date}</div>`;
+items.forEach(t => {
+let timeStr = t.dateObj ? new Date(t.dateObj).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : new Date(t.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+let desc = '';
+let isNegative = true;
+let isNeutral = false;
+let isFailed = t.status === 'Failed' || t.type === 'PBC Purchase Failed';
+if (t.type === 'Withdrawal') desc = `You sent money to ${t.fullDetails?.recipient || 'Bank'} ${t.fullDetails?.recipientAccount ? t.fullDetails.recipientAccount.slice(0,4)+'...' : ''}`;
+else if (t.type === 'Airtime') desc = `You bought airtime for ${t.phone} on ${t.network || ''}`;
+else if (t.type === 'Data') desc = `You bought ${t.plan} data for ${t.phone} on ${t.network || ''}`;
+else if (t.type === 'Bonus') { desc = `You received a welcome bonus`; isNegative = false; }
+else if (t.type === 'Mining Reward' || t.type === 'Mining Complete') { desc = t.fullDetails?.note || `Mining reward`; isNegative = false; }
+else if (t.type === 'PBC Purchase') { desc = `PBC Code purchased - Code: 4234`; isNegative = false; isNeutral = true; }
+else if (t.type === 'PBC Purchase Failed') { desc = `PBC Purchase Failed - No payment received`; isNegative = false; isFailed = true; }
+
+let amountClass = isFailed ? 'failed' : (isNeutral ? 'neutral' : (isNegative ? 'negative' : 'positive'));
+let amountPrefix = isFailed ? '❌ ' : (isNeutral ? '📋 ' : (isNegative ? '-₦' : '+₦'));
+let failedBadge = isFailed ? '<span class="failed-badge">Failed</span>' : '';
+historyHtml += `<div class="history-item ${isFailed ? 'failed-transaction' : ''}" onclick="showTransactionDetails('${t.id}')"><div class="history-row"><div class="history-desc">${desc} ${failedBadge}<small>${timeStr}</small></div><div class="history-amount ${amountClass}">${amountPrefix}${t.amount.toLocaleString()}</div></div></div>`;
+});
+historyHtml += `</div>`;
+}
+document.getElementById('dynamicContent').innerHTML = `<div id="historyView"><div class="header"><button class="back-btn" onclick="closeDynamic()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><h2>Transaction history</h2>${historyHtml || '<div class="text-center" style="color:#9ca3af; padding:40px;">No transactions yet</div>'}</div>`;
+showPage('dashboardPage');
+document.getElementById('dashboardPage').classList.add('hidden');
+document.getElementById('historyView').style.display = 'block';
+document.getElementById('historyView').style.padding = '20px';
+}
+
+function showTransactionDetails(transactionId) {
+if(!currentUser) return;
+let transaction = currentUser.transactions.find(t => t.id == transactionId);
+if(!transaction) { alert('Transaction not found'); return; }
+let details = transaction.fullDetails || {};
+let amount = details.amount || transaction.amount;
+let dateStr = transaction.date;
+let type = transaction.type;
+let status = transaction.status || 'Success';
+let fees = details.fees || 0;
+let taxes = details.taxes || 0;
+let sender = details.sender || currentUser.firstname + ' ' + currentUser.surname;
+let recipient = details.recipient || (type === 'Airtime' ? transaction.phone : type === 'Data' ? transaction.phone : (type === 'Mining Reward' || type === 'Mining Complete') ? 'Mining System' : (type === 'PBC Purchase' ? 'Gpay System' : (type === 'PBC Purchase Failed' ? 'Gpay System' : 'Bank Transfer')));
+let recipientAccount = details.recipientAccount || (type === 'Airtime' ? transaction.phone : type === 'Data' ? transaction.phone : (type === 'PBC Purchase' ? 'Gpay' : (type === 'PBC Purchase Failed' ? 'N/A' : '****')));
+let recipientBank = details.recipientBank || (type === 'Airtime' ? (transaction.network || 'Telecom') : type === 'Data' ? (transaction.network || 'Telecom') : (type === 'Mining Reward' || type === 'Mining Complete') ? 'Gpay' : (type === 'PBC Purchase' ? 'Gpay System' : (type === 'PBC Purchase Failed' ? 'Gpay System' : 'Bank')));
+let transId = details.transactionId || transaction.id || 'N/A';
+let note = details.note || (type === 'Bonus' ? 'Welcome bonus from Gpay' : (type === 'Mining Reward' || type === 'Mining Complete') ? 'Earned from mining activity' : (type === 'PBC Purchase' ? '✅ Payment successfully! Your PBC Code: 4234' : (type === 'PBC Purchase Failed' ? '❌ Transaction verification failed! No payment received.' : 'Transaction via Gpay')));
+let isPositive = (type === 'Bonus' || type === 'Mining Reward' || type === 'Mining Complete');
+let isPBC = (type === 'PBC Purchase');
+let isFailedTxn = (type === 'PBC Purchase Failed');
+let amountColor = isFailedTxn ? '#f97316' : (isPositive ? '#34d399' : (isPBC ? '#fbbf24' : '#f87171'));
+let amountSymbol = isFailedTxn ? '❌ ' : (isPositive ? '+' : (isPBC ? '📋' : '-'));
+let detailsHtml = `<div id="transactionDetailView"><div class="header"><button class="back-btn" onclick="goBackToHistory()">←</button><button class="help-btn" onclick="showHelp()">❓</button></div><h2>Transaction details</h2><div style="text-align: center; margin: 20px 0;"><div style="font-size: 48px; font-weight: bold; color: ${amountColor};">${amountSymbol}₦${amount.toLocaleString()}.00</div><div style="color: ${isFailedTxn ? '#f97316' : '#10b981'}; margin-top: 5px;">${status}</div>${isPBC ? '<div style="color: #fbbf24; margin-top: 5px; font-size: 14px;">✅ Payment successfully!</div>' : ''}${isFailedTxn ? '<div style="color: #f97316; margin-top: 5px; font-size: 14px;">❌ Verification failed</div>' : ''}</div><div class="transaction-detail-row"><span class="transaction-detail-label">Date</span><span class="transaction-detail-value">${dateStr}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Amount</span><span class="transaction-detail-value">₦${amount.toLocaleString()}.00</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Fees</span><span class="transaction-detail-value">₦${fees.toFixed(2)}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Taxes</span><span class="transaction-detail-value">₦${taxes.toFixed(2)}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Transaction Type</span><span class="transaction-detail-value">${type}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Sender</span><span class="transaction-detail-value">${sender}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Recipient</span><span class="transaction-detail-value">${recipient}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Recipient Account</span><span class="transaction-detail-value">${recipientAccount}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Recipient Bank</span><span class="transaction-detail-value">${recipientBank}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Transaction ID</span><span class="transaction-detail-value">${transId}</span></div><div class="transaction-detail-row"><span class="transaction-detail-label">Note</span><span class="transaction-detail-value">${note}</span></div>${isPBC ? `<div class="transaction-detail-row"><span class="transaction-detail-label">Your PBC Code</span><span class="transaction-detail-value" style="color: #10b981; font-size: 20px; font-weight: bold; letter-spacing: 2px;">4234 <button onclick="copyPbcCode()" style="background: #2a2a2a; border: none; padding: 4px 12px; border-radius: 6px; color: #10b981; cursor: pointer; font-size: 12px; margin-left: 8px;">📋 Copy</button></span></div>` : ''}<div class="receipt-actions"><button class="btn" onclick="shareReceipt('${transId}')">📤 Share receipt</button><button class="btn" onclick="repeatTransaction('${type}')">🔄 Repeat Transfer</button></div><div class="text-center mt-20"><span style="color: #10b981; cursor: pointer;" onclick="showHelp()">Trouble with your payment? Let us know on help center now</span></div></div>`;
+document.getElementById('dynamicContent').innerHTML = detailsHtml;
+showPage('dashboardPage');
+document.getElementById('dashboardPage').classList.add('hidden');
+document.getElementById('transactionDetailView').style.display = 'block';
+document.getElementById('transactionDetailView').style.padding = '20px';
+}
+
+function goBackToHistory() { showTransactionHistory(); }
+
+function shareReceipt(transactionId) {
+let transaction = currentUser.transactions.find(t => t.id == transactionId);
+if(transaction) { let details = transaction.fullDetails || {}; let shareText = `Gpay Transaction\nAmount: ₦${(details.amount || transaction.amount).toLocaleString()}\nType: ${transaction.type}\nDate: ${transaction.date}\nID: ${transactionId}`; navigator.clipboard.writeText(shareText); alert('Receipt copied to clipboard!'); }
+else alert('Unable to share receipt');
+}
+
+function repeatTransaction(type) { closeDynamic(); if(type === 'Withdrawal') showWithdrawPage(); else if(type === 'Airtime') showBuyAirtime(); else if(type === 'Data') showBuyData(); else showDashboardPage(); }
+
+function showHelp() { document.getElementById('helpModal').style.display = 'flex'; }
+function closeHelp() { document.getElementById('helpModal').style.display = 'none'; }
+
+function showWelcomePopup() {
+let popupHtml = `<div id="welcomePopup" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 3000;"><div style="background: #1f1f1f; border-radius: 20px; padding: 30px; width: 85%; max-width: 350px; text-align: center;"><div style="font-size: 50px; margin-bottom: 15px;">🎉</div><h2 style="color: #10b981; margin-bottom: 10px;">Welcome ${currentUser.firstname}!</h2><p style="color: #9ca3af; margin-bottom: 20px;">You have received</p><div style="font-size: 36px; font-weight: bold; color: #10b981; margin-bottom: 20px;">₦10,000</div><p style="color: #9ca3af; margin-bottom: 25px;">Start mining every hour and withdraw your earnings anytime!</p><button class="btn" onclick="closeWelcomePopup()" style="background: #10b981; padding: 12px 24px;">Get Started</button></div></div>`;
+document.body.insertAdjacentHTML('beforeend', popupHtml);
+}
+
+function closeWelcomePopup() { let popup = document.getElementById('welcomePopup'); if(popup) popup.remove(); }
+function copyPbcCode() { let code = '4234'; navigator.clipboard.writeText(code); let btn = event.target; let originalText = btn.innerText; btn.innerText = '✅ Copied!'; setTimeout(() => { btn.innerText = originalText; }, 2000); }
+
+// ============ INITIALIZE ============
+document.addEventListener('DOMContentLoaded', function() {
+loadUsers();
+autoLogin();
+});
 </script>
 </body>
 </html>
