@@ -505,7 +505,7 @@
         }
     }
     
-    // ============ UPDATE PROFILE BADGE ============
+    // ============ UPDATE PROFILE BADGE - FIXED ============
     async function updateProfileBadge() {
         if (!currentUser) return;
         
@@ -514,9 +514,9 @@
         
         if (badge) {
             if (!isVerified) {
-                badge.style.display = 'inline-block';
+                badge.style.display = 'inline-block';  // Show red dot if NOT verified
             } else {
-                badge.style.display = 'none';
+                badge.style.display = 'none';  // HIDE red dot if verified
             }
         }
     }
