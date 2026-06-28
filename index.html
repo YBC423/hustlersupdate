@@ -264,11 +264,17 @@ white-space: nowrap;
 opacity: 0.7;
 }
 
-/* ===== ACTION BUTTONS (separate from balance card) ===== */
+/* ===== ACTION BUTTONS CARD ===== */
+.action-card {
+background: #1a1a1a;
+border-radius: 16px;
+padding: 14px 16px;
+margin-bottom: 14px;
+border: 1px solid #2a2a2a;
+}
 .action-buttons {
 display: flex;
 gap: 10px;
-margin-bottom: 14px;
 }
 .action-buttons .action-btn {
 flex: 1;
@@ -276,7 +282,7 @@ padding: 12px 8px;
 border-radius: 12px;
 font-size: 13px;
 font-weight: 600;
-background: #1a1a1a;
+background: #000;
 border: none;
 color: #10b981;
 cursor: pointer;
@@ -289,11 +295,11 @@ gap: 8px;
 min-width: 0;
 }
 .action-buttons .action-btn:active {
-background: #2a2a2a;
+background: #1a1a1a;
 }
 .action-buttons .action-btn svg {
-width: 18px;
-height: 18px;
+width: 20px;
+height: 20px;
 stroke: #10b981;
 stroke-width: 2;
 fill: none;
@@ -301,8 +307,13 @@ stroke-linecap: round;
 stroke-linejoin: round;
 flex-shrink: 0;
 }
+.action-buttons .action-btn .opay-icon {
+width: 20px;
+height: 20px;
+flex-shrink: 0;
+}
 
-/* ===== BVN WARNING BANNER ===== */
+/* ===== BVN WARNING BANNER (no orange color) ===== */
 .bvn-banner {
 background: #1a1a2e;
 border-radius: 14px;
@@ -311,7 +322,6 @@ margin-bottom: 14px;
 display: flex;
 justify-content: space-between;
 align-items: center;
-border-left: 3px solid #f59e0b;
 }
 .bvn-banner .msg {
 font-size: 13px;
@@ -328,8 +338,8 @@ display: block;
 margin-top: 2px;
 }
 .bvn-banner .go-btn {
-background: #f59e0b;
-color: #000;
+background: #10b981;
+color: #fff;
 border: none;
 padding: 6px 18px;
 border-radius: 20px;
@@ -1150,23 +1160,36 @@ Don't have an account? <span class="signup-link" onclick="showSignupPage()">Clic
 </div>
 </div>
 
-<!-- Action Buttons (separate from balance card) -->
+<!-- Action Buttons Card -->
+<div class="action-card">
 <div class="action-buttons">
 <button class="action-btn" onclick="alert('To OPay coming soon')">
-<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="12" cy="12" r="10"/>
+<path d="M8 12h8"/>
+<path d="M12 8v8"/>
+</svg>
 To OPay
 </button>
 <button class="action-btn" onclick="showWithdrawPage()">
-<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M12 3v4"/><path d="M8 7l4-4 4 4"/></svg>
+<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<rect x="2" y="7" width="20" height="14" rx="2"/>
+<path d="M12 3v4"/>
+<path d="M8 7l4-4 4 4"/>
+</svg>
 To Bank
 </button>
 <button class="action-btn" onclick="showWithdrawPage()">
-<svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M12 19V5"/>
+<path d="M5 12l7-7 7 7"/>
+</svg>
 Withdraw
 </button>
 </div>
+</div>
 
-<!-- BVN Warning Banner -->
+<!-- BVN Warning Banner (no orange color) -->
 <div class="bvn-banner" id="bvnBanner">
 <div class="msg">
 <strong>Your BVN and NIN info do not...</strong>
@@ -2366,4 +2389,4 @@ autoLogin();
 </script>
 
 </body>
-</html> 
+</html>
