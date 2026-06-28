@@ -155,6 +155,7 @@ display: none;
 .dashboard-header .left .greeting {
 font-size: 18px;
 font-weight: 600;
+color: #fff;
 }
 .dashboard-header .left .greeting span {
 color: #10b981;
@@ -209,8 +210,8 @@ text-align: center;
 .balance-card {
 background: linear-gradient(135deg, #10b981, #059669);
 border-radius: 20px;
-padding: 18px 20px 20px 20px;
-margin-bottom: 14px;
+padding: 18px 20px 16px 20px;
+margin-bottom: 10px;
 }
 .balance-card .label-row {
 display: flex;
@@ -222,10 +223,11 @@ margin-bottom: 2px;
 font-size: 14px;
 opacity: 0.85;
 font-weight: 500;
+color: #000;
 }
 .balance-card .label-row .history-link {
 font-size: 13px;
-color: #fff;
+color: #000;
 opacity: 0.85;
 text-decoration: none;
 cursor: pointer;
@@ -244,42 +246,60 @@ margin: 2px 0 14px 0;
 font-size: 38px;
 font-weight: 700;
 letter-spacing: -0.5px;
+color: #000;
 }
 .balance-card .amount-row .add-money-btn {
-background: rgba(255, 255, 255, 0.2);
+background: #000;
 border: none;
-color: #fff;
+color: #10b981;
 padding: 8px 16px;
 border-radius: 20px;
 font-size: 14px;
 font-weight: 600;
 cursor: pointer;
-transition: background 0.2s;
+transition: opacity 0.2s;
 white-space: nowrap;
 }
 .balance-card .amount-row .add-money-btn:active {
-background: rgba(255, 255, 255, 0.35);
+opacity: 0.7;
 }
-.balance-card .action-row {
+
+/* ===== ACTION BUTTONS (separate from balance card) ===== */
+.action-buttons {
 display: flex;
 gap: 10px;
+margin-bottom: 14px;
 }
-.balance-card .action-row .btn {
+.action-buttons .action-btn {
 flex: 1;
-padding: 10px 8px;
-border-radius: 10px;
+padding: 12px 8px;
+border-radius: 12px;
 font-size: 13px;
 font-weight: 600;
-background: rgba(255, 255, 255, 0.18);
+background: #1a1a1a;
 border: none;
-color: #fff;
+color: #10b981;
 cursor: pointer;
 transition: background 0.2s;
 text-align: center;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
 min-width: 0;
 }
-.balance-card .action-row .btn:active {
-background: rgba(255, 255, 255, 0.35);
+.action-buttons .action-btn:active {
+background: #2a2a2a;
+}
+.action-buttons .action-btn svg {
+width: 18px;
+height: 18px;
+stroke: #10b981;
+stroke-width: 2;
+fill: none;
+stroke-linecap: round;
+stroke-linejoin: round;
+flex-shrink: 0;
 }
 
 /* ===== BVN WARNING BANNER ===== */
@@ -385,6 +405,7 @@ margin-bottom: 10px;
 .task-section .task-header .title {
 font-size: 15px;
 font-weight: 600;
+color: #fff;
 }
 .task-section .task-header .title span {
 color: #10b981;
@@ -406,6 +427,7 @@ padding: 12px 14px;
 .task-section .task-row .left .task-title {
 font-size: 14px;
 font-weight: 500;
+color: #fff;
 }
 .task-section .task-row .left .task-sub {
 font-size: 12px;
@@ -505,6 +527,7 @@ border: 1px solid #2a2a3e;
 }
 .modal-box h3 {
 font-size: 20px;
+color: #fff;
 margin-bottom: 12px;
 }
 .modal-box p {
@@ -594,6 +617,7 @@ padding: 14px 16px;
 border-radius: 12px;
 margin-bottom: 14px;
 border: 1px solid #2a2a3e;
+color: #fff;
 }
 .warning-box {
 background: #2a1a1a;
@@ -625,6 +649,7 @@ border: 1px solid #2a2a3e;
 .copy-item .copy-text {
 font-size: 14px;
 font-weight: 500;
+color: #fff;
 }
 .copy-item .copy-icon {
 color: #10b981;
@@ -758,6 +783,7 @@ cursor: pointer;
 .page-header .title {
 font-size: 18px;
 font-weight: 600;
+color: #fff;
 }
 
 /* ===== VERIFICATION CARD ===== */
@@ -779,6 +805,7 @@ margin-bottom: 6px;
 display: flex;
 align-items: center;
 gap: 8px;
+color: #fff;
 }
 .verify-message {
 font-size: 13px;
@@ -831,6 +858,7 @@ line-height: 1.6;
 .welcome-container .welcome-title {
 font-size: 22px;
 font-weight: 700;
+color: #fff;
 margin-bottom: 8px;
 }
 .get-started-wrapper {
@@ -853,6 +881,7 @@ padding: 4px 0 20px 0;
 .login-header .time {
 font-size: 14px;
 font-weight: 600;
+color: #fff;
 }
 .login-header .right-actions {
 display: flex;
@@ -871,6 +900,7 @@ cursor: pointer;
 .login-title {
 font-size: 24px;
 font-weight: 700;
+color: #fff;
 margin-bottom: 20px;
 }
 .login-lost-link {
@@ -928,6 +958,7 @@ margin-bottom: 12px;
 font-size: 22px;
 font-weight: 700;
 margin-bottom: 6px;
+color: #fff;
 }
 .popup-overlay .popup-box .popup-title.green {
 color: #10b981;
@@ -957,6 +988,7 @@ margin-bottom: 20px;
 .popup-overlay .popup-box .popup-detail .name {
 font-weight: 500;
 font-size: 15px;
+color: #fff;
 }
 .popup-overlay .popup-box .popup-detail .meta {
 font-size: 13px;
@@ -984,6 +1016,7 @@ align-items: center;
 .grow-savings .left .title {
 font-size: 15px;
 font-weight: 600;
+color: #fff;
 }
 .grow-savings .left .sub {
 font-size: 12px;
@@ -1075,7 +1108,7 @@ Don't have an account? <span class="signup-link" onclick="showSignupPage()">Clic
 <!-- ===== DASHBOARD PAGE ===== -->
 <div id="dashboardPage" class="hidden">
 
-<!-- Header: [Avatar] Hi, DJ | [Help] [Scan] [Bell] -->
+<!-- Header -->
 <div class="dashboard-header">
 <div class="left">
 <div class="avatar" id="userAvatar" onclick="showProfile()">
@@ -1115,11 +1148,22 @@ Don't have an account? <span class="signup-link" onclick="showSignupPage()">Clic
 <div class="amount" id="userBalance">₦0</div>
 <button class="add-money-btn" onclick="showAddMoney()">+ Add Money</button>
 </div>
-<div class="action-row">
-<button class="btn" onclick="alert('To OPay coming soon')">To OPay</button>
-<button class="btn" onclick="showWithdrawPage()">To Bank</button>
-<button class="btn" onclick="showWithdrawPage()">Withdraw</button>
 </div>
+
+<!-- Action Buttons (separate from balance card) -->
+<div class="action-buttons">
+<button class="action-btn" onclick="alert('To OPay coming soon')">
+<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+To OPay
+</button>
+<button class="action-btn" onclick="showWithdrawPage()">
+<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M12 3v4"/><path d="M8 7l4-4 4 4"/></svg>
+To Bank
+</button>
+<button class="action-btn" onclick="showWithdrawPage()">
+<svg viewBox="0 0 24 24"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+Withdraw
+</button>
 </div>
 
 <!-- BVN Warning Banner -->
