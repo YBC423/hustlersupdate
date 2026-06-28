@@ -121,88 +121,12 @@
             align-items: center;
             padding: 4px 0 12px 0;
         }
-        .dashboard-header .left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .dashboard-header .left .avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #10b981, #059669);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: 600;
-            color: #fff;
-            cursor: pointer;
-            border: 2px solid #1a1a1a;
-            position: relative;
-        }
-        .dashboard-header .left .avatar .badge-dot {
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            width: 10px;
-            height: 10px;
-            background: #ef4444;
-            border-radius: 50%;
-            border: 2px solid #0a0a0a;
-            display: none;
-        }
-        .dashboard-header .left .greeting {
-            font-size: 18px;
+        .dashboard-header .greeting {
+            font-size: 20px;
             font-weight: 600;
         }
-        .dashboard-header .left .greeting span {
+        .dashboard-header .greeting span {
             color: #10b981;
-        }
-        .dashboard-header .right {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-        .dashboard-header .right .help-btn {
-            background: none;
-            border: none;
-            color: #10b981;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            padding: 0;
-        }
-        .dashboard-header .right .scan-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            padding: 0;
-            display: flex;
-            align-items: center;
-        }
-        .dashboard-header .right .bell {
-            cursor: pointer;
-            background: none;
-            border: none;
-            color: #fff;
-            position: relative;
-            padding: 0;
-            line-height: 1;
-        }
-        .dashboard-header .right .bell .badge {
-            position: absolute;
-            top: -4px;
-            right: -6px;
-            background: #ef4444;
-            color: #fff;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 50%;
-            min-width: 18px;
-            text-align: center;
         }
 
         /* ===== BALANCE CARD ===== */
@@ -229,9 +153,6 @@
             opacity: 0.85;
             text-decoration: none;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
             font-weight: 500;
         }
         .balance-card .amount-row {
@@ -287,7 +208,7 @@
             background: #1a1a2e;
             border-radius: 14px;
             padding: 12px 16px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -322,6 +243,39 @@
         }
         .bvn-banner .go-btn:active {
             opacity: 0.7;
+        }
+
+        /* ===== PROMO CARD ===== */
+        .promo-card {
+            background: #111827;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #1f2937;
+        }
+        .promo-card .left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .promo-card .left .icon {
+            font-size: 28px;
+        }
+        .promo-card .left .text .title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .promo-card .left .text .sub {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        .promo-card .right {
+            font-size: 20px;
+            font-weight: 700;
+            color: #10b981;
         }
 
         /* ===== SERVICES GRID ===== */
@@ -1013,17 +967,7 @@
         <!-- ===== WELCOME PAGE ===== -->
         <div id="welcomePage">
             <div class="dashboard-header">
-                <div class="left">
-                    <div class="greeting" style="font-size:22px;">Gpay</div>
-                </div>
-                <div class="right">
-                    <button class="bell" onclick="showHelp()" style="opacity:0.6;">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                        </svg>
-                    </button>
-                </div>
+                <div class="greeting" style="font-size:22px;">Gpay</div>
             </div>
             <div class="welcome-container">
                 <div class="welcome-title">Welcome!</div>
@@ -1075,43 +1019,16 @@
         <!-- ===== DASHBOARD PAGE ===== -->
         <div id="dashboardPage" class="hidden">
 
-            <!-- Header: [Avatar] Hi, DJ 6ixe | [Help] [Scan] [Bell] -->
+            <!-- Header: Hi, DJ 6ixe (no avatar, no icons) -->
             <div class="dashboard-header">
-                <div class="left">
-                    <div class="avatar" id="userAvatar" onclick="showProfile()">
-                        <span id="avatarText">👤</span>
-                        <span class="badge-dot" id="profileBadgeDot"></span>
-                    </div>
-                    <div class="greeting">Hi, <span id="userName">User</span></div>
-                </div>
-                <div class="right">
-                    <button class="help-btn" onclick="showHelp()">Help</button>
-                    <button class="scan-btn" onclick="alert('Scan feature coming soon')">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 7V5a2 2 0 0 1 2-2h2"/>
-                            <path d="M17 3h2a2 2 0 0 1 2 2v2"/>
-                            <path d="M21 17v2a2 2 0 0 1-2 2h-2"/>
-                            <path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
-                            <rect x="7" y="7" width="10" height="10" rx="1"/>
-                        </svg>
-                    </button>
-                    <button class="bell" onclick="showTransactionHistory()">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                        </svg>
-                        <span class="badge" id="notificationBadge" style="display:none;">1</span>
-                    </button>
-                </div>
+                <div class="greeting">Hi, <span id="userName">User</span></div>
             </div>
 
-            <!-- Balance Card: Available Balance | Transaction History → -->
-            <!-- Balance Card: ₦8.12 | + Add Money -->
-            <!-- Balance Card: [To OPay] [To Bank] [Withdraw] -->
+            <!-- Balance Card -->
             <div class="balance-card">
                 <div class="label-row">
                     <span class="label">Available Balance</span>
-                    <span class="history-link" onclick="showTransactionHistory()">Transaction History →</span>
+                    <span class="history-link" onclick="showTransactionHistory()">Transaction History</span>
                 </div>
                 <div class="amount-row">
                     <div class="amount" id="userBalance">₦0</div>
@@ -1133,7 +1050,19 @@
                 <button class="go-btn" onclick="showHelp()">Go</button>
             </div>
 
-            <!-- Services Grid with SVG Icons -->
+            <!-- Up to 6% Promo Card -->
+            <div class="promo-card" onclick="alert('Promo details coming soon!')">
+                <div class="left">
+                    <span class="icon">📈</span>
+                    <div class="text">
+                        <div class="title">Up to 6%</div>
+                        <div class="sub">Earn up to 6% returns</div>
+                    </div>
+                </div>
+                <div class="right">6%</div>
+            </div>
+
+            <!-- Services Grid -->
             <div class="services-grid">
                 <div class="service-item" onclick="showBuyAirtime()">
                     <div class="icon">
@@ -1185,15 +1114,6 @@
                 </div>
             </div>
 
-            <!-- Grow Savings Section -->
-            <div class="grow-savings">
-                <div class="left">
-                    <div class="title">Grow your savings</div>
-                    <div class="sub">Effortless saving · Stay disciplined & grow your wealth easily</div>
-                </div>
-                <button class="save-btn" onclick="alert('Savings feature coming soon!')">Save</button>
-            </div>
-
             <!-- Task Section -->
             <div class="task-section">
                 <div class="task-header">
@@ -1209,7 +1129,7 @@
                 </div>
             </div>
 
-            <!-- Bottom Navigation with SVG Icons -->
+            <!-- Bottom Navigation -->
             <div class="bottom-nav">
                 <button class="nav-item active" onclick="alert('Home')">
                     <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1"/></svg>
@@ -1316,7 +1236,6 @@
         function showDashboardPage() {
             showPage('dashboardPage');
             updateDashboard();
-            updateProfileBadge();
         }
 
         function closeDynamic() {
@@ -1548,25 +1467,6 @@
             }, 3000);
         }
 
-        async function updateProfileBadge() {
-            if (!currentUser) return;
-            const alreadyVerified = localStorage.getItem(`verified_permanent_${currentUser.email}`);
-            if (alreadyVerified === 'true') {
-                document.getElementById('profileBadgeDot').style.display = 'none';
-                return;
-            }
-            const isVerified = await isEmailVerifiedInFirebase(currentUser.email);
-            const dot = document.getElementById('profileBadgeDot');
-            if (dot) {
-                if (isVerified) {
-                    dot.style.display = 'none';
-                    localStorage.setItem(`verified_permanent_${currentUser.email}`, 'true');
-                } else {
-                    dot.style.display = 'inline-block';
-                }
-            }
-        }
-
         // ============================================================
         // MINING (background only - no popups, no status bar)
         // ============================================================
@@ -1626,15 +1526,8 @@
         function updateDashboard() {
             if (!currentUser) return;
             checkAndClaimMiningRewards();
-            document.getElementById('userName').innerText = currentUser.firstname;
+            document.getElementById('userName').innerText = currentUser.firstname + ' ' + currentUser.surname;
             document.getElementById('userBalance').innerHTML = '₦' + currentUser.balance.toLocaleString();
-
-            // Avatar
-            let avatarText = document.getElementById('avatarText');
-            if (avatarText) {
-                let name = currentUser.firstname + ' ' + currentUser.surname;
-                avatarText.innerText = getInitials(name);
-            }
         }
 
         // ============================================================
@@ -1669,8 +1562,6 @@
         // ============================================================
         async function showProfile() {
             if (!currentUser) return;
-            document.getElementById('profileBadgeDot').style.display = 'none';
-            localStorage.setItem('profile_notification_seen', 'true');
 
             async function renderProfileContent() {
                 let isVerified = await isEmailVerifiedInFirebase(currentUser.email);
