@@ -1,2216 +1,2325 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>Gpay</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<title>Gpay</title>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js">
-    </script>
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js">
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js">
+</script>
 
-    <style>
-        /* ===== RESET & BASE ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: #0a0a0a;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            color: #fff;
-            -webkit-font-smoothing: antialiased;
-        }
-        .app {
-            max-width: 450px;
-            margin: 0 auto;
-            background: #0a0a0a;
-            min-height: 100vh;
-            padding: 12px 16px 80px 16px;
-            position: relative;
-        }
+<style>
+/* ===== RESET & BASE ===== */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+body {
+background: #0a0a0a;
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+color: #fff;
+-webkit-font-smoothing: antialiased;
+}
+.app {
+max-width: 450px;
+margin: 0 auto;
+background: #0a0a0a;
+min-height: 100vh;
+padding: 12px 16px 80px 16px;
+position: relative;
+}
 
-        /* ===== UTILITY ===== */
-        .hidden {
-            display: none !important;
-        }
-        .text-center {
-            text-align: center;
-        }
-        .mt-10 {
-            margin-top: 10px;
-        }
-        .mt-20 {
-            margin-top: 20px;
-        }
-        .mb-10 {
-            margin-bottom: 10px;
-        }
-        .mb-20 {
-            margin-bottom: 20px;
-        }
-        .flex-between {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .flex-center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .gap-8 {
-            gap: 8px;
-        }
-        .gap-12 {
-            gap: 12px;
-        }
-        .w-full {
-            width: 100%;
-        }
+/* ===== UTILITY ===== */
+.hidden {
+display: none !important;
+}
+.text-center {
+text-align: center;
+}
+.mt-10 {
+margin-top: 10px;
+}
+.mt-20 {
+margin-top: 20px;
+}
+.mb-10 {
+margin-bottom: 10px;
+}
+.mb-20 {
+margin-bottom: 20px;
+}
+.flex-between {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.flex-center {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.gap-8 {
+gap: 8px;
+}
+.gap-12 {
+gap: 12px;
+}
+.w-full {
+width: 100%;
+}
 
-        /* ===== BUTTONS ===== */
-        .btn {
-            padding: 14px 20px;
-            background: #10b981;
-            border: none;
-            border-radius: 12px;
-            color: #fff;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            transition: opacity 0.2s;
-            display: inline-block;
-        }
-        .btn:active {
-            opacity: 0.7;
-        }
-        .btn-gray {
-            background: #2a2a2a;
-            color: #9ca3af;
-            cursor: not-allowed;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #2a2a2a;
-            color: #fff;
-        }
-        .btn-sm {
-            padding: 8px 16px;
-            font-size: 13px;
-            border-radius: 8px;
-        }
-        .btn-green {
-            background: #10b981;
-            color: #fff;
-        }
-        .btn-green-outline {
-            background: transparent;
-            border: 1px solid #10b981;
-            color: #10b981;
-        }
+/* ===== BUTTONS ===== */
+.btn {
+padding: 14px 20px;
+background: #10b981;
+border: none;
+border-radius: 12px;
+color: #fff;
+font-size: 16px;
+font-weight: 600;
+cursor: pointer;
+text-align: center;
+transition: opacity 0.2s;
+display: inline-block;
+}
+.btn:active {
+opacity: 0.7;
+}
+.btn-gray {
+background: #2a2a2a;
+color: #9ca3af;
+cursor: not-allowed;
+}
+.btn-outline {
+background: transparent;
+border: 1px solid #2a2a2a;
+color: #fff;
+}
+.btn-sm {
+padding: 8px 16px;
+font-size: 13px;
+border-radius: 8px;
+}
+.btn-green {
+background: #10b981;
+color: #fff;
+}
+.btn-green-outline {
+background: transparent;
+border: 1px solid #10b981;
+color: #10b981;
+}
 
-        /* ===== HEADER ===== */
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4px 0 12px 0;
-        }
-        .dashboard-header .greeting {
-            font-size: 20px;
-            font-weight: 600;
-        }
-        .dashboard-header .greeting span {
-            color: #10b981;
-        }
+/* ===== HEADER ===== */
+.dashboard-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 4px 0 12px 0;
+}
+.dashboard-header .left {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.dashboard-header .left .avatar {
+width: 38px;
+height: 38px;
+border-radius: 50%;
+background: linear-gradient(135deg, #10b981, #059669);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 16px;
+font-weight: 600;
+color: #fff;
+cursor: pointer;
+border: 2px solid #1a1a1a;
+position: relative;
+}
+.dashboard-header .left .avatar .badge-dot {
+position: absolute;
+top: -2px;
+right: -2px;
+width: 10px;
+height: 10px;
+background: #ef4444;
+border-radius: 50%;
+border: 2px solid #0a0a0a;
+display: none;
+}
+.dashboard-header .left .greeting {
+font-size: 18px;
+font-weight: 600;
+}
+.dashboard-header .left .greeting span {
+color: #10b981;
+}
+.dashboard-header .right {
+display: flex;
+align-items: center;
+gap: 14px;
+}
+.dashboard-header .right .help-btn {
+background: none;
+border: none;
+color: #10b981;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+padding: 0;
+}
+.dashboard-header .right .scan-btn {
+background: none;
+border: none;
+color: #fff;
+cursor: pointer;
+padding: 0;
+display: flex;
+align-items: center;
+}
+.dashboard-header .right .bell {
+cursor: pointer;
+background: none;
+border: none;
+color: #fff;
+position: relative;
+padding: 0;
+line-height: 1;
+}
+.dashboard-header .right .bell .badge {
+position: absolute;
+top: -4px;
+right: -6px;
+background: #ef4444;
+color: #fff;
+font-size: 10px;
+font-weight: bold;
+padding: 2px 6px;
+border-radius: 50%;
+min-width: 18px;
+text-align: center;
+}
 
-        /* ===== BALANCE CARD ===== */
-        .balance-card {
-            background: linear-gradient(135deg, #10b981, #059669);
-            border-radius: 20px;
-            padding: 18px 20px 20px 20px;
-            margin-bottom: 14px;
-        }
-        .balance-card .label-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2px;
-        }
-        .balance-card .label-row .label {
-            font-size: 14px;
-            opacity: 0.85;
-            font-weight: 500;
-        }
-        .balance-card .label-row .history-link {
-            font-size: 13px;
-            color: #fff;
-            opacity: 0.85;
-            text-decoration: none;
-            cursor: pointer;
-            font-weight: 500;
-        }
-        .balance-card .amount-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 2px 0 14px 0;
-        }
-        .balance-card .amount-row .amount {
-            font-size: 38px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        .balance-card .amount-row .add-money-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: #fff;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            white-space: nowrap;
-        }
-        .balance-card .amount-row .add-money-btn:active {
-            background: rgba(255, 255, 255, 0.35);
-        }
-        .balance-card .action-row {
-            display: flex;
-            gap: 10px;
-        }
-        .balance-card .action-row .btn {
-            flex: 1;
-            padding: 10px 8px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            background: rgba(255, 255, 255, 0.18);
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            transition: background 0.2s;
-            text-align: center;
-            min-width: 0;
-        }
-        .balance-card .action-row .btn:active {
-            background: rgba(255, 255, 255, 0.35);
-        }
+/* ===== BALANCE CARD ===== */
+.balance-card {
+background: linear-gradient(135deg, #10b981, #059669);
+border-radius: 20px;
+padding: 18px 20px 20px 20px;
+margin-bottom: 14px;
+}
+.balance-card .label-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 2px;
+}
+.balance-card .label-row .label {
+font-size: 14px;
+opacity: 0.85;
+font-weight: 500;
+}
+.balance-card .label-row .history-link {
+font-size: 13px;
+color: #fff;
+opacity: 0.85;
+text-decoration: none;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 4px;
+font-weight: 500;
+}
+.balance-card .amount-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin: 2px 0 14px 0;
+}
+.balance-card .amount-row .amount {
+font-size: 38px;
+font-weight: 700;
+letter-spacing: -0.5px;
+}
+.balance-card .amount-row .add-money-btn {
+background: rgba(255, 255, 255, 0.2);
+border: none;
+color: #fff;
+padding: 8px 16px;
+border-radius: 20px;
+font-size: 14px;
+font-weight: 600;
+cursor: pointer;
+transition: background 0.2s;
+white-space: nowrap;
+}
+.balance-card .amount-row .add-money-btn:active {
+background: rgba(255, 255, 255, 0.35);
+}
+.balance-card .action-row {
+display: flex;
+gap: 10px;
+}
+.balance-card .action-row .btn {
+flex: 1;
+padding: 10px 8px;
+border-radius: 10px;
+font-size: 13px;
+font-weight: 600;
+background: rgba(255, 255, 255, 0.18);
+border: none;
+color: #fff;
+cursor: pointer;
+transition: background 0.2s;
+text-align: center;
+min-width: 0;
+}
+.balance-card .action-row .btn:active {
+background: rgba(255, 255, 255, 0.35);
+}
 
-        /* ===== BVN WARNING BANNER ===== */
-        .bvn-banner {
-            background: #1a1a2e;
-            border-radius: 14px;
-            padding: 12px 16px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 3px solid #f59e0b;
-        }
-        .bvn-banner .msg {
-            font-size: 13px;
-            color: #d1d5db;
-            line-height: 1.4;
-        }
-        .bvn-banner .msg strong {
-            color: #fff;
-        }
-        .bvn-banner .msg .sub {
-            font-size: 12px;
-            color: #9ca3af;
-            display: block;
-            margin-top: 2px;
-        }
-        .bvn-banner .go-btn {
-            background: #f59e0b;
-            color: #000;
-            border: none;
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            white-space: nowrap;
-            margin-left: 12px;
-            transition: opacity 0.2s;
-        }
-        .bvn-banner .go-btn:active {
-            opacity: 0.7;
-        }
+/* ===== BVN WARNING BANNER ===== */
+.bvn-banner {
+background: #1a1a2e;
+border-radius: 14px;
+padding: 12px 16px;
+margin-bottom: 14px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-left: 3px solid #f59e0b;
+}
+.bvn-banner .msg {
+font-size: 13px;
+color: #d1d5db;
+line-height: 1.4;
+}
+.bvn-banner .msg strong {
+color: #fff;
+}
+.bvn-banner .msg .sub {
+font-size: 12px;
+color: #9ca3af;
+display: block;
+margin-top: 2px;
+}
+.bvn-banner .go-btn {
+background: #f59e0b;
+color: #000;
+border: none;
+padding: 6px 18px;
+border-radius: 20px;
+font-weight: 600;
+font-size: 13px;
+cursor: pointer;
+white-space: nowrap;
+margin-left: 12px;
+transition: opacity 0.2s;
+}
+.bvn-banner .go-btn:active {
+opacity: 0.7;
+}
 
-        /* ===== PROMO CARD ===== */
-        .promo-card {
-            background: #111827;
-            border-radius: 14px;
-            padding: 14px 16px;
-            margin-bottom: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #1f2937;
-        }
-        .promo-card .left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .promo-card .left .icon {
-            font-size: 28px;
-        }
-        .promo-card .left .text .title {
-            font-size: 15px;
-            font-weight: 600;
-        }
-        .promo-card .left .text .sub {
-            font-size: 12px;
-            color: #9ca3af;
-        }
-        .promo-card .right {
-            font-size: 20px;
-            font-weight: 700;
-            color: #10b981;
-        }
+/* ===== SERVICES GRID ===== */
+.services-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 10px;
+background: #111827;
+padding: 16px 10px;
+border-radius: 16px;
+margin-bottom: 14px;
+border: 1px solid #1f2937;
+}
+.services-grid .service-item {
+text-align: center;
+cursor: pointer;
+transition: transform 0.15s;
+}
+.services-grid .service-item:active {
+transform: scale(0.94);
+}
+.services-grid .service-item .icon {
+width: 46px;
+height: 46px;
+border-radius: 50%;
+background: #1f2937;
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 0 auto 6px auto;
+}
+.services-grid .service-item .icon svg {
+width: 22px;
+height: 22px;
+stroke: #d1d5db;
+stroke-width: 1.8;
+fill: none;
+stroke-linecap: round;
+stroke-linejoin: round;
+}
+.services-grid .service-item .label {
+font-size: 11px;
+color: #9ca3af;
+font-weight: 500;
+}
 
-        /* ===== SERVICES GRID ===== */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            background: #111827;
-            padding: 16px 10px;
-            border-radius: 16px;
-            margin-bottom: 14px;
-            border: 1px solid #1f2937;
-        }
-        .services-grid .service-item {
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.15s;
-        }
-        .services-grid .service-item:active {
-            transform: scale(0.94);
-        }
-        .services-grid .service-item .icon {
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            background: #1f2937;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 6px auto;
-        }
-        .services-grid .service-item .icon svg {
-            width: 22px;
-            height: 22px;
-            stroke: #d1d5db;
-            stroke-width: 1.8;
-            fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-        .services-grid .service-item .label {
-            font-size: 11px;
-            color: #9ca3af;
-            font-weight: 500;
-        }
+/* ===== TASK SECTION ===== */
+.task-section {
+background: #111827;
+border-radius: 16px;
+padding: 16px;
+margin-bottom: 14px;
+border: 1px solid #1f2937;
+}
+.task-section .task-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 10px;
+}
+.task-section .task-header .title {
+font-size: 15px;
+font-weight: 600;
+}
+.task-section .task-header .title span {
+color: #10b981;
+}
+.task-section .task-header .view-all {
+color: #10b981;
+font-size: 12px;
+cursor: pointer;
+font-weight: 500;
+}
+.task-section .task-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: #1a1a2e;
+border-radius: 12px;
+padding: 12px 14px;
+}
+.task-section .task-row .left .task-title {
+font-size: 14px;
+font-weight: 500;
+}
+.task-section .task-row .left .task-sub {
+font-size: 12px;
+color: #9ca3af;
+margin-top: 2px;
+}
+.task-section .task-row .claim-btn {
+background: #10b981;
+color: #fff;
+border: none;
+padding: 6px 20px;
+border-radius: 20px;
+font-weight: 600;
+font-size: 13px;
+cursor: pointer;
+transition: opacity 0.2s;
+white-space: nowrap;
+margin-left: 10px;
+}
+.task-section .task-row .claim-btn:active {
+opacity: 0.7;
+}
 
-        /* ===== TASK SECTION ===== */
-        .task-section {
-            background: #111827;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 14px;
-            border: 1px solid #1f2937;
-        }
-        .task-section .task-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .task-section .task-header .title {
-            font-size: 15px;
-            font-weight: 600;
-        }
-        .task-section .task-header .title span {
-            color: #10b981;
-        }
-        .task-section .task-header .view-all {
-            color: #10b981;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-        .task-section .task-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #1a1a2e;
-            border-radius: 12px;
-            padding: 12px 14px;
-        }
-        .task-section .task-row .left .task-title {
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .task-section .task-row .left .task-sub {
-            font-size: 12px;
-            color: #9ca3af;
-            margin-top: 2px;
-        }
-        .task-section .task-row .claim-btn {
-            background: #10b981;
-            color: #fff;
-            border: none;
-            padding: 6px 20px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            white-space: nowrap;
-            margin-left: 10px;
-        }
-        .task-section .task-row .claim-btn:active {
-            opacity: 0.7;
-        }
+/* ===== BOTTOM NAV ===== */
+.bottom-nav {
+position: fixed;
+bottom: 0;
+left: 0;
+right: 0;
+max-width: 450px;
+margin: 0 auto;
+background: #111827;
+display: flex;
+justify-content: space-around;
+padding: 8px 0 14px 0;
+border-top: 1px solid #1f2937;
+z-index: 100;
+}
+.bottom-nav .nav-item {
+display: flex;
+flex-direction: column;
+align-items: center;
+color: #6b7280;
+font-size: 10px;
+cursor: pointer;
+transition: color 0.2s;
+background: none;
+border: none;
+padding: 4px 8px;
+gap: 2px;
+font-weight: 500;
+}
+.bottom-nav .nav-item svg {
+width: 24px;
+height: 24px;
+stroke: #6b7280;
+stroke-width: 1.8;
+fill: none;
+stroke-linecap: round;
+stroke-linejoin: round;
+margin-bottom: 2px;
+}
+.bottom-nav .nav-item.active {
+color: #10b981;
+}
+.bottom-nav .nav-item.active svg {
+stroke: #10b981;
+}
+.bottom-nav .nav-item:active {
+transform: scale(0.92);
+}
 
-        /* ===== BOTTOM NAV ===== */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            max-width: 450px;
-            margin: 0 auto;
-            background: #111827;
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0 14px 0;
-            border-top: 1px solid #1f2937;
-            z-index: 100;
-        }
-        .bottom-nav .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #6b7280;
-            font-size: 10px;
-            cursor: pointer;
-            transition: color 0.2s;
-            background: none;
-            border: none;
-            padding: 4px 8px;
-            gap: 2px;
-            font-weight: 500;
-        }
-        .bottom-nav .nav-item svg {
-            width: 24px;
-            height: 24px;
-            stroke: #6b7280;
-            stroke-width: 1.8;
-            fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            margin-bottom: 2px;
-        }
-        .bottom-nav .nav-item.active {
-            color: #10b981;
-        }
-        .bottom-nav .nav-item.active svg {
-            stroke: #10b981;
-        }
-        .bottom-nav .nav-item:active {
-            transform: scale(0.92);
-        }
+/* ===== MODALS & OVERLAYS ===== */
+.modal-overlay {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0, 0, 0, 0.85);
+align-items: center;
+justify-content: center;
+z-index: 2000;
+padding: 20px;
+}
+.modal-overlay.show {
+display: flex;
+}
+.modal-box {
+background: #1a1a2e;
+border-radius: 24px;
+padding: 24px 20px;
+width: 100%;
+max-width: 360px;
+border: 1px solid #2a2a3e;
+}
+.modal-box h3 {
+font-size: 20px;
+margin-bottom: 12px;
+}
+.modal-box p {
+color: #9ca3af;
+font-size: 14px;
+margin-bottom: 16px;
+}
+.modal-box .modal-actions {
+display: flex;
+gap: 12px;
+flex-wrap: wrap;
+}
+.modal-box .modal-actions .btn {
+flex: 1;
+min-width: 100px;
+}
 
-        /* ===== MODALS & OVERLAYS ===== */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            padding: 20px;
-        }
-        .modal-overlay.show {
-            display: flex;
-        }
-        .modal-box {
-            background: #1a1a2e;
-            border-radius: 24px;
-            padding: 24px 20px;
-            width: 100%;
-            max-width: 360px;
-            border: 1px solid #2a2a3e;
-        }
-        .modal-box h3 {
-            font-size: 20px;
-            margin-bottom: 12px;
-        }
-        .modal-box p {
-            color: #9ca3af;
-            font-size: 14px;
-            margin-bottom: 16px;
-        }
-        .modal-box .modal-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .modal-box .modal-actions .btn {
-            flex: 1;
-            min-width: 100px;
-        }
+/* ===== SPLASH ===== */
+.splash-loading {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: #0a0a0a;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+z-index: 9999;
+}
+.splash-loading .spinner {
+width: 50px;
+height: 50px;
+border: 3px solid #2a2a2a;
+border-top: 3px solid #10b981;
+border-radius: 50%;
+animation: spin 1s linear infinite;
+}
+@keyframes spin {
+0% {
+transform: rotate(0deg);
+}
+100% {
+transform: rotate(360deg);
+}
+}
+.splash-loading .logo-text {
+font-size: 24px;
+font-weight: bold;
+color: #10b981;
+margin-top: 20px;
+}
+.splash-loading .loading-text {
+color: #9ca3af;
+margin-top: 10px;
+font-size: 14px;
+}
 
-        /* ===== SPLASH ===== */
-        .splash-loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: #0a0a0a;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-        .splash-loading .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid #2a2a2a;
-            border-top: 3px solid #10b981;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-        .splash-loading .logo-text {
-            font-size: 24px;
-            font-weight: bold;
-            color: #10b981;
-            margin-top: 20px;
-        }
-        .splash-loading .loading-text {
-            color: #9ca3af;
-            margin-top: 10px;
-            font-size: 14px;
-        }
+/* ===== INPUTS ===== */
+.input-field {
+width: 100%;
+padding: 14px 16px;
+background: #1a1a2e;
+border: 1px solid #2a2a3e;
+border-radius: 12px;
+color: #fff;
+font-size: 16px;
+margin-bottom: 14px;
+outline: none;
+transition: border 0.2s;
+}
+.input-field:focus {
+border-color: #10b981;
+}
+.input-field::placeholder {
+color: #6b7280;
+}
+select.input-field {
+appearance: none;
+background: #1a1a2e;
+}
 
-        /* ===== INPUTS ===== */
-        .input-field {
-            width: 100%;
-            padding: 14px 16px;
-            background: #1a1a2e;
-            border: 1px solid #2a2a3e;
-            border-radius: 12px;
-            color: #fff;
-            font-size: 16px;
-            margin-bottom: 14px;
-            outline: none;
-            transition: border 0.2s;
-        }
-        .input-field:focus {
-            border-color: #10b981;
-        }
-        .input-field::placeholder {
-            color: #6b7280;
-        }
-        select.input-field {
-            appearance: none;
-            background: #1a1a2e;
-        }
+.info-box {
+background: #1a1a2e;
+padding: 14px 16px;
+border-radius: 12px;
+margin-bottom: 14px;
+border: 1px solid #2a2a3e;
+}
+.warning-box {
+background: #2a1a1a;
+border-left: 4px solid #ef4444;
+padding: 14px 16px;
+border-radius: 12px;
+margin-bottom: 16px;
+}
+.min-withdrawal {
+background: #1a1a2e;
+padding: 10px 14px;
+border-radius: 10px;
+text-align: center;
+font-size: 14px;
+color: #fbbf24;
+margin: 10px 0 16px 0;
+}
+.copy-item {
+background: #1a1a2e;
+padding: 12px 16px;
+border-radius: 10px;
+margin-bottom: 10px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+cursor: pointer;
+border: 1px solid #2a2a3e;
+}
+.copy-item .copy-text {
+font-size: 14px;
+font-weight: 500;
+}
+.copy-item .copy-icon {
+color: #10b981;
+font-size: 13px;
+}
+.error {
+color: #ef4444;
+font-size: 13px;
+margin-bottom: 10px;
+}
 
-        .info-box {
-            background: #1a1a2e;
-            padding: 14px 16px;
-            border-radius: 12px;
-            margin-bottom: 14px;
-            border: 1px solid #2a2a3e;
-        }
-        .warning-box {
-            background: #2a1a1a;
-            border-left: 4px solid #ef4444;
-            padding: 14px 16px;
-            border-radius: 12px;
-            margin-bottom: 16px;
-        }
-        .min-withdrawal {
-            background: #1a1a2e;
-            padding: 10px 14px;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 14px;
-            color: #fbbf24;
-            margin: 10px 0 16px 0;
-        }
-        .copy-item {
-            background: #1a1a2e;
-            padding: 12px 16px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            border: 1px solid #2a2a3e;
-        }
-        .copy-item .copy-text {
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .copy-item .copy-icon {
-            color: #10b981;
-            font-size: 13px;
-        }
-        .error {
-            color: #ef4444;
-            font-size: 13px;
-            margin-bottom: 10px;
-        }
+/* ===== HISTORY ===== */
+.history-date-group {
+margin-bottom: 16px;
+}
+.history-date {
+color: #10b981;
+font-size: 14px;
+font-weight: 600;
+margin-bottom: 8px;
+padding-bottom: 4px;
+border-bottom: 1px solid #1f2937;
+}
+.history-item {
+background: #111827;
+border-radius: 12px;
+padding: 12px 14px;
+margin-bottom: 6px;
+cursor: pointer;
+transition: background 0.2s;
+border: 1px solid #1f2937;
+}
+.history-item:active {
+background: #1a1a2e;
+}
+.history-item.failed-transaction {
+border-left: 3px solid #ef4444;
+background: #1a1414;
+}
+.history-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.history-desc {
+font-size: 14px;
+color: #fff;
+}
+.history-desc small {
+font-size: 11px;
+color: #9ca3af;
+display: block;
+margin-top: 2px;
+}
+.history-amount {
+font-size: 16px;
+font-weight: 600;
+}
+.history-amount.negative {
+color: #f87171;
+}
+.history-amount.positive {
+color: #34d399;
+}
+.history-amount.neutral {
+color: #fbbf24;
+}
+.history-amount.failed {
+color: #f97316;
+}
+.failed-badge {
+background: #7f1f1f;
+color: #fca5a5;
+font-size: 10px;
+padding: 2px 8px;
+border-radius: 20px;
+display: inline-block;
+margin-left: 6px;
+vertical-align: middle;
+}
 
-        /* ===== HISTORY ===== */
-        .history-date-group {
-            margin-bottom: 16px;
-        }
-        .history-date {
-            color: #10b981;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            padding-bottom: 4px;
-            border-bottom: 1px solid #1f2937;
-        }
-        .history-item {
-            background: #111827;
-            border-radius: 12px;
-            padding: 12px 14px;
-            margin-bottom: 6px;
-            cursor: pointer;
-            transition: background 0.2s;
-            border: 1px solid #1f2937;
-        }
-        .history-item:active {
-            background: #1a1a2e;
-        }
-        .history-item.failed-transaction {
-            border-left: 3px solid #ef4444;
-            background: #1a1414;
-        }
-        .history-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .history-desc {
-            font-size: 14px;
-            color: #fff;
-        }
-        .history-desc small {
-            font-size: 11px;
-            color: #9ca3af;
-            display: block;
-            margin-top: 2px;
-        }
-        .history-amount {
-            font-size: 16px;
-            font-weight: 600;
-        }
-        .history-amount.negative {
-            color: #f87171;
-        }
-        .history-amount.positive {
-            color: #34d399;
-        }
-        .history-amount.neutral {
-            color: #fbbf24;
-        }
-        .history-amount.failed {
-            color: #f97316;
-        }
-        .failed-badge {
-            background: #7f1f1f;
-            color: #fca5a5;
-            font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-left: 6px;
-            vertical-align: middle;
-        }
+/* ===== TRANSACTION DETAIL ===== */
+.transaction-detail-row {
+display: flex;
+justify-content: space-between;
+padding: 10px 0;
+border-bottom: 1px solid #1f2937;
+}
+.transaction-detail-row .label {
+color: #9ca3af;
+font-size: 14px;
+}
+.transaction-detail-row .value {
+color: #fff;
+font-size: 14px;
+font-weight: 500;
+text-align: right;
+}
+.receipt-actions {
+display: flex;
+gap: 12px;
+margin-top: 20px;
+}
+.receipt-actions .btn {
+flex: 1;
+}
 
-        /* ===== TRANSACTION DETAIL ===== */
-        .transaction-detail-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #1f2937;
-        }
-        .transaction-detail-row .label {
-            color: #9ca3af;
-            font-size: 14px;
-        }
-        .transaction-detail-row .value {
-            color: #fff;
-            font-size: 14px;
-            font-weight: 500;
-            text-align: right;
-        }
-        .receipt-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-        .receipt-actions .btn {
-            flex: 1;
-        }
+/* ===== PAGE HEADER ===== */
+.page-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 4px 0 16px 0;
+}
+.page-header .back-btn {
+background: none;
+border: none;
+color: #fff;
+font-size: 28px;
+cursor: pointer;
+padding: 0;
+line-height: 1;
+}
+.page-header .help-btn {
+background: none;
+border: none;
+color: #10b981;
+font-size: 18px;
+cursor: pointer;
+}
+.page-header .title {
+font-size: 18px;
+font-weight: 600;
+}
 
-        /* ===== PAGE HEADER ===== */
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4px 0 16px 0;
-        }
-        .page-header .back-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 28px;
-            cursor: pointer;
-            padding: 0;
-            line-height: 1;
-        }
-        .page-header .help-btn {
-            background: none;
-            border: none;
-            color: #10b981;
-            font-size: 18px;
-            cursor: pointer;
-        }
-        .page-header .title {
-            font-size: 18px;
-            font-weight: 600;
-        }
+/* ===== VERIFICATION CARD ===== */
+.verify-card {
+background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+border-radius: 16px;
+padding: 16px 18px;
+margin-bottom: 16px;
+border-left: 4px solid #f59e0b;
+}
+.verify-card.verified {
+border-left-color: #10b981;
+background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
+}
+.verify-title {
+font-size: 16px;
+font-weight: 600;
+margin-bottom: 6px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.verify-message {
+font-size: 13px;
+color: #9ca3af;
+margin-bottom: 10px;
+}
+.verify-btn {
+background: #f59e0b;
+color: #000;
+border: none;
+padding: 8px 16px;
+border-radius: 8px;
+font-weight: 600;
+cursor: pointer;
+font-size: 13px;
+}
+.verify-btn:active {
+opacity: 0.7;
+}
+.verified-badge {
+color: #10b981;
+font-size: 14px;
+}
 
-        /* ===== VERIFICATION CARD ===== */
-        .verify-card {
-            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-            border-radius: 16px;
-            padding: 16px 18px;
-            margin-bottom: 16px;
-            border-left: 4px solid #f59e0b;
-        }
-        .verify-card.verified {
-            border-left-color: #10b981;
-            background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
-        }
-        .verify-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .verify-message {
-            font-size: 13px;
-            color: #9ca3af;
-            margin-bottom: 10px;
-        }
-        .verify-btn {
-            background: #f59e0b;
-            color: #000;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .verify-btn:active {
-            opacity: 0.7;
-        }
-        .verified-badge {
-            color: #10b981;
-            font-size: 14px;
-        }
+/* ===== WELCOME / LOGIN / SIGNUP ===== */
+.logo-center {
+font-size: 28px;
+font-weight: bold;
+text-align: center;
+background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+margin-bottom: 16px;
+}
+.welcome-container {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+min-height: 50vh;
+text-align: center;
+}
+.welcome-container .welcome-text {
+color: #9ca3af;
+margin-bottom: 12px;
+font-size: 15px;
+line-height: 1.6;
+}
+.welcome-container .welcome-title {
+font-size: 22px;
+font-weight: 700;
+margin-bottom: 8px;
+}
+.get-started-wrapper {
+display: flex;
+justify-content: center;
+width: 100%;
+margin-top: 8px;
+}
+.get-started-wrapper .btn {
+min-width: 160px;
+}
 
-        /* ===== WELCOME / LOGIN / SIGNUP ===== */
-        .logo-center {
-            font-size: 28px;
-            font-weight: bold;
-            text-align: center;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 16px;
-        }
-        .welcome-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 50vh;
-            text-align: center;
-        }
-        .welcome-container .welcome-text {
-            color: #9ca3af;
-            margin-bottom: 12px;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-        .welcome-container .welcome-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .get-started-wrapper {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-            margin-top: 8px;
-        }
-        .get-started-wrapper .btn {
-            min-width: 160px;
-        }
+/* ===== LOGIN PAGE ===== */
+.login-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 4px 0 20px 0;
+}
+.login-header .time {
+font-size: 14px;
+font-weight: 600;
+}
+.login-header .right-actions {
+display: flex;
+gap: 16px;
+font-size: 14px;
+font-weight: 500;
+}
+.login-header .right-actions .help {
+color: #10b981;
+cursor: pointer;
+}
+.login-header .right-actions .pay {
+color: #fff;
+cursor: pointer;
+}
+.login-title {
+font-size: 24px;
+font-weight: 700;
+margin-bottom: 20px;
+}
+.login-lost-link {
+color: #10b981;
+font-size: 13px;
+cursor: pointer;
+display: block;
+margin: -8px 0 16px 0;
+}
+.login-footer {
+text-align: center;
+margin-top: 20px;
+font-size: 13px;
+color: #9ca3af;
+}
+.login-footer .signup-link {
+color: #10b981;
+cursor: pointer;
+font-weight: 600;
+}
+.login-footer .cbn-text {
+color: #6b7280;
+font-size: 11px;
+margin-top: 12px;
+}
 
-        /* ===== LOGIN PAGE ===== */
-        .login-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4px 0 20px 0;
-        }
-        .login-header .time {
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .login-header .right-actions {
-            display: flex;
-            gap: 16px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .login-header .right-actions .help {
-            color: #10b981;
-            cursor: pointer;
-        }
-        .login-header .right-actions .pay {
-            color: #fff;
-            cursor: pointer;
-        }
-        .login-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-        .login-lost-link {
-            color: #10b981;
-            font-size: 13px;
-            cursor: pointer;
-            display: block;
-            margin: -8px 0 16px 0;
-        }
-        .login-footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 13px;
-            color: #9ca3af;
-        }
-        .login-footer .signup-link {
-            color: #10b981;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .login-footer .cbn-text {
-            color: #6b7280;
-            font-size: 11px;
-            margin-top: 12px;
-        }
+/* ===== POPUP ===== */
+.popup-overlay {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0, 0, 0, 0.92);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 10000;
+padding: 20px;
+}
+.popup-overlay .popup-box {
+background: #1a1a2e;
+border-radius: 28px;
+padding: 28px 20px;
+width: 100%;
+max-width: 380px;
+text-align: center;
+border: 1px solid #2a2a3e;
+}
+.popup-overlay .popup-box .emoji {
+font-size: 56px;
+margin-bottom: 12px;
+}
+.popup-overlay .popup-box .popup-title {
+font-size: 22px;
+font-weight: 700;
+margin-bottom: 6px;
+}
+.popup-overlay .popup-box .popup-title.green {
+color: #10b981;
+}
+.popup-overlay .popup-box .popup-sub {
+color: #9ca3af;
+font-size: 14px;
+margin-bottom: 16px;
+}
+.popup-overlay .popup-box .popup-amount {
+font-size: 38px;
+font-weight: 700;
+margin-bottom: 16px;
+}
+.popup-overlay .popup-box .popup-amount.negative {
+color: #f87171;
+}
+.popup-overlay .popup-box .popup-amount.positive {
+color: #34d399;
+}
+.popup-overlay .popup-box .popup-detail {
+background: #0a0a0a;
+border-radius: 16px;
+padding: 14px;
+margin-bottom: 20px;
+}
+.popup-overlay .popup-box .popup-detail .name {
+font-weight: 500;
+font-size: 15px;
+}
+.popup-overlay .popup-box .popup-detail .meta {
+font-size: 13px;
+color: #9ca3af;
+}
+.popup-overlay .popup-box .popup-actions {
+display: flex;
+gap: 12px;
+}
+.popup-overlay .popup-box .popup-actions .btn {
+flex: 1;
+}
 
-        /* ===== POPUP ===== */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.92);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            padding: 20px;
-        }
-        .popup-overlay .popup-box {
-            background: #1a1a2e;
-            border-radius: 28px;
-            padding: 28px 20px;
-            width: 100%;
-            max-width: 380px;
-            text-align: center;
-            border: 1px solid #2a2a3e;
-        }
-        .popup-overlay .popup-box .emoji {
-            font-size: 56px;
-            margin-bottom: 12px;
-        }
-        .popup-overlay .popup-box .popup-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-        .popup-overlay .popup-box .popup-title.green {
-            color: #10b981;
-        }
-        .popup-overlay .popup-box .popup-sub {
-            color: #9ca3af;
-            font-size: 14px;
-            margin-bottom: 16px;
-        }
-        .popup-overlay .popup-box .popup-amount {
-            font-size: 38px;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-        .popup-overlay .popup-box .popup-amount.negative {
-            color: #f87171;
-        }
-        .popup-overlay .popup-box .popup-amount.positive {
-            color: #34d399;
-        }
-        .popup-overlay .popup-box .popup-detail {
-            background: #0a0a0a;
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 20px;
-        }
-        .popup-overlay .popup-box .popup-detail .name {
-            font-weight: 500;
-            font-size: 15px;
-        }
-        .popup-overlay .popup-box .popup-detail .meta {
-            font-size: 13px;
-            color: #9ca3af;
-        }
-        .popup-overlay .popup-box .popup-actions {
-            display: flex;
-            gap: 12px;
-        }
-        .popup-overlay .popup-box .popup-actions .btn {
-            flex: 1;
-        }
-
-        /* ===== GROW SAVINGS SECTION ===== */
-        .grow-savings {
-            background: #111827;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 14px;
-            border: 1px solid #1f2937;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .grow-savings .left .title {
-            font-size: 15px;
-            font-weight: 600;
-        }
-        .grow-savings .left .sub {
-            font-size: 12px;
-            color: #9ca3af;
-            margin-top: 2px;
-        }
-        .grow-savings .save-btn {
-            background: #10b981;
-            color: #fff;
-            border: none;
-            padding: 8px 24px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-        .grow-savings .save-btn:active {
-            opacity: 0.7;
-        }
-    </style>
+/* ===== GROW SAVINGS SECTION ===== */
+.grow-savings {
+background: #111827;
+border-radius: 16px;
+padding: 16px;
+margin-bottom: 14px;
+border: 1px solid #1f2937;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.grow-savings .left .title {
+font-size: 15px;
+font-weight: 600;
+}
+.grow-savings .left .sub {
+font-size: 12px;
+color: #9ca3af;
+margin-top: 2px;
+}
+.grow-savings .save-btn {
+background: #10b981;
+color: #fff;
+border: none;
+padding: 8px 24px;
+border-radius: 20px;
+font-weight: 600;
+font-size: 14px;
+cursor: pointer;
+transition: opacity 0.2s;
+}
+.grow-savings .save-btn:active {
+opacity: 0.7;
+}
+</style>
 </head>
 <body>
 
-    <div class="app" id="app">
-
-        <!-- ===== WELCOME PAGE ===== -->
-        <div id="welcomePage">
-            <div class="dashboard-header">
-                <div class="greeting" style="font-size:22px;">Gpay</div>
-            </div>
-            <div class="welcome-container">
-                <div class="welcome-title">Welcome!</div>
-                <div class="welcome-text">Create your account and get welcome bonus. Start mining every hour and withdraw your earnings anytime.</div>
-                <div class="get-started-wrapper">
-                    <button class="btn" onclick="handleGetStarted()">Get Started</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ===== SIGNUP PAGE ===== -->
-        <div id="signupPage" class="hidden">
-            <div class="page-header">
-                <button class="back-btn" onclick="showWelcomePage()">←</button>
-                <span class="title">Create Account</span>
-                <button class="help-btn" onclick="showHelp()">❓</button>
-            </div>
-            <div class="logo-center">Gpay</div>
-            <input type="text" id="signupFirstname" class="input-field" placeholder="First Name">
-            <input type="text" id="signupSurname" class="input-field" placeholder="Surname">
-            <input type="email" id="signupEmail" class="input-field" placeholder="Email Address">
-            <input type="password" id="signupPassword" class="input-field" placeholder="Password (min 8 characters)">
-            <input type="password" id="signupConfirm" class="input-field" placeholder="Confirm Password">
-            <div id="signupError" class="error"></div>
-            <button class="btn w-full" onclick="signup()">Create account</button>
-            <div class="text-center mt-20" style="color:#9ca3af; font-size:14px;">Already have an account? <span style="color:#10b981; cursor:pointer; font-weight:600;" onclick="showLoginPage()">Sign in</span></div>
-        </div>
-
-        <!-- ===== LOGIN PAGE ===== -->
-        <div id="loginPage" class="hidden">
-            <div class="login-header">
-                <span class="time">10:27</span>
-                <div class="right-actions">
-                    <span class="help" onclick="showHelp()">Help</span>
-                    <span class="pay" onclick="alert('Pay feature coming soon')">Pay</span>
-                </div>
-            </div>
-            <div class="login-title">Log in to your account</div>
-            <input type="text" id="loginEmail" class="input-field" placeholder="Enter your Mobile No./Email">
-            <span class="login-lost-link" onclick="showHelp()">Lost Your Mobile Number, Change Now</span>
-            <button class="btn w-full" onclick="login()" style="font-size:18px; padding:16px;">NEXT</button>
-            <div id="loginError" class="error" style="margin-top:10px;"></div>
-            <div class="login-footer">
-                Don't have an account? <span class="signup-link" onclick="showSignupPage()">Click here to Sign Up</span>
-                <div class="cbn-text">Licensed by the CBN and insured by the |NDIC</div>
-            </div>
-        </div>
-
-        <!-- ===== DASHBOARD PAGE ===== -->
-        <div id="dashboardPage" class="hidden">
-
-            <!-- Header: Hi, DJ 6ixe (no avatar, no icons) -->
-            <div class="dashboard-header">
-                <div class="greeting">Hi, <span id="userName">User</span></div>
-            </div>
-
-            <!-- Balance Card -->
-            <div class="balance-card">
-                <div class="label-row">
-                    <span class="label">Available Balance</span>
-                    <span class="history-link" onclick="showTransactionHistory()">Transaction History</span>
-                </div>
-                <div class="amount-row">
-                    <div class="amount" id="userBalance">₦0</div>
-                    <button class="add-money-btn" onclick="showAddMoney()">+ Add Money</button>
-                </div>
-                <div class="action-row">
-                    <button class="btn" onclick="alert('To OPay coming soon')">To OPay</button>
-                    <button class="btn" onclick="showWithdrawPage()">To Bank</button>
-                    <button class="btn" onclick="showWithdrawPage()">Withdraw</button>
-                </div>
-            </div>
-
-            <!-- BVN Warning Banner -->
-            <div class="bvn-banner" id="bvnBanner">
-                <div class="msg">
-                    <strong>Your BVN and NIN info do not...</strong>
-                    <span class="sub">Click to view more details</span>
-                </div>
-                <button class="go-btn" onclick="showHelp()">Go</button>
-            </div>
-
-            <!-- Up to 6% Promo Card -->
-            <div class="promo-card" onclick="alert('Promo details coming soon!')">
-                <div class="left">
-                    <span class="icon">📈</span>
-                    <div class="text">
-                        <div class="title">Up to 6%</div>
-                        <div class="sub">Earn up to 6% returns</div>
-                    </div>
-                </div>
-                <div class="right">6%</div>
-            </div>
-
-            <!-- Services Grid -->
-            <div class="services-grid">
-                <div class="service-item" onclick="showBuyAirtime()">
-                    <div class="icon">
-                        <svg viewBox="0 0 24 24"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>
-                    </div>
-                    <div class="label">Airtime</div>
-                </div>
-                <div class="service-item" onclick="showBuyData()">
-                    <div class="icon">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M12 2a10 10 0 0 1 0 20"/><path d="M12 2a10 10 0 0 0 0 20"/><path d="M2 12h20"/></svg>
-                    </div>
-                    <div class="label">Data</div>
-                </div>
-                <div class="service-item" onclick="alert('Betting coming soon')">
-                    <div class="icon">
-                        <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="6" y1="9" x2="18" y2="9"/><line x1="6" y1="15" x2="18" y2="15"/><line x1="9" y1="6" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="18"/></svg>
-                    </div>
-                    <div class="label">Betting</div>
-                </div>
-                <div class="service-item" onclick="alert('TV coming soon')">
-                    <div class="icon">
-                        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="12" rx="2"/><path d="M8 3L12 7L16 3"/></svg>
-                    </div>
-                    <div class="label">TV</div>
-                </div>
-                <div class="service-item" onclick="alert('SafeBox coming soon')">
-                    <div class="icon">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1"/></svg>
-                    </div>
-                    <div class="label">SafeBox</div>
-                </div>
-                <div class="service-item" onclick="alert('Loan coming soon')">
-                    <div class="icon">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
-                    </div>
-                    <div class="label">Loan</div>
-                </div>
-                <div class="service-item" onclick="openWhatsApp()">
-                    <div class="icon">
-                        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.66 14.77L2 22l5.23-1.34A10 10 0 1 0 12 2z"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
-                    </div>
-                    <div class="label">Invitation</div>
-                </div>
-                <div class="service-item" onclick="showHelp()">
-                    <div class="icon">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                    </div>
-                    <div class="label">More</div>
-                </div>
-            </div>
-
-            <!-- Task Section -->
-            <div class="task-section">
-                <div class="task-header">
-                    <div class="title">Complete Tasks, <span>Earn Cash!</span></div>
-                    <span class="view-all" onclick="alert('View all tasks')">View all →</span>
-                </div>
-                <div class="task-row">
-                    <div class="left">
-                        <div class="task-title">Targets</div>
-                        <div class="task-sub">Create Target and deposit to get a ₦100 cash reward.</div>
-                    </div>
-                    <button class="claim-btn" onclick="alert('Claim your reward!')">Claim</button>
-                </div>
-            </div>
-
-            <!-- Bottom Navigation -->
-            <div class="bottom-nav">
-                <button class="nav-item active" onclick="alert('Home')">
-                    <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1"/></svg>
-                    Home
-                </button>
-                <button class="nav-item" onclick="alert('Rewards')">
-                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    Rewards
-                </button>
-                <button class="nav-item" onclick="alert('Finance')">
-                    <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                    Finance
-                </button>
-                <button class="nav-item" onclick="alert('Cards')">
-                    <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/></svg>
-                    Cards
-                </button>
-                <button class="nav-item" onclick="showProfile()">
-                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Me
-                </button>
-            </div>
-
-        </div>
-
-        <!-- ===== DYNAMIC CONTENT ===== -->
-        <div id="dynamicContent"></div>
-    </div>
-
-    <!-- ===== HELP MODAL ===== -->
-    <div id="helpModal" class="modal-overlay">
-        <div class="modal-box">
-            <h3>Contact Support</h3>
-            <p>We're here to help you 24/7</p>
-            <div class="modal-actions">
-                <button class="btn" onclick="window.open('https://wa.me/2348168909003','_blank')">💬 WhatsApp</button>
-                <button class="btn btn-outline" onclick="location.href='mailto:graypay423492@gmail.com'">📧 Email</button>
-            </div>
-            <button class="btn btn-outline w-full mt-10" onclick="closeHelp()">Close</button>
-        </div>
-    </div>
-
-    <!-- ===== LOADING OVERLAY ===== -->
-    <div id="loadingOverlay" class="modal-overlay" style="background:rgba(0,0,0,0.92);">
-        <div class="modal-box" style="text-align:center; max-width:300px;">
-            <div style="font-size:48px; margin-bottom:12px;">⏳</div>
-            <div id="loadingMsg" style="font-size:16px; color:#9ca3af;">Processing...</div>
-        </div>
-    </div>
-
-    <script>
-        // ============================================================
-        // FIREBASE CONFIG
-        // ============================================================
-        const firebaseConfig = {
-            apiKey: "AIzaSyDRQsnce5A337wRzOjjwEcgiXDgplJq5lU",
-            authDomain: "growfastng.firebaseapp.com",
-            projectId: "growfastng",
-            storageBucket: "growfastng.firebasestorage.app",
-            messagingSenderId: "133938265658",
-            appId: "1:133938265658:web:4396fd308606de3ad43f03",
-            measurementId: "G-0K8H201KX0"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-
-        // ============================================================
-        // GLOBAL STATE
-        // ============================================================
-        let currentUser = null;
-        let users = [];
-
-        // ============================================================
-        // STORAGE HELPERS
-        // ============================================================
-        function loadUsers() {
-            let s = localStorage.getItem('graypay_users');
-            if (s) users = JSON.parse(s);
-        }
-
-        function saveUsers() {
-            localStorage.setItem('graypay_users', JSON.stringify(users));
-        }
-
-        // ============================================================
-        // UI HELPERS
-        // ============================================================
-        function showPage(id) {
-            document.getElementById('welcomePage').classList.add('hidden');
-            document.getElementById('signupPage').classList.add('hidden');
-            document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('dashboardPage').classList.add('hidden');
-            let el = document.getElementById(id);
-            if (el) el.classList.remove('hidden');
-            if (id === 'dashboardPage' && currentUser) updateDashboard();
-        }
-
-        function showWelcomePage() { showPage('welcomePage'); }
-
-        function showSignupPage() { showPage('signupPage'); }
-
-        function showLoginPage() { showPage('loginPage'); }
-
-        function showDashboardPage() {
-            showPage('dashboardPage');
-            updateDashboard();
-        }
-
-        function closeDynamic() {
-            document.getElementById('dynamicContent').innerHTML = '';
-            showDashboardPage();
-        }
-
-        function showHelp() {
-            document.getElementById('helpModal').classList.add('show');
-        }
-
-        function closeHelp() {
-            document.getElementById('helpModal').classList.remove('show');
-        }
-
-        function openWhatsApp() {
-            window.open('https://wa.me/2348168909003', '_blank');
-        }
-
-        function showSplashLoading(message, callback, duration = 3000) {
-            let splash = document.createElement('div');
-            splash.className = 'splash-loading';
-            splash.innerHTML =
-                `<div class="spinner"></div><div class="logo-text">Gpay</div><div class="loading-text">${message}</div>`;
-            document.body.appendChild(splash);
-            setTimeout(() => { splash.remove(); if (callback) callback(); }, duration);
-        }
-
-        function showLoadingOverlay(msg = 'Processing...') {
-            document.getElementById('loadingMsg').innerText = msg;
-            document.getElementById('loadingOverlay').classList.add('show');
-        }
-
-        function hideLoadingOverlay() {
-            document.getElementById('loadingOverlay').classList.remove('show');
-        }
-
-        function getInitials(name) {
-            if (!name) return '👤';
-            let parts = name.trim().split(' ');
-            if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
-            return name.substring(0, 2).toUpperCase();
-        }
-
-        // ============================================================
-        // AUTH: SIGNUP
-        // ============================================================
-        async function signup() {
-            let fn = document.getElementById('signupFirstname').value.trim();
-            let sn = document.getElementById('signupSurname').value.trim();
-            let em = document.getElementById('signupEmail').value.trim();
-            let pw = document.getElementById('signupPassword').value;
-            let cf = document.getElementById('signupConfirm').value;
-
-            if (!fn || !sn || !em || !pw) { document.getElementById('signupError').innerText = 'All fields required'; return; }
-            if (pw.length < 8) { document.getElementById('signupError').innerText = 'Password must be 8+ characters'; return; }
-            if (pw !== cf) { document.getElementById('signupError').innerText = 'Passwords do not match'; return; }
-            for (let u of users) { if (u.email === em) { document.getElementById('signupError').innerText =
-                    'Email exists'; return; } }
-
-            showSplashLoading('Creating account...', async () => {
-                try {
-                    const userCredential = await auth.createUserWithEmailAndPassword(em, pw);
-                    const firebaseUser = userCredential.user;
-
-                    let newUser = {
-                        id: Date.now(),
-                        firebaseUID: firebaseUser.uid,
-                        firstname: fn,
-                        surname: sn,
-                        email: em,
-                        password: pw,
-                        balance: 10000,
-                        miningActive: false,
-                        miningEnd: null,
-                        miningStart: null,
-                        lastClaimTime: null,
-                        miningClaimed: 0,
-                        transactions: [{
-                            type: 'Bonus',
-                            amount: 10000,
-                            date: new Date().toLocaleString(),
-                            dateObj: new Date(),
-                            status: 'Success',
-                            fullDetails: {
-                                transactionType: 'Bonus',
-                                sender: 'Gpay',
-                                recipient: fn + ' ' + sn,
-                                amount: 10000,
-                                note: 'Welcome bonus'
-                            }
-                        }]
-                    };
-                    users.push(newUser);
-                    saveUsers();
-                    currentUser = newUser;
-                    localStorage.setItem('graypay_current', em);
-                    showDashboardPage();
-                    showWelcomePopup();
-                } catch (error) {
-                    let msg = error.message;
-                    if (msg.includes('email-already-in-use')) {
-                        document.getElementById('signupError').innerText = 'Email already registered. Please login.';
-                    } else {
-                        document.getElementById('signupError').innerText = msg;
-                    }
-                }
-            }, 5000);
-        }
-
-        // ============================================================
-        // AUTH: LOGIN
-        // ============================================================
-        async function login() {
-            let em = document.getElementById('loginEmail').value.trim();
-            let pw = document.getElementById('loginPassword').value;
-
-            showSplashLoading('Logging in...', async () => {
-                try {
-                    const userCredential = await auth.signInWithEmailAndPassword(em, pw);
-                    const firebaseUser = userCredential.user;
-                    loadUsers();
-                    let localUser = null;
-                    for (let u of users) { if (u.email === em) { localUser = u; break; } }
-                    if (!localUser) {
-                        localUser = {
-                            id: Date.now(),
-                            firebaseUID: firebaseUser.uid,
-                            firstname: em.split('@')[0],
-                            surname: '',
-                            email: em,
-                            password: pw,
-                            balance: 0,
-                            miningActive: false,
-                            miningEnd: null,
-                            miningStart: null,
-                            lastClaimTime: null,
-                            miningClaimed: 0,
-                            transactions: []
-                        };
-                        users.push(localUser);
-                        saveUsers();
-                    }
-                    currentUser = localUser;
-                    localStorage.setItem('graypay_current', em);
-                    if (currentUser.miningActive) {
-                        checkAndClaimMiningRewards();
-                    }
-                    showDashboardPage();
-                } catch (error) {
-                    document.getElementById('loginError').innerText = 'Invalid email or password';
-                }
-            }, 3000);
-        }
-
-        // ============================================================
-        // AUTH: AUTO LOGIN
-        // ============================================================
-        async function autoLogin() {
-            loadUsers();
-            let saved = localStorage.getItem('graypay_current');
-            if (saved) {
-                for (let u of users) {
-                    if (u.email === saved) {
-                        currentUser = u;
-                        try {
-                            const firebaseUser = auth.currentUser;
-                            if (firebaseUser && firebaseUser.email === saved) {
-                                await firebaseUser.reload();
-                            }
-                        } catch (e) {}
-                        if (currentUser.miningActive) {
-                            checkAndClaimMiningRewards();
-                        }
-                        showDashboardPage();
-                        return;
-                    }
-                }
-            }
-            showWelcomePage();
-        }
-
-        // ============================================================
-        // AUTH: LOGOUT
-        // ============================================================
-        async function logout() {
-            await auth.signOut();
-            showSplashLoading('Logging out...', () => {
-                currentUser = null;
-                localStorage.removeItem('graypay_current');
-                closeDynamic();
-                showWelcomePage();
-            }, 2000);
-        }
-
-        // ============================================================
-        // EMAIL VERIFICATION
-        // ============================================================
-        async function isEmailVerifiedInFirebase(email) {
-            try {
-                const user = auth.currentUser;
-                if (user && user.email === email) {
-                    await user.reload();
-                    return user.emailVerified;
-                }
-                return false;
-            } catch (e) { return false; }
-        }
-
-        async function sendVerificationEmailFirebase() {
-            if (!currentUser) { alert('Please login first'); return; }
-            showSplashLoading('Sending verification email...', async () => {
-                try {
-                    const user = auth.currentUser;
-                    if (user && user.email === currentUser.email) {
-                        await user.sendEmailVerification();
-                        alert(
-                            `✅ Verification email sent to ${currentUser.email}\n\nPlease check your inbox and click the verification link.`
-                            );
-                    } else {
-                        const uc = await auth.signInWithEmailAndPassword(currentUser.email, currentUser.password);
-                        await uc.user.sendEmailVerification();
-                        alert(`✅ Verification email sent to ${currentUser.email}`);
-                    }
-                    if (window.renderProfileContent) setTimeout(() => window.renderProfileContent(), 2000);
-                } catch (e) {
-                    alert(`❌ Failed to send verification: ${e.message}`);
-                }
-            }, 3000);
-        }
-
-        // ============================================================
-        // MINING (background only - no popups, no status bar)
-        // ============================================================
-        function checkAndClaimMiningRewards() {
-            if (!currentUser || !currentUser.miningActive) return false;
-            let now = Date.now();
-            let claimed = false;
-            if (now >= currentUser.miningEnd) {
-                let remaining = 20000 - (currentUser.miningClaimed || 0);
-                if (remaining > 0) {
-                    currentUser.balance += remaining;
-                    currentUser.miningClaimed = 20000;
-                    currentUser.miningActive = false;
-                    saveUsers();
-                    updateDashboard();
-                }
-                return true;
-            }
-            let miningStart = currentUser.miningStart;
-            let elapsedMs = now - miningStart;
-            let elapsedHours = elapsedMs / (60 * 60 * 1000);
-            let totalRewardSoFar = Math.min(20000, Math.floor(elapsedHours * (20000 / 24)));
-            let alreadyClaimed = currentUser.miningClaimed || 0;
-            let reward = totalRewardSoFar - alreadyClaimed;
-            if (reward > 0) {
-                currentUser.balance += reward;
-                currentUser.miningClaimed = alreadyClaimed + reward;
-                currentUser.lastClaimTime = now;
-                saveUsers();
-                updateDashboard();
-                claimed = true;
-            }
-            return claimed;
-        }
-
-        function startMining() {
-            if (!currentUser) return;
-            if (currentUser.miningActive) {
-                checkAndClaimMiningRewards();
-                updateDashboard();
-                alert('⛏️ Mining rewards have been added to your balance!');
-                return;
-            }
-            currentUser.miningActive = true;
-            currentUser.miningStart = Date.now();
-            currentUser.miningEnd = Date.now() + (24 * 60 * 60 * 1000);
-            currentUser.lastClaimTime = Date.now();
-            currentUser.miningClaimed = 0;
-            saveUsers();
-            alert('✅ Mining started! You will earn ₦20,000 over 24 hours.');
-            updateDashboard();
-        }
-
-        // ============================================================
-        // DASHBOARD UPDATE
-        // ============================================================
-        function updateDashboard() {
-            if (!currentUser) return;
-            checkAndClaimMiningRewards();
-            document.getElementById('userName').innerText = currentUser.firstname + ' ' + currentUser.surname;
-            document.getElementById('userBalance').innerHTML = '₦' + currentUser.balance.toLocaleString();
-        }
-
-        // ============================================================
-        // WELCOME POPUP
-        // ============================================================
-        function showWelcomePopup() {
-            let popup = document.createElement('div');
-            popup.className = 'popup-overlay';
-            popup.id = 'welcomePopup';
-            popup.innerHTML = `
-                <div class="popup-box">
-                    <div class="emoji">🎉</div>
-                    <div class="popup-title green">Welcome ${currentUser.firstname}!</div>
-                    <div class="popup-sub">You have received</div>
-                    <div class="popup-amount positive">₦10,000</div>
-                    <div class="popup-sub" style="margin-bottom:20px;">Start mining every hour and withdraw your earnings anytime!</div>
-                    <button class="btn w-full" onclick="document.getElementById('welcomePopup').remove()">Get Started</button>
-                </div>
-            `;
-            document.body.appendChild(popup);
-        }
-
-        // ============================================================
-        // ADD MONEY
-        // ============================================================
-        function showAddMoney() {
-            alert('💳 Add Money feature coming soon!\n\nYou can earn more by mining or completing tasks.');
-        }
-
-        // ============================================================
-        // PROFILE
-        // ============================================================
-        async function showProfile() {
-            if (!currentUser) return;
-
-            async function renderProfileContent() {
-                let isVerified = await isEmailVerifiedInFirebase(currentUser.email);
-                let verificationHtml = isVerified ?
-                    `<div class="verify-card verified">
-                        <div class="verify-title"><span>✅</span> <span class="verified-badge">Email Verified</span></div>
-                        <div class="verify-message">Your email has been successfully verified.</div>
-                    </div>` :
-                    `<div class="verify-card">
-                        <div class="verify-title"><span>⚠️</span> Email Verification Required</div>
-                        <div class="verify-message">Verify your email to secure your account and unlock all features.</div>
-                        <button class="verify-btn" onclick="sendVerificationEmailFirebase()">📧 Send Verification Email</button>
-                    </div>`;
-
-                document.getElementById('dynamicContent').innerHTML = `
-                    <div id="profileView">
-                        <div class="page-header">
-                            <button class="back-btn" onclick="closeDynamic()">←</button>
-                            <span class="title">Profile</span>
-                            <button class="help-btn" onclick="showHelp()">❓</button>
-                        </div>
-                        <div class="logo-center">Gpay</div>
-                        <div class="info-box"><strong>Full Name:</strong> ${currentUser.firstname} ${currentUser.surname}</div>
-                        <div class="info-box"><strong>Email:</strong> ${currentUser.email}</div>
-                        <div class="info-box"><strong>Password:</strong> ********</div>
-                        ${verificationHtml}
-                        <button class="btn w-full" onclick="logout()">Log Out</button>
-                    </div>
-                `;
-                showPage('dashboardPage');
-                document.getElementById('dashboardPage').classList.add('hidden');
-                document.getElementById('profileView').style.display = 'block';
-                document.getElementById('profileView').style.padding = '20px 0';
-            }
-            renderProfileContent();
-            window.renderProfileContent = renderProfileContent;
-        }
-
-        // ============================================================
-        // WITHDRAWAL
-        // ============================================================
-        function showWithdrawPage() {
-            if (!currentUser) return;
-            let banks = ['Access Bank', 'GTBank', 'First Bank', 'Zenith Bank', 'UBA', 'WEMA Bank', 'Polaris Bank',
-                'Fidelity Bank', 'Sterling Bank', 'PalmPay', 'Opay', 'Moniepoint', 'Kuda Bank'
-            ];
-            let opts = banks.map(b => `<option>${b}</option>`).join('');
-            document.getElementById('dynamicContent').innerHTML = `
-                <div id="withdrawView">
-                    <div class="page-header">
-                        <button class="back-btn" onclick="closeDynamic()">←</button>
-                        <span class="title">Transfer To Bank</span>
-                        <button class="help-btn" onclick="showHelp()">❓</button>
-                    </div>
-                    <input type="text" id="accName" class="input-field" placeholder="Account Name">
-                    <input type="text" id="accNumber" class="input-field" placeholder="Account Number">
-                    <select id="bankName" class="input-field">${opts}</select>
-                    <input type="number" id="withdrawAmount" class="input-field" placeholder="Amount">
-                    <input type="text" id="pbcCode" class="input-field" placeholder="PBC Code (e.g., 1234)">
-                    <div class="info-box">Available: ₦${currentUser.balance.toLocaleString()}</div>
-                    <div class="min-withdrawal">⚠️ Minimum withdrawal: ₦10,000</div>
-                    <button class="btn w-full" onclick="processWithdraw()">Submit</button>
-                </div>
-            `;
-            showPage('dashboardPage');
-            document.getElementById('dashboardPage').classList.add('hidden');
-            document.getElementById('withdrawView').style.display = 'block';
-            document.getElementById('withdrawView').style.padding = '20px 0';
-        }
-
-        function processWithdraw() {
-            let amt = parseInt(document.getElementById('withdrawAmount').value);
-            let code = document.getElementById('pbcCode').value;
-            let accName = document.getElementById('accName').value;
-            let accNumber = document.getElementById('accNumber').value;
-            let bankName = document.getElementById('bankName').value;
-            if (code !== '4234') { alert('Invalid PBC Code!'); return; }
-            if (amt < 10000) { alert('Minimum withdrawal is ₦10,000'); return; }
-            if (amt > currentUser.balance) { alert('Insufficient balance'); return; }
-            if (!accName || !accNumber) { alert('Please fill account name and number'); return; }
-            showLoadingOverlay('Processing withdrawal...');
-            setTimeout(() => {
-                currentUser.balance -= amt;
-                let tid = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
-                let tx = {
-                    id: tid,
-                    type: 'Withdrawal',
-                    amount: amt,
-                    date: new Date().toLocaleString(),
-                    dateObj: new Date(),
-                    status: 'Success',
-                    fullDetails: {
-                        transactionType: 'Deposit To Bank',
-                        amount: amt,
-                        fees: 10,
-                        taxes: 0.75,
-                        sender: currentUser.firstname + ' ' + currentUser.surname,
-                        recipient: accName,
-                        recipientAccount: accNumber,
-                        recipientBank: bankName,
-                        transactionId: tid,
-                        note: 'Sent from my Gpay account'
-                    }
-                };
-                currentUser.transactions.unshift(tx);
-                saveUsers();
-                hideLoadingOverlay();
-                showSuccessPopup('Withdrawal Successful!', 'You have successfully withdrawn', amt, accName, bankName,
-                    accNumber, tid, () => showTransactionDetails(tid));
-            }, 15000);
-        }
-
-        // ============================================================
-        // AIRTIME
-        // ============================================================
-        function showBuyAirtime() {
-            if (!currentUser) return;
-            document.getElementById('dynamicContent').innerHTML = `
-                <div id="airtimeView">
-                    <div class="page-header">
-                        <button class="back-btn" onclick="closeDynamic()">←</button>
-                        <span class="title">Buy Airtime</span>
-                        <button class="help-btn" onclick="showHelp()">❓</button>
-                    </div>
-                    <input type="text" id="airPhone" class="input-field" placeholder="Phone Number">
-                    <select id="airNetwork" class="input-field">
-                        <option value="MTN">MTN</option>
-                        <option value="Airtel">Airtel</option>
-                        <option value="Glo">Glo</option>
-                        <option value="9mobile">9mobile</option>
-                    </select>
-                    <input type="number" id="airAmount" class="input-field" placeholder="Amount">
-                    <input type="text" id="airCode" class="input-field" placeholder="PBC Code (e.g., 1234)">
-                    <button class="btn w-full" onclick="processAirtime()">Buy Airtime</button>
-                </div>
-            `;
-            showPage('dashboardPage');
-            document.getElementById('dashboardPage').classList.add('hidden');
-            document.getElementById('airtimeView').style.display = 'block';
-            document.getElementById('airtimeView').style.padding = '20px 0';
-        }
-
-        function processAirtime() {
-            let code = document.getElementById('airCode').value;
-            let amt = parseInt(document.getElementById('airAmount').value);
-            let phone = document.getElementById('airPhone').value;
-            let network = document.getElementById('airNetwork').value;
-            if (code !== '4234') { alert('Invalid PBC Code!'); return; }
-            if (!phone || !amt) { alert('Fill all fields'); return; }
-            if (amt > currentUser.balance) { alert('Insufficient balance'); return; }
-            showLoadingOverlay('Processing airtime purchase...');
-            setTimeout(() => {
-                currentUser.balance -= amt;
-                let tid = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
-                let tx = {
-                    id: tid,
-                    type: 'Airtime',
-                    amount: amt,
-                    phone: phone,
-                    network: network,
-                    date: new Date().toLocaleString(),
-                    dateObj: new Date(),
-                    status: 'Success',
-                    fullDetails: {
-                        transactionType: 'Airtime Purchase',
-                        amount: amt,
-                        fees: 0,
-                        taxes: 0,
-                        sender: currentUser.firstname + ' ' + currentUser.surname,
-                        recipient: phone,
-                        recipientAccount: phone,
-                        recipientBank: network,
-                        transactionId: tid,
-                        note: 'Airtime purchase on ' + network
-                    }
-                };
-                currentUser.transactions.unshift(tx);
-                saveUsers();
-                hideLoadingOverlay();
-                showAirtimeSuccessPopup(amt, phone, network, tid, () => showTransactionDetails(tid));
-            }, 10000);
-        }
-
-        // ============================================================
-        // DATA
-        // ============================================================
-        function showBuyData() {
-            if (!currentUser) return;
-            document.getElementById('dynamicContent').innerHTML = `
-                <div id="dataView">
-                    <div class="page-header">
-                        <button class="back-btn" onclick="closeDynamic()">←</button>
-                        <span class="title">Buy Data</span>
-                        <button class="help-btn" onclick="showHelp()">❓</button>
-                    </div>
-                    <input type="text" id="dataPhone" class="input-field" placeholder="Phone Number">
-                    <select id="dataNetwork" class="input-field">
-                        <option value="MTN">MTN</option>
-                        <option value="Airtel">Airtel</option>
-                        <option value="Glo">Glo</option>
-                        <option value="9mobile">9mobile</option>
-                    </select>
-                    <select id="dataPlan" class="input-field">
-                        <option value="500">1GB - ₦500</option>
-                        <option value="1000">2GB - ₦1000</option>
-                        <option value="2000">5GB - ₦2000</option>
-                        <option value="5000">10GB - ₦5000</option>
-                        <option value="10000">20GB - ₦10000</option>
-                    </select>
-                    <input type="text" id="dataCode" class="input-field" placeholder="PBC Code (e.g., 1234)">
-                    <button class="btn w-full" onclick="processData()">Buy Data</button>
-                </div>
-            `;
-            showPage('dashboardPage');
-            document.getElementById('dashboardPage').classList.add('hidden');
-            document.getElementById('dataView').style.display = 'block';
-            document.getElementById('dataView').style.padding = '20px 0';
-        }
-
-        function processData() {
-            let code = document.getElementById('dataCode').value;
-            let phone = document.getElementById('dataPhone').value;
-            let network = document.getElementById('dataNetwork').value;
-            let plan = document.getElementById('dataPlan');
-            let amt = parseInt(plan.value);
-            let name = plan.options[plan.selectedIndex].text;
-            if (code !== '4234') { alert('Invalid PBC Code!'); return; }
-            if (!phone) { alert('Enter phone number'); return; }
-            if (amt > currentUser.balance) { alert('Insufficient balance'); return; }
-            showLoadingOverlay('Processing data purchase...');
-            setTimeout(() => {
-                currentUser.balance -= amt;
-                let tid = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
-                let tx = {
-                    id: tid,
-                    type: 'Data',
-                    amount: amt,
-                    plan: name,
-                    network: network,
-                    phone: phone,
-                    date: new Date().toLocaleString(),
-                    dateObj: new Date(),
-                    status: 'Success',
-                    fullDetails: {
-                        transactionType: 'Data Purchase',
-                        amount: amt,
-                        fees: 0,
-                        taxes: 0,
-                        sender: currentUser.firstname + ' ' + currentUser.surname,
-                        recipient: phone,
-                        recipientAccount: phone,
-                        recipientBank: network,
-                        transactionId: tid,
-                        note: 'Data purchase - ' + name + ' on ' + network
-                    }
-                };
-                currentUser.transactions.unshift(tx);
-                saveUsers();
-                hideLoadingOverlay();
-                showDataSuccessPopup(amt, phone, name, network, tid, () => showTransactionDetails(tid));
-            }, 10000);
-        }
-
-        // ============================================================
-        // PBC PURCHASE
-        // ============================================================
-        function showBuyPBC() {
-            if (!currentUser) return;
-            document.getElementById('dynamicContent').innerHTML = `
-                <div id="pbcView">
-                    <div class="page-header">
-                        <button class="back-btn" onclick="closeDynamic()">←</button>
-                        <span class="title">Buy PBC</span>
-                        <button class="help-btn" onclick="showHelp()">❓</button>
-                    </div>
-                    <div class="info-box">Amount: ₦7,000 (Fixed)</div>
-                    <input type="text" id="pbcName" class="input-field" placeholder="Full Name">
-                    <input type="email" id="pbcEmail" class="input-field" placeholder="Email Address">
-                    <button id="pbcPayBtn" class="btn btn-gray w-full" disabled onclick="pbcStep1()">Pay</button>
-                </div>
-            `;
-            showPage('dashboardPage');
-            document.getElementById('dashboardPage').classList.add('hidden');
-            document.getElementById('pbcView').style.display = 'block';
-            document.getElementById('pbcView').style.padding = '20px 0';
-            let nameInp = document.getElementById('pbcName');
-            let emailInp = document.getElementById('pbcEmail');
-            let btn = document.getElementById('pbcPayBtn');
-
-            function check() {
-                if (nameInp.value && emailInp.value) { btn.disabled = false;
-                    btn.className = 'btn w-full'; } else { btn.disabled = true;
-                    btn.className = 'btn btn-gray w-full'; }
-            }
-            nameInp.addEventListener('input', check);
-            emailInp.addEventListener('input', check);
-        }
-
-        function pbcStep1() {
-            showSplashLoading('Processing PBC purchase...', () => showPalmPayWarning(), 10000);
-        }
-
-        function showPalmPayWarning() {
-            document.getElementById('dynamicContent').innerHTML = `
-                <div id="warningView">
-                    <div class="page-header">
-                        <button class="back-btn" onclick="showBuyPBC()">←</button>
-                        <span class="title">Important</span>
-                        <button class="help-btn" onclick="showHelp()">❓</button>
-                    </div>
-                    <div class="warning-box">
-                        <h2 style="color:#ef4444; margin-bottom:8px;">PalmPay Service Down</h2>
-                        <p style="color:#9ca3af;">Please do not use PalmPay for payments at this time. Use other supported banks.</p>
-                    </div>
-                    <button class="btn w-full" onclick="pbcStep2()">Proceed to Bank Transfer</button>
-                    <button class="btn btn-outline w-full mt-10" onclick="pbcStep2()">I Understand</button>
-                </div>
-            `;
-            document.getElementById('warningView').style.display = 'block';
-            document.getElementById('warningView').style.padding = '20px 0';
-        }
-
-        function pbcStep2() {
-            showSplashLoading('Preparing bank details...', () => showBankDetails(), 5000);
-        }
-
-        function showBankDetails() {
-            document.getElementById('dynamicContent').innerHTML = `
-                <div id="bankView">
-                    <div class="page-header">
-                        <button class="back-btn" onclick="showPalmPayWarning()">←</button>
-                        <span class="title">Bank Transfer</span>
-                        <button class="help-btn" onclick="showHelp()">❓</button>
-                    </div>
-                    <div class="copy-item" onclick="copyText('7000', this.querySelector('.copy-text'))">
-                        <span class="copy-text"><strong>Amount:</strong> NGN 7,000</span>
-                        <span class="copy-icon">📋 Copy</span>
-                    </div>
-                    <div class="copy-item" onclick="copyText('2778715377', this.querySelector('.copy-text'))">
-                        <span class="copy-text"><strong>Account Number:</strong> 2778715377</span>
-                        <span class="copy-icon">📋 Copy</span>
-                    </div>
-                    <div class="info-box"><strong>Bank Name:</strong> Paga</div>
-                    <div class="info-box"><strong>Account Name:</strong> Ahmed Isah</div>
-                    <p class="text-center mb-10" style="color:#9ca3af; font-size:14px;">Transfer exact amount. Use your name as description.</p>
-                    <button class="btn w-full" onclick="pbcStep3()">I have made this bank transfer</button>
-                </div>
-            `;
-            document.getElementById('bankView').style.display = 'block';
-            document.getElementById('bankView').style.padding = '20px 0';
-        }
-
-        function pbcStep3() {
-            showSplashLoading('Verifying payment...', () => showFailed(), 20000);
-        }
-
-        function showFailed() {
-            let tid = 'FAILPBC' + Date.now() + Math.floor(Math.random() * 10000);
-            let failedTx = {
-                id: tid,
-                type: 'PBC Purchase Failed',
-                amount: 7000,
-                date: new Date().toLocaleString(),
-                dateObj: new Date(),
-                status: 'Failed',
-                isFailed: true,
-                fullDetails: {
-                    transactionType: 'PBC Code Purchase',
-                    amount: 7000,
-                    fees: 0,
-                    taxes: 0,
-                    sender: currentUser.firstname + ' ' + currentUser.surname,
-                    recipient: 'Gpay System',
-                    transactionId: tid,
-                    note: '❌ Transaction verification failed! No payment received.',
-                    reason: 'No payment received from you / invalid payment method'
-                }
-            };
-            currentUser.transactions.unshift(failedTx);
-            saveUsers();
-
-            document.getElementById('dynamicContent').innerHTML = `
-                <div id="failedView">
-                    <div class="page-header">
-                        <button class="back-btn" onclick="showBankDetails()">←</button>
-                        <span class="title">Failed</span>
-                        <button class="help-btn" onclick="showHelp()">❓</button>
-                    </div>
-                    <div style="text-align:center; padding:20px 0;">
-                        <div style="font-size:60px; margin-bottom:16px;">❌</div>
-                        <h2 style="color:#ef4444; margin-bottom:12px;">Transaction verification failed!</h2>
-                        <div style="background:#2a1a1a; border-radius:16px; padding:16px; margin:16px 0; border-left:4px solid #ef4444;">
-                            <p style="color:#fca5a5;">Your payment could not be completed.</p>
-                            <p style="color:#9ca3af; font-size:14px;">Reason: No payment received from you.</p>
-                        </div>
-                        <div style="display:flex; gap:12px; margin-top:16px;">
-                            <button class="btn" onclick="showBankDetails()" style="flex:1;">🔄 Try again</button>
-                            <button class="btn btn-outline" onclick="showHelp()" style="flex:1;">🆘 Help</button>
-                        </div>
-                        <button class="btn btn-outline w-full mt-10" onclick="showTransactionHistory()">📜 View history</button>
-                    </div>
-                </div>
-            `;
-            document.getElementById('failedView').style.display = 'block';
-            document.getElementById('failedView').style.padding = '20px 0';
-        }
-
-        function copyText(text, el) {
-            navigator.clipboard.writeText(text);
-            let orig = el.innerHTML;
-            el.innerHTML = text + ' ✅ Copied!';
-            setTimeout(() => el.innerHTML = orig, 2000);
-        }
-
-        // ============================================================
-        // SUCCESS POPUPS
-        // ============================================================
-        function showSuccessPopup(title, msg, amount, recipient, bank, account, tid, onView) {
-            let popup = document.createElement('div');
-            popup.className = 'popup-overlay';
-            popup.innerHTML = `
-                <div class="popup-box">
-                    <div class="emoji">✅</div>
-                    <div class="popup-title green">${title}</div>
-                    <div class="popup-sub">${msg}</div>
-                    <div class="popup-amount negative">-₦${amount.toLocaleString()}</div>
-                    <div class="popup-detail">
-                        <div class="name">${recipient}</div>
-                        <div class="meta">${bank} • ${account}</div>
-                    </div>
-                    <div class="popup-actions">
-                        <button class="btn" onclick="this.closest('.popup-overlay').remove(); closeDynamic();">Done</button>
-                        <button class="btn btn-outline" onclick="this.closest('.popup-overlay').remove(); if(onView) onView(); else showTransactionDetails('${tid}');">View receipt</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(popup);
-            window.__onViewReceipt = onView;
-        }
-
-        function showAirtimeSuccessPopup(amount, phone, network, tid, onView) {
-            let popup = document.createElement('div');
-            popup.className = 'popup-overlay';
-            popup.innerHTML = `
-                <div class="popup-box">
-                    <div class="emoji">📱✅</div>
-                    <div class="popup-title green">Airtime Purchase Successful!</div>
-                    <div class="popup-sub">You have successfully purchased</div>
-                    <div class="popup-amount negative">₦${amount.toLocaleString()}</div>
-                    <div class="popup-detail">
-                        <div class="name">${phone}</div>
-                        <div class="meta">Network: ${network}</div>
-                    </div>
-                    <div class="popup-actions">
-                        <button class="btn" onclick="this.closest('.popup-overlay').remove(); closeDynamic();">Done</button>
-                        <button class="btn btn-outline" onclick="this.closest('.popup-overlay').remove(); if(onView) onView(); else showTransactionDetails('${tid}');">View receipt</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(popup);
-            window.__onViewReceipt = onView;
-        }
-
-        function showDataSuccessPopup(amount, phone, plan, network, tid, onView) {
-            let popup = document.createElement('div');
-            popup.className = 'popup-overlay';
-            popup.innerHTML = `
-                <div class="popup-box">
-                    <div class="emoji">🌐✅</div>
-                    <div class="popup-title green">Data Purchase Successful!</div>
-                    <div class="popup-sub">You have successfully purchased</div>
-                    <div style="font-size:20px; font-weight:600; color:#34d399; margin-bottom:4px;">${plan} on ${network}</div>
-                    <div class="popup-amount negative">₦${amount.toLocaleString()}</div>
-                    <div class="popup-detail">
-                        <div class="name">${phone}</div>
-                    </div>
-                    <div class="popup-actions">
-                        <button class="btn" onclick="this.closest('.popup-overlay').remove(); closeDynamic();">Done</button>
-                        <button class="btn btn-outline" onclick="this.closest('.popup-overlay').remove(); if(onView) onView(); else showTransactionDetails('${tid}');">View receipt</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(popup);
-            window.__onViewReceipt = onView;
-        }
-
-        // ============================================================
-        // TRANSACTION HISTORY
-        // ============================================================
-        function showTransactionHistory() {
-            if (!currentUser) return;
-            let txs = [...currentUser.transactions];
-            let groups = {};
-            txs.forEach(t => {
-                let d = t.dateObj ? new Date(t.dateObj) : new Date(t.date);
-                let today = new Date();
-                let yesterday = new Date(today);
-                yesterday.setDate(yesterday.getDate() - 1);
-                let key = d.toDateString() === today.toDateString() ? 'Today' :
-                    (d.toDateString() === yesterday.toDateString() ? 'Yesterday' :
-                        d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }));
-                if (!groups[key]) groups[key] = [];
-                groups[key].push(t);
-            });
-            let html = '';
-            for (let [date, items] of Object.entries(groups)) {
-                html += `<div class="history-date-group"><div class="history-date">${date}</div>`;
-                items.forEach(t => {
-                    let time = t.dateObj ? new Date(t.dateObj).toLocaleTimeString([], { hour: '2-digit',
-                        minute: '2-digit' }) : new Date(t.date).toLocaleTimeString([], { hour: '2-digit',
-                        minute: '2-digit' });
-                    let desc = '';
-                    let isNeg = true;
-                    let isNeutral = false;
-                    let isFailed = t.status === 'Failed' || t.type === 'PBC Purchase Failed';
-                    if (t.type === 'Withdrawal') desc = `You sent money to ${t.fullDetails?.recipient || 'Bank'}`;
-                    else if (t.type === 'Airtime') desc = `You bought airtime for ${t.phone} on ${t.network || ''}`;
-                    else if (t.type === 'Data') desc = `You bought ${t.plan} data for ${t.phone}`;
-                    else if (t.type === 'Bonus') { desc = 'You received a welcome bonus';
-                        isNeg = false; } else if (t.type === 'Mining Reward' || t.type === 'Mining Complete') { desc =
-                            'Mining reward';
-                        isNeg = false; } else if (t.type === 'PBC Purchase') { desc = 'PBC Code purchased';
-                        isNeg = false;
-                        isNeutral = true; } else if (t.type === 'PBC Purchase Failed') { desc = 'PBC Purchase Failed';
-                        isNeg = false;
-                        isFailed = true; }
-                    let cls = isFailed ? 'failed' : (isNeutral ? 'neutral' : (isNeg ? 'negative' : 'positive'));
-                    let prefix = isFailed ? '❌ ' : (isNeutral ? '📋 ' : (isNeg ? '-₦' : '+₦'));
-                    let badge = isFailed ? '<span class="failed-badge">Failed</span>' : '';
-                    html += `
-                        <div class="history-item ${isFailed ? 'failed-transaction' : ''}" onclick="showTransactionDetails('${t.id}')">
-                            <div class="history-row">
-                                <div class="history-desc">${desc} ${badge}<small>${time}</small></div>
-                                <div class="history-amount ${cls}">${prefix}${t.amount.toLocaleString()}</div>
-                            </div>
-                        </div>
-                    `;
-                });
-                html += '</div>';
-            }
-            document.getElementById('dynamicContent').innerHTML = `
-                <div id="historyView">
-                    <div class="page-header">
-                        <button class="back-btn" onclick="closeDynamic()">←</button>
-                        <span class="title">Transaction History</span>
-                        <button class="help-btn" onclick="showHelp()">❓</button>
-                    </div>
-                    ${html || '<div class="text-center" style="color:#9ca3af; padding:40px;">No transactions yet</div>'}
-                </div>
-            `;
-            showPage('dashboardPage');
-            document.getElementById('dashboardPage').classList.add('hidden');
-            document.getElementById('historyView').style.display = 'block';
-            document.getElementById('historyView').style.padding = '20px 0';
-        }
-
-        // ============================================================
-        // TRANSACTION DETAIL
-        // ============================================================
-        function showTransactionDetails(tid) {
-            if (!currentUser) return;
-            let tx = currentUser.transactions.find(t => t.id == tid);
-            if (!tx) { alert('Transaction not found'); return; }
-            let d = tx.fullDetails || {};
-            let amt = d.amount || tx.amount;
-            let isPos = (tx.type === 'Bonus' || tx.type === 'Mining Reward' || tx.type === 'Mining Complete');
-            let isPBC = (tx.type === 'PBC Purchase');
-            let isFailed = (tx.type === 'PBC Purchase Failed');
-            let color = isFailed ? '#f97316' : (isPos ? '#34d399' : (isPBC ? '#fbbf24' : '#f87171'));
-            let symbol = isFailed ? '❌ ' : (isPos ? '+' : (isPBC ? '📋' : '-'));
-            let statusText = tx.status || 'Success';
-
-            document.getElementById('dynamicContent').innerHTML = `
-                <div id="txDetailView">
-                    <div class="page-header">
-                        <button class="back-btn" onclick="showTransactionHistory()">←</button>
-                        <span class="title">Transaction Details</span>
-                        <button class="help-btn" onclick="showHelp()">❓</button>
-                    </div>
-                    <div style="text-align:center; margin:16px 0;">
-                        <div style="font-size:42px; font-weight:700; color:${color};">${symbol}₦${amt.toLocaleString()}.00</div>
-                        <div style="color:${isFailed ? '#f97316' : '#10b981'}; margin-top:4px;">${statusText}</div>
-                        ${isPBC ? '<div style="color:#fbbf24; font-size:14px; margin-top:4px;">✅ Payment successful!</div>' : ''}
-                        ${isFailed ? '<div style="color:#f97316; font-size:14px; margin-top:4px;">❌ Verification failed</div>' : ''}
-                    </div>
-                    <div class="transaction-detail-row"><span class="label">Date</span><span class="value">${tx.date}</span></div>
-                    <div class="transaction-detail-row"><span class="label">Amount</span><span class="value">₦${amt.toLocaleString()}.00</span></div>
-                    <div class="transaction-detail-row"><span class="label">Fees</span><span class="value">₦${(d.fees || 0).toFixed(2)}</span></div>
-                    <div class="transaction-detail-row"><span class="label">Taxes</span><span class="value">₦${(d.taxes || 0).toFixed(2)}</span></div>
-                    <div class="transaction-detail-row"><span class="label">Transaction Type</span><span class="value">${tx.type}</span></div>
-                    <div class="transaction-detail-row"><span class="label">Sender</span><span class="value">${d.sender || currentUser.firstname + ' ' + currentUser.surname}</span></div>
-                    <div class="transaction-detail-row"><span class="label">Recipient</span><span class="value">${d.recipient || 'N/A'}</span></div>
-                    <div class="transaction-detail-row"><span class="label">Recipient Account</span><span class="value">${d.recipientAccount || 'N/A'}</span></div>
-                    <div class="transaction-detail-row"><span class="label">Recipient Bank</span><span class="value">${d.recipientBank || 'N/A'}</span></div>
-                    <div class="transaction-detail-row"><span class="label">Transaction ID</span><span class="value">${d.transactionId || tx.id}</span></div>
-                    <div class="transaction-detail-row"><span class="label">Note</span><span class="value">${d.note || 'N/A'}</span></div>
-                    ${isPBC ? `<div class="transaction-detail-row"><span class="label">Your PBC Code</span><span class="value" style="color:#10b981; font-size:20px; font-weight:700; letter-spacing:2px;">4234 <button onclick="copyPbcCode()" style="background:#1a1a2e; border:none; padding:4px 12px; border-radius:6px; color:#10b981; cursor:pointer; font-size:12px; margin-left:8px;">📋 Copy</button></span></div>` : ''}
-                    <div class="receipt-actions">
-                        <button class="btn" onclick="shareReceipt('${tx.id}')">📤 Share receipt</button>
-                        <button class="btn btn-outline" onclick="repeatTransaction('${tx.type}')">🔄 Repeat</button>
-                    </div>
-                    <div class="text-center mt-20"><span style="color:#10b981; cursor:pointer;" onclick="showHelp()">Trouble? Contact support</span></div>
-                </div>
-            `;
-            showPage('dashboardPage');
-            document.getElementById('dashboardPage').classList.add('hidden');
-            document.getElementById('txDetailView').style.display = 'block';
-            document.getElementById('txDetailView').style.padding = '20px 0';
-        }
-
-        function shareReceipt(tid) {
-            let tx = currentUser.transactions.find(t => t.id == tid);
-            if (tx) {
-                let d = tx.fullDetails || {};
-                let text =
-                    `Gpay Transaction\nAmount: ₦${(d.amount || tx.amount).toLocaleString()}\nType: ${tx.type}\nDate: ${tx.date}\nID: ${tx.id}`;
-                navigator.clipboard.writeText(text);
-                alert('✅ Receipt copied to clipboard!');
-            }
-        }
-
-        function repeatTransaction(type) {
-            closeDynamic();
-            if (type === 'Withdrawal') showWithdrawPage();
-            else if (type === 'Airtime') showBuyAirtime();
-            else if (type === 'Data') showBuyData();
-            else showDashboardPage();
-        }
-
-        function copyPbcCode() {
-            navigator.clipboard.writeText('4234');
-            alert('✅ PBC Code 4234 copied to clipboard!');
-        }
-
-        // ============================================================
-        // HANDLE GET STARTED
-        // ============================================================
-        function handleGetStarted() {
-            showSplashLoading('Loading...', () => showSignupPage(), 2500);
-        }
-
-        // ============================================================
-        // INIT
-        // ============================================================
-        document.addEventListener('DOMContentLoaded', function() {
-            loadUsers();
-            autoLogin();
-        });
-    </script>
+<div class="app" id="app">
+
+<!-- ===== WELCOME PAGE ===== -->
+<div id="welcomePage">
+<div class="dashboard-header">
+<div class="left">
+<div class="greeting" style="font-size:22px;">Gpay</div>
+</div>
+<div class="right">
+<button class="bell" onclick="showHelp()" style="opacity:0.6;">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+<path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+</svg>
+</button>
+</div>
+</div>
+<div class="welcome-container">
+<div class="welcome-title">Welcome!</div>
+<div class="welcome-text">Create your account and get welcome bonus. Start mining every hour and withdraw your earnings anytime.</div>
+<div class="get-started-wrapper">
+<button class="btn" onclick="handleGetStarted()">Get Started</button>
+</div>
+</div>
+</div>
+
+<!-- ===== SIGNUP PAGE ===== -->
+<div id="signupPage" class="hidden">
+<div class="page-header">
+<button class="back-btn" onclick="showWelcomePage()">←</button>
+<span class="title">Create Account</span>
+<button class="help-btn" onclick="showHelp()">❓</button>
+</div>
+<div class="logo-center">Gpay</div>
+<input type="text" id="signupFirstname" class="input-field" placeholder="First Name">
+<input type="text" id="signupSurname" class="input-field" placeholder="Surname">
+<input type="email" id="signupEmail" class="input-field" placeholder="Email Address">
+<input type="password" id="signupPassword" class="input-field" placeholder="Password (min 8 characters)">
+<input type="password" id="signupConfirm" class="input-field" placeholder="Confirm Password">
+<div id="signupError" class="error"></div>
+<button class="btn w-full" onclick="signup()">Create account</button>
+<div class="text-center mt-20" style="color:#9ca3af; font-size:14px;">Already have an account? <span style="color:#10b981; cursor:pointer; font-weight:600;" onclick="showLoginPage()">Sign in</span></div>
+</div>
+
+<!-- ===== LOGIN PAGE ===== -->
+<div id="loginPage" class="hidden">
+<div class="login-header">
+<span class="time">10:27</span>
+<div class="right-actions">
+<span class="help" onclick="showHelp()">Help</span>
+<span class="pay" onclick="alert('Pay feature coming soon')">Pay</span>
+</div>
+</div>
+<div class="login-title">Log in to your account</div>
+<input type="text" id="loginEmail" class="input-field" placeholder="Enter your Mobile No./Email">
+<span class="login-lost-link" onclick="showHelp()">Lost Your Mobile Number, Change Now</span>
+<button class="btn w-full" onclick="login()" style="font-size:18px; padding:16px;">NEXT</button>
+<div id="loginError" class="error" style="margin-top:10px;"></div>
+<div class="login-footer">
+Don't have an account? <span class="signup-link" onclick="showSignupPage()">Click here to Sign Up</span>
+<div class="cbn-text">Licensed by the CBN and insured by the |NDIC</div>
+</div>
+</div>
+
+<!-- ===== DASHBOARD PAGE ===== -->
+<div id="dashboardPage" class="hidden">
+
+<!-- Header: [Avatar] Hi, DJ | [Help] [Scan] [Bell] -->
+<div class="dashboard-header">
+<div class="left">
+<div class="avatar" id="userAvatar" onclick="showProfile()">
+<span id="avatarText">👤</span>
+<span class="badge-dot" id="profileBadgeDot"></span>
+</div>
+<div class="greeting">Hi, <span id="userName">User</span></div>
+</div>
+<div class="right">
+<button class="help-btn" onclick="showHelp()">Help</button>
+<button class="scan-btn" onclick="alert('Scan feature coming soon')">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M3 7V5a2 2 0 0 1 2-2h2"/>
+<path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+<path d="M21 17v2a2 2 0 0 1-2 2h-2"/>
+<path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+<rect x="7" y="7" width="10" height="10" rx="1"/>
+</svg>
+</button>
+<button class="bell" onclick="showTransactionHistory()">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+<path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+</svg>
+<span class="badge" id="notificationBadge" style="display:none;">1</span>
+</button>
+</div>
+</div>
+
+<!-- Balance Card -->
+<div class="balance-card">
+<div class="label-row">
+<span class="label">Available Balance</span>
+<span class="history-link" onclick="showTransactionHistory()">Transaction History →</span>
+</div>
+<div class="amount-row">
+<div class="amount" id="userBalance">₦0</div>
+<button class="add-money-btn" onclick="showAddMoney()">+ Add Money</button>
+</div>
+<div class="action-row">
+<button class="btn" onclick="alert('To OPay coming soon')">To OPay</button>
+<button class="btn" onclick="showWithdrawPage()">To Bank</button>
+<button class="btn" onclick="showWithdrawPage()">Withdraw</button>
+</div>
+</div>
+
+<!-- BVN Warning Banner -->
+<div class="bvn-banner" id="bvnBanner">
+<div class="msg">
+<strong>Your BVN and NIN info do not...</strong>
+<span class="sub">Click to view more details</span>
+</div>
+<button class="go-btn" onclick="showHelp()">Go</button>
+</div>
+
+<!-- Services Grid -->
+<div class="services-grid">
+<div class="service-item" onclick="showBuyAirtime()">
+<div class="icon">
+<svg viewBox="0 0 24 24"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>
+</div>
+<div class="label">Airtime</div>
+</div>
+<div class="service-item" onclick="showBuyData()">
+<div class="icon">
+<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M12 2a10 10 0 0 1 0 20"/><path d="M12 2a10 10 0 0 0 0 20"/><path d="M2 12h20"/></svg>
+</div>
+<div class="label">Data</div>
+</div>
+<div class="service-item" onclick="alert('Betting coming soon')">
+<div class="icon">
+<svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="6" y1="9" x2="18" y2="9"/><line x1="6" y1="15" x2="18" y2="15"/><line x1="9" y1="6" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="18"/></svg>
+</div>
+<div class="label">Betting</div>
+</div>
+<div class="service-item" onclick="alert('TV coming soon')">
+<div class="icon">
+<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="12" rx="2"/><path d="M8 3L12 7L16 3"/></svg>
+</div>
+<div class="label">TV</div>
+</div>
+<div class="service-item" onclick="alert('SafeBox coming soon')">
+<div class="icon">
+<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1"/></svg>
+</div>
+<div class="label">SafeBox</div>
+</div>
+<div class="service-item" onclick="alert('Loan coming soon')">
+<div class="icon">
+<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+</div>
+<div class="label">Loan</div>
+</div>
+<div class="service-item" onclick="openWhatsApp()">
+<div class="icon">
+<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.66 14.77L2 22l5.23-1.34A10 10 0 1 0 12 2z"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+</div>
+<div class="label">Invitation</div>
+</div>
+<div class="service-item" onclick="showHelp()">
+<div class="icon">
+<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+</div>
+<div class="label">More</div>
+</div>
+</div>
+
+<!-- Grow Savings Section -->
+<div class="grow-savings">
+<div class="left">
+<div class="title">Grow your savings</div>
+<div class="sub">Effortless saving · Stay disciplined & grow your wealth easily</div>
+</div>
+<button class="save-btn" onclick="alert('Savings feature coming soon!')">Save</button>
+</div>
+
+<!-- Task Section -->
+<div class="task-section">
+<div class="task-header">
+<div class="title">Complete Tasks, <span>Earn Cash!</span></div>
+<span class="view-all" onclick="alert('View all tasks')">View all →</span>
+</div>
+<div class="task-row">
+<div class="left">
+<div class="task-title">Targets</div>
+<div class="task-sub">Create Target and deposit to get a ₦100 cash reward.</div>
+</div>
+<button class="claim-btn" onclick="alert('Claim your reward!')">Claim</button>
+</div>
+</div>
+
+<!-- Bottom Navigation -->
+<div class="bottom-nav">
+<button class="nav-item active" onclick="alert('Home')">
+<svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1"/></svg>
+Home
+</button>
+<button class="nav-item" onclick="alert('Rewards')">
+<svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+Rewards
+</button>
+<button class="nav-item" onclick="alert('Finance')">
+<svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+Finance
+</button>
+<button class="nav-item" onclick="alert('Cards')">
+<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/></svg>
+Cards
+</button>
+<button class="nav-item" onclick="showProfile()">
+<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+Me
+</button>
+</div>
+
+</div>
+
+<!-- ===== DYNAMIC CONTENT ===== -->
+<div id="dynamicContent"></div>
+</div>
+
+<!-- ===== HELP MODAL ===== -->
+<div id="helpModal" class="modal-overlay">
+<div class="modal-box">
+<h3>Contact Support</h3>
+<p>We're here to help you 24/7</p>
+<div class="modal-actions">
+<button class="btn" onclick="window.open('https://wa.me/2348168909003','_blank')">💬 WhatsApp</button>
+<button class="btn btn-outline" onclick="location.href='mailto:graypay423492@gmail.com'">📧 Email</button>
+</div>
+<button class="btn btn-outline w-full mt-10" onclick="closeHelp()">Close</button>
+</div>
+</div>
+
+<!-- ===== LOADING OVERLAY ===== -->
+<div id="loadingOverlay" class="modal-overlay" style="background:rgba(0,0,0,0.92);">
+<div class="modal-box" style="text-align:center; max-width:300px;">
+<div style="font-size:48px; margin-bottom:12px;">⏳</div>
+<div id="loadingMsg" style="font-size:16px; color:#9ca3af;">Processing...</div>
+</div>
+</div>
+
+<script>
+// ============================================================
+// FIREBASE CONFIG
+// ============================================================
+const firebaseConfig = {
+apiKey: "AIzaSyDRQsnce5A337wRzOjjwEcgiXDgplJq5lU",
+authDomain: "growfastng.firebaseapp.com",
+projectId: "growfastng",
+storageBucket: "growfastng.firebasestorage.app",
+messagingSenderId: "133938265658",
+appId: "1:133938265658:web:4396fd308606de3ad43f03",
+measurementId: "G-0K8H201KX0"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+// ============================================================
+// GLOBAL STATE
+// ============================================================
+let currentUser = null;
+let users = [];
+
+// ============================================================
+// STORAGE HELPERS
+// ============================================================
+function loadUsers() {
+let s = localStorage.getItem('graypay_users');
+if (s) users = JSON.parse(s);
+}
+
+function saveUsers() {
+localStorage.setItem('graypay_users', JSON.stringify(users));
+}
+
+// ============================================================
+// UI HELPERS
+// ============================================================
+function showPage(id) {
+document.getElementById('welcomePage').classList.add('hidden');
+document.getElementById('signupPage').classList.add('hidden');
+document.getElementById('loginPage').classList.add('hidden');
+document.getElementById('dashboardPage').classList.add('hidden');
+let el = document.getElementById(id);
+if (el) el.classList.remove('hidden');
+if (id === 'dashboardPage' && currentUser) updateDashboard();
+}
+
+function showWelcomePage() { showPage('welcomePage'); }
+
+function showSignupPage() { showPage('signupPage'); }
+
+function showLoginPage() { showPage('loginPage'); }
+
+function showDashboardPage() {
+showPage('dashboardPage');
+updateDashboard();
+updateProfileBadge();
+}
+
+function closeDynamic() {
+document.getElementById('dynamicContent').innerHTML = '';
+showDashboardPage();
+}
+
+function showHelp() {
+document.getElementById('helpModal').classList.add('show');
+}
+
+function closeHelp() {
+document.getElementById('helpModal').classList.remove('show');
+}
+
+function openWhatsApp() {
+window.open('https://wa.me/2348168909003', '_blank');
+}
+
+function showSplashLoading(message, callback, duration = 3000) {
+let splash = document.createElement('div');
+splash.className = 'splash-loading';
+splash.innerHTML =
+`<div class="spinner"></div><div class="logo-text">Gpay</div><div class="loading-text">${message}</div>`;
+document.body.appendChild(splash);
+setTimeout(() => { splash.remove(); if (callback) callback(); }, duration);
+}
+
+function showLoadingOverlay(msg = 'Processing...') {
+document.getElementById('loadingMsg').innerText = msg;
+document.getElementById('loadingOverlay').classList.add('show');
+}
+
+function hideLoadingOverlay() {
+document.getElementById('loadingOverlay').classList.remove('show');
+}
+
+function getInitials(name) {
+if (!name) return '👤';
+let parts = name.trim().split(' ');
+if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+return name.substring(0, 2).toUpperCase();
+}
+
+// ============================================================
+// AUTH: SIGNUP
+// ============================================================
+async function signup() {
+let fn = document.getElementById('signupFirstname').value.trim();
+let sn = document.getElementById('signupSurname').value.trim();
+let em = document.getElementById('signupEmail').value.trim();
+let pw = document.getElementById('signupPassword').value;
+let cf = document.getElementById('signupConfirm').value;
+
+if (!fn || !sn || !em || !pw) { document.getElementById('signupError').innerText = 'All fields required'; return; }
+if (pw.length < 8) { document.getElementById('signupError').innerText = 'Password must be 8+ characters'; return; }
+if (pw !== cf) { document.getElementById('signupError').innerText = 'Passwords do not match'; return; }
+for (let u of users) { if (u.email === em) { document.getElementById('signupError').innerText =
+'Email exists'; return; } }
+
+showSplashLoading('Creating account...', async () => {
+try {
+const userCredential = await auth.createUserWithEmailAndPassword(em, pw);
+const firebaseUser = userCredential.user;
+
+let newUser = {
+id: Date.now(),
+firebaseUID: firebaseUser.uid,
+firstname: fn,
+surname: sn,
+email: em,
+password: pw,
+balance: 10000,
+miningActive: false,
+miningEnd: null,
+miningStart: null,
+lastClaimTime: null,
+miningClaimed: 0,
+transactions: [{
+type: 'Bonus',
+amount: 10000,
+date: new Date().toLocaleString(),
+dateObj: new Date(),
+status: 'Success',
+fullDetails: {
+transactionType: 'Bonus',
+sender: 'Gpay',
+recipient: fn + ' ' + sn,
+amount: 10000,
+note: 'Welcome bonus'
+}
+}]
+};
+users.push(newUser);
+saveUsers();
+currentUser = newUser;
+localStorage.setItem('graypay_current', em);
+showDashboardPage();
+showWelcomePopup();
+} catch (error) {
+let msg = error.message;
+if (msg.includes('email-already-in-use')) {
+document.getElementById('signupError').innerText = 'Email already registered. Please login.';
+} else {
+document.getElementById('signupError').innerText = msg;
+}
+}
+}, 5000);
+}
+
+// ============================================================
+// AUTH: LOGIN
+// ============================================================
+async function login() {
+let em = document.getElementById('loginEmail').value.trim();
+let pw = document.getElementById('loginPassword').value;
+
+showSplashLoading('Logging in...', async () => {
+try {
+const userCredential = await auth.signInWithEmailAndPassword(em, pw);
+const firebaseUser = userCredential.user;
+loadUsers();
+let localUser = null;
+for (let u of users) { if (u.email === em) { localUser = u; break; } }
+if (!localUser) {
+localUser = {
+id: Date.now(),
+firebaseUID: firebaseUser.uid,
+firstname: em.split('@')[0],
+surname: '',
+email: em,
+password: pw,
+balance: 0,
+miningActive: false,
+miningEnd: null,
+miningStart: null,
+lastClaimTime: null,
+miningClaimed: 0,
+transactions: []
+};
+users.push(localUser);
+saveUsers();
+}
+currentUser = localUser;
+localStorage.setItem('graypay_current', em);
+if (currentUser.miningActive) {
+checkAndClaimMiningRewards();
+}
+showDashboardPage();
+} catch (error) {
+document.getElementById('loginError').innerText = 'Invalid email or password';
+}
+}, 3000);
+}
+
+// ============================================================
+// AUTH: AUTO LOGIN
+// ============================================================
+async function autoLogin() {
+loadUsers();
+let saved = localStorage.getItem('graypay_current');
+if (saved) {
+for (let u of users) {
+if (u.email === saved) {
+currentUser = u;
+try {
+const firebaseUser = auth.currentUser;
+if (firebaseUser && firebaseUser.email === saved) {
+await firebaseUser.reload();
+}
+} catch (e) {}
+if (currentUser.miningActive) {
+checkAndClaimMiningRewards();
+}
+showDashboardPage();
+return;
+}
+}
+}
+showWelcomePage();
+}
+
+// ============================================================
+// AUTH: LOGOUT
+// ============================================================
+async function logout() {
+await auth.signOut();
+showSplashLoading('Logging out...', () => {
+currentUser = null;
+localStorage.removeItem('graypay_current');
+closeDynamic();
+showWelcomePage();
+}, 2000);
+}
+
+// ============================================================
+// EMAIL VERIFICATION
+// ============================================================
+async function isEmailVerifiedInFirebase(email) {
+try {
+const user = auth.currentUser;
+if (user && user.email === email) {
+await user.reload();
+return user.emailVerified;
+}
+return false;
+} catch (e) { return false; }
+}
+
+async function sendVerificationEmailFirebase() {
+if (!currentUser) { alert('Please login first'); return; }
+showSplashLoading('Sending verification email...', async () => {
+try {
+const user = auth.currentUser;
+if (user && user.email === currentUser.email) {
+await user.sendEmailVerification();
+alert(
+`✅ Verification email sent to ${currentUser.email}\n\nPlease check your inbox and click the verification link.`
+);
+} else {
+const uc = await auth.signInWithEmailAndPassword(currentUser.email, currentUser.password);
+await uc.user.sendEmailVerification();
+alert(`✅ Verification email sent to ${currentUser.email}`);
+}
+if (window.renderProfileContent) setTimeout(() => window.renderProfileContent(), 2000);
+} catch (e) {
+alert(`❌ Failed to send verification: ${e.message}`);
+}
+}, 3000);
+}
+
+async function updateProfileBadge() {
+if (!currentUser) return;
+const alreadyVerified = localStorage.getItem(`verified_permanent_${currentUser.email}`);
+if (alreadyVerified === 'true') {
+document.getElementById('profileBadgeDot').style.display = 'none';
+return;
+}
+const isVerified = await isEmailVerifiedInFirebase(currentUser.email);
+const dot = document.getElementById('profileBadgeDot');
+if (dot) {
+if (isVerified) {
+dot.style.display = 'none';
+localStorage.setItem(`verified_permanent_${currentUser.email}`, 'true');
+} else {
+dot.style.display = 'inline-block';
+}
+}
+}
+
+// ============================================================
+// MINING (background only - no popups, no status bar)
+// ============================================================
+function checkAndClaimMiningRewards() {
+if (!currentUser || !currentUser.miningActive) return false;
+let now = Date.now();
+let claimed = false;
+if (now >= currentUser.miningEnd) {
+let remaining = 20000 - (currentUser.miningClaimed || 0);
+if (remaining > 0) {
+currentUser.balance += remaining;
+currentUser.miningClaimed = 20000;
+currentUser.miningActive = false;
+saveUsers();
+updateDashboard();
+}
+return true;
+}
+let miningStart = currentUser.miningStart;
+let elapsedMs = now - miningStart;
+let elapsedHours = elapsedMs / (60 * 60 * 1000);
+let totalRewardSoFar = Math.min(20000, Math.floor(elapsedHours * (20000 / 24)));
+let alreadyClaimed = currentUser.miningClaimed || 0;
+let reward = totalRewardSoFar - alreadyClaimed;
+if (reward > 0) {
+currentUser.balance += reward;
+currentUser.miningClaimed = alreadyClaimed + reward;
+currentUser.lastClaimTime = now;
+saveUsers();
+updateDashboard();
+claimed = true;
+}
+return claimed;
+}
+
+function startMining() {
+if (!currentUser) return;
+if (currentUser.miningActive) {
+checkAndClaimMiningRewards();
+updateDashboard();
+alert('⛏️ Mining rewards have been added to your balance!');
+return;
+}
+currentUser.miningActive = true;
+currentUser.miningStart = Date.now();
+currentUser.miningEnd = Date.now() + (24 * 60 * 60 * 1000);
+currentUser.lastClaimTime = Date.now();
+currentUser.miningClaimed = 0;
+saveUsers();
+alert('✅ Mining started! You will earn ₦20,000 over 24 hours.');
+updateDashboard();
+}
+
+// ============================================================
+// DASHBOARD UPDATE
+// ============================================================
+function updateDashboard() {
+if (!currentUser) return;
+checkAndClaimMiningRewards();
+
+// Show ONLY first name in header
+document.getElementById('userName').innerText = currentUser.firstname;
+document.getElementById('userBalance').innerHTML = '₦' + currentUser.balance.toLocaleString();
+
+// Avatar
+let avatarText = document.getElementById('avatarText');
+if (avatarText) {
+let name = currentUser.firstname + ' ' + currentUser.surname;
+avatarText.innerText = getInitials(name);
+}
+}
+
+// ============================================================
+// WELCOME POPUP
+// ============================================================
+function showWelcomePopup() {
+let popup = document.createElement('div');
+popup.className = 'popup-overlay';
+popup.id = 'welcomePopup';
+popup.innerHTML = `
+<div class="popup-box">
+<div class="emoji">🎉</div>
+<div class="popup-title green">Welcome ${currentUser.firstname}!</div>
+<div class="popup-sub">You have received</div>
+<div class="popup-amount positive">₦10,000</div>
+<div class="popup-sub" style="margin-bottom:20px;">Start mining every hour and withdraw your earnings anytime!</div>
+<button class="btn w-full" onclick="document.getElementById('welcomePopup').remove()">Get Started</button>
+</div>
+`;
+document.body.appendChild(popup);
+}
+
+// ============================================================
+// ADD MONEY
+// ============================================================
+function showAddMoney() {
+alert('💳 Add Money feature coming soon!\n\nYou can earn more by mining or completing tasks.');
+}
+
+// ============================================================
+// PROFILE
+// ============================================================
+async function showProfile() {
+if (!currentUser) return;
+document.getElementById('profileBadgeDot').style.display = 'none';
+localStorage.setItem('profile_notification_seen', 'true');
+
+async function renderProfileContent() {
+let isVerified = await isEmailVerifiedInFirebase(currentUser.email);
+let verificationHtml = isVerified ?
+`<div class="verify-card verified">
+<div class="verify-title"><span>✅</span> <span class="verified-badge">Email Verified</span></div>
+<div class="verify-message">Your email has been successfully verified.</div>
+</div>` :
+`<div class="verify-card">
+<div class="verify-title"><span>⚠️</span> Email Verification Required</div>
+<div class="verify-message">Verify your email to secure your account and unlock all features.</div>
+<button class="verify-btn" onclick="sendVerificationEmailFirebase()">📧 Send Verification Email</button>
+</div>`;
+
+document.getElementById('dynamicContent').innerHTML = `
+<div id="profileView">
+<div class="page-header">
+<button class="back-btn" onclick="closeDynamic()">←</button>
+<span class="title">Profile</span>
+<button class="help-btn" onclick="showHelp()">❓</button>
+</div>
+<div class="logo-center">Gpay</div>
+<div class="info-box"><strong>Full Name:</strong> ${currentUser.firstname} ${currentUser.surname}</div>
+<div class="info-box"><strong>Email:</strong> ${currentUser.email}</div>
+<div class="info-box"><strong>Password:</strong> ********</div>
+${verificationHtml}
+<button class="btn w-full" onclick="logout()">Log Out</button>
+</div>
+`;
+showPage('dashboardPage');
+document.getElementById('dashboardPage').classList.add('hidden');
+document.getElementById('profileView').style.display = 'block';
+document.getElementById('profileView').style.padding = '20px 0';
+}
+renderProfileContent();
+window.renderProfileContent = renderProfileContent;
+}
+
+// ============================================================
+// WITHDRAWAL
+// ============================================================
+function showWithdrawPage() {
+if (!currentUser) return;
+let banks = ['Access Bank', 'GTBank', 'First Bank', 'Zenith Bank', 'UBA', 'WEMA Bank', 'Polaris Bank',
+'Fidelity Bank', 'Sterling Bank', 'PalmPay', 'Opay', 'Moniepoint', 'Kuda Bank'
+];
+let opts = banks.map(b => `<option>${b}</option>`).join('');
+document.getElementById('dynamicContent').innerHTML = `
+<div id="withdrawView">
+<div class="page-header">
+<button class="back-btn" onclick="closeDynamic()">←</button>
+<span class="title">Transfer To Bank</span>
+<button class="help-btn" onclick="showHelp()">❓</button>
+</div>
+<input type="text" id="accName" class="input-field" placeholder="Account Name">
+<input type="text" id="accNumber" class="input-field" placeholder="Account Number">
+<select id="bankName" class="input-field">${opts}</select>
+<input type="number" id="withdrawAmount" class="input-field" placeholder="Amount">
+<input type="text" id="pbcCode" class="input-field" placeholder="PBC Code (e.g., 1234)">
+<div class="info-box">Available: ₦${currentUser.balance.toLocaleString()}</div>
+<div class="min-withdrawal">⚠️ Minimum withdrawal: ₦10,000</div>
+<button class="btn w-full" onclick="processWithdraw()">Submit</button>
+</div>
+`;
+showPage('dashboardPage');
+document.getElementById('dashboardPage').classList.add('hidden');
+document.getElementById('withdrawView').style.display = 'block';
+document.getElementById('withdrawView').style.padding = '20px 0';
+}
+
+function processWithdraw() {
+let amt = parseInt(document.getElementById('withdrawAmount').value);
+let code = document.getElementById('pbcCode').value;
+let accName = document.getElementById('accName').value;
+let accNumber = document.getElementById('accNumber').value;
+let bankName = document.getElementById('bankName').value;
+if (code !== '4234') { alert('Invalid PBC Code!'); return; }
+if (amt < 10000) { alert('Minimum withdrawal is ₦10,000'); return; }
+if (amt > currentUser.balance) { alert('Insufficient balance'); return; }
+if (!accName || !accNumber) { alert('Please fill account name and number'); return; }
+showLoadingOverlay('Processing withdrawal...');
+setTimeout(() => {
+currentUser.balance -= amt;
+let tid = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
+let tx = {
+id: tid,
+type: 'Withdrawal',
+amount: amt,
+date: new Date().toLocaleString(),
+dateObj: new Date(),
+status: 'Success',
+fullDetails: {
+transactionType: 'Deposit To Bank',
+amount: amt,
+fees: 10,
+taxes: 0.75,
+sender: currentUser.firstname + ' ' + currentUser.surname,
+recipient: accName,
+recipientAccount: accNumber,
+recipientBank: bankName,
+transactionId: tid,
+note: 'Sent from my Gpay account'
+}
+};
+currentUser.transactions.unshift(tx);
+saveUsers();
+hideLoadingOverlay();
+showSuccessPopup('Withdrawal Successful!', 'You have successfully withdrawn', amt, accName, bankName,
+accNumber, tid, () => showTransactionDetails(tid));
+}, 15000);
+}
+
+// ============================================================
+// AIRTIME
+// ============================================================
+function showBuyAirtime() {
+if (!currentUser) return;
+document.getElementById('dynamicContent').innerHTML = `
+<div id="airtimeView">
+<div class="page-header">
+<button class="back-btn" onclick="closeDynamic()">←</button>
+<span class="title">Buy Airtime</span>
+<button class="help-btn" onclick="showHelp()">❓</button>
+</div>
+<input type="text" id="airPhone" class="input-field" placeholder="Phone Number">
+<select id="airNetwork" class="input-field">
+<option value="MTN">MTN</option>
+<option value="Airtel">Airtel</option>
+<option value="Glo">Glo</option>
+<option value="9mobile">9mobile</option>
+</select>
+<input type="number" id="airAmount" class="input-field" placeholder="Amount">
+<input type="text" id="airCode" class="input-field" placeholder="PBC Code (e.g., 1234)">
+<button class="btn w-full" onclick="processAirtime()">Buy Airtime</button>
+</div>
+`;
+showPage('dashboardPage');
+document.getElementById('dashboardPage').classList.add('hidden');
+document.getElementById('airtimeView').style.display = 'block';
+document.getElementById('airtimeView').style.padding = '20px 0';
+}
+
+function processAirtime() {
+let code = document.getElementById('airCode').value;
+let amt = parseInt(document.getElementById('airAmount').value);
+let phone = document.getElementById('airPhone').value;
+let network = document.getElementById('airNetwork').value;
+if (code !== '4234') { alert('Invalid PBC Code!'); return; }
+if (!phone || !amt) { alert('Fill all fields'); return; }
+if (amt > currentUser.balance) { alert('Insufficient balance'); return; }
+showLoadingOverlay('Processing airtime purchase...');
+setTimeout(() => {
+currentUser.balance -= amt;
+let tid = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
+let tx = {
+id: tid,
+type: 'Airtime',
+amount: amt,
+phone: phone,
+network: network,
+date: new Date().toLocaleString(),
+dateObj: new Date(),
+status: 'Success',
+fullDetails: {
+transactionType: 'Airtime Purchase',
+amount: amt,
+fees: 0,
+taxes: 0,
+sender: currentUser.firstname + ' ' + currentUser.surname,
+recipient: phone,
+recipientAccount: phone,
+recipientBank: network,
+transactionId: tid,
+note: 'Airtime purchase on ' + network
+}
+};
+currentUser.transactions.unshift(tx);
+saveUsers();
+hideLoadingOverlay();
+showAirtimeSuccessPopup(amt, phone, network, tid, () => showTransactionDetails(tid));
+}, 10000);
+}
+
+// ============================================================
+// DATA
+// ============================================================
+function showBuyData() {
+if (!currentUser) return;
+document.getElementById('dynamicContent').innerHTML = `
+<div id="dataView">
+<div class="page-header">
+<button class="back-btn" onclick="closeDynamic()">←</button>
+<span class="title">Buy Data</span>
+<button class="help-btn" onclick="showHelp()">❓</button>
+</div>
+<input type="text" id="dataPhone" class="input-field" placeholder="Phone Number">
+<select id="dataNetwork" class="input-field">
+<option value="MTN">MTN</option>
+<option value="Airtel">Airtel</option>
+<option value="Glo">Glo</option>
+<option value="9mobile">9mobile</option>
+</select>
+<select id="dataPlan" class="input-field">
+<option value="500">1GB - ₦500</option>
+<option value="1000">2GB - ₦1000</option>
+<option value="2000">5GB - ₦2000</option>
+<option value="5000">10GB - ₦5000</option>
+<option value="10000">20GB - ₦10000</option>
+</select>
+<input type="text" id="dataCode" class="input-field" placeholder="PBC Code (e.g., 1234)">
+<button class="btn w-full" onclick="processData()">Buy Data</button>
+</div>
+`;
+showPage('dashboardPage');
+document.getElementById('dashboardPage').classList.add('hidden');
+document.getElementById('dataView').style.display = 'block';
+document.getElementById('dataView').style.padding = '20px 0';
+}
+
+function processData() {
+let code = document.getElementById('dataCode').value;
+let phone = document.getElementById('dataPhone').value;
+let network = document.getElementById('dataNetwork').value;
+let plan = document.getElementById('dataPlan');
+let amt = parseInt(plan.value);
+let name = plan.options[plan.selectedIndex].text;
+if (code !== '4234') { alert('Invalid PBC Code!'); return; }
+if (!phone) { alert('Enter phone number'); return; }
+if (amt > currentUser.balance) { alert('Insufficient balance'); return; }
+showLoadingOverlay('Processing data purchase...');
+setTimeout(() => {
+currentUser.balance -= amt;
+let tid = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
+let tx = {
+id: tid,
+type: 'Data',
+amount: amt,
+plan: name,
+network: network,
+phone: phone,
+date: new Date().toLocaleString(),
+dateObj: new Date(),
+status: 'Success',
+fullDetails: {
+transactionType: 'Data Purchase',
+amount: amt,
+fees: 0,
+taxes: 0,
+sender: currentUser.firstname + ' ' + currentUser.surname,
+recipient: phone,
+recipientAccount: phone,
+recipientBank: network,
+transactionId: tid,
+note: 'Data purchase - ' + name + ' on ' + network
+}
+};
+currentUser.transactions.unshift(tx);
+saveUsers();
+hideLoadingOverlay();
+showDataSuccessPopup(amt, phone, name, network, tid, () => showTransactionDetails(tid));
+}, 10000);
+}
+
+// ============================================================
+// PBC PURCHASE
+// ============================================================
+function showBuyPBC() {
+if (!currentUser) return;
+document.getElementById('dynamicContent').innerHTML = `
+<div id="pbcView">
+<div class="page-header">
+<button class="back-btn" onclick="closeDynamic()">←</button>
+<span class="title">Buy PBC</span>
+<button class="help-btn" onclick="showHelp()">❓</button>
+</div>
+<div class="info-box">Amount: ₦7,000 (Fixed)</div>
+<input type="text" id="pbcName" class="input-field" placeholder="Full Name">
+<input type="email" id="pbcEmail" class="input-field" placeholder="Email Address">
+<button id="pbcPayBtn" class="btn btn-gray w-full" disabled onclick="pbcStep1()">Pay</button>
+</div>
+`;
+showPage('dashboardPage');
+document.getElementById('dashboardPage').classList.add('hidden');
+document.getElementById('pbcView').style.display = 'block';
+document.getElementById('pbcView').style.padding = '20px 0';
+let nameInp = document.getElementById('pbcName');
+let emailInp = document.getElementById('pbcEmail');
+let btn = document.getElementById('pbcPayBtn');
+
+function check() {
+if (nameInp.value && emailInp.value) { btn.disabled = false;
+btn.className = 'btn w-full'; } else { btn.disabled = true;
+btn.className = 'btn btn-gray w-full'; }
+}
+nameInp.addEventListener('input', check);
+emailInp.addEventListener('input', check);
+}
+
+function pbcStep1() {
+showSplashLoading('Processing PBC purchase...', () => showPalmPayWarning(), 10000);
+}
+
+function showPalmPayWarning() {
+document.getElementById('dynamicContent').innerHTML = `
+<div id="warningView">
+<div class="page-header">
+<button class="back-btn" onclick="showBuyPBC()">←</button>
+<span class="title">Important</span>
+<button class="help-btn" onclick="showHelp()">❓</button>
+</div>
+<div class="warning-box">
+<h2 style="color:#ef4444; margin-bottom:8px;">PalmPay Service Down</h2>
+<p style="color:#9ca3af;">Please do not use PalmPay for payments at this time. Use other supported banks.</p>
+</div>
+<button class="btn w-full" onclick="pbcStep2()">Proceed to Bank Transfer</button>
+<button class="btn btn-outline w-full mt-10" onclick="pbcStep2()">I Understand</button>
+</div>
+`;
+document.getElementById('warningView').style.display = 'block';
+document.getElementById('warningView').style.padding = '20px 0';
+}
+
+function pbcStep2() {
+showSplashLoading('Preparing bank details...', () => showBankDetails(), 5000);
+}
+
+function showBankDetails() {
+document.getElementById('dynamicContent').innerHTML = `
+<div id="bankView">
+<div class="page-header">
+<button class="back-btn" onclick="showPalmPayWarning()">←</button>
+<span class="title">Bank Transfer</span>
+<button class="help-btn" onclick="showHelp()">❓</button>
+</div>
+<div class="copy-item" onclick="copyText('7000', this.querySelector('.copy-text'))">
+<span class="copy-text"><strong>Amount:</strong> NGN 7,000</span>
+<span class="copy-icon">📋 Copy</span>
+</div>
+<div class="copy-item" onclick="copyText('2778715377', this.querySelector('.copy-text'))">
+<span class="copy-text"><strong>Account Number:</strong> 2778715377</span>
+<span class="copy-icon">📋 Copy</span>
+</div>
+<div class="info-box"><strong>Bank Name:</strong> Paga</div>
+<div class="info-box"><strong>Account Name:</strong> Ahmed Isah</div>
+<p class="text-center mb-10" style="color:#9ca3af; font-size:14px;">Transfer exact amount. Use your name as description.</p>
+<button class="btn w-full" onclick="pbcStep3()">I have made this bank transfer</button>
+</div>
+`;
+document.getElementById('bankView').style.display = 'block';
+document.getElementById('bankView').style.padding = '20px 0';
+}
+
+function pbcStep3() {
+showSplashLoading('Verifying payment...', () => showFailed(), 20000);
+}
+
+function showFailed() {
+let tid = 'FAILPBC' + Date.now() + Math.floor(Math.random() * 10000);
+let failedTx = {
+id: tid,
+type: 'PBC Purchase Failed',
+amount: 7000,
+date: new Date().toLocaleString(),
+dateObj: new Date(),
+status: 'Failed',
+isFailed: true,
+fullDetails: {
+transactionType: 'PBC Code Purchase',
+amount: 7000,
+fees: 0,
+taxes: 0,
+sender: currentUser.firstname + ' ' + currentUser.surname,
+recipient: 'Gpay System',
+transactionId: tid,
+note: '❌ Transaction verification failed! No payment received.',
+reason: 'No payment received from you / invalid payment method'
+}
+};
+currentUser.transactions.unshift(failedTx);
+saveUsers();
+
+document.getElementById('dynamicContent').innerHTML = `
+<div id="failedView">
+<div class="page-header">
+<button class="back-btn" onclick="showBankDetails()">←</button>
+<span class="title">Failed</span>
+<button class="help-btn" onclick="showHelp()">❓</button>
+</div>
+<div style="text-align:center; padding:20px 0;">
+<div style="font-size:60px; margin-bottom:16px;">❌</div>
+<h2 style="color:#ef4444; margin-bottom:12px;">Transaction verification failed!</h2>
+<div style="background:#2a1a1a; border-radius:16px; padding:16px; margin:16px 0; border-left:4px solid #ef4444;">
+<p style="color:#fca5a5;">Your payment could not be completed.</p>
+<p style="color:#9ca3af; font-size:14px;">Reason: No payment received from you.</p>
+</div>
+<div style="display:flex; gap:12px; margin-top:16px;">
+<button class="btn" onclick="showBankDetails()" style="flex:1;">🔄 Try again</button>
+<button class="btn btn-outline" onclick="showHelp()" style="flex:1;">🆘 Help</button>
+</div>
+<button class="btn btn-outline w-full mt-10" onclick="showTransactionHistory()">📜 View history</button>
+</div>
+</div>
+`;
+document.getElementById('failedView').style.display = 'block';
+document.getElementById('failedView').style.padding = '20px 0';
+}
+
+function copyText(text, el) {
+navigator.clipboard.writeText(text);
+let orig = el.innerHTML;
+el.innerHTML = text + ' ✅ Copied!';
+setTimeout(() => el.innerHTML = orig, 2000);
+}
+
+// ============================================================
+// SUCCESS POPUPS
+// ============================================================
+function showSuccessPopup(title, msg, amount, recipient, bank, account, tid, onView) {
+let popup = document.createElement('div');
+popup.className = 'popup-overlay';
+popup.innerHTML = `
+<div class="popup-box">
+<div class="emoji">✅</div>
+<div class="popup-title green">${title}</div>
+<div class="popup-sub">${msg}</div>
+<div class="popup-amount negative">-₦${amount.toLocaleString()}</div>
+<div class="popup-detail">
+<div class="name">${recipient}</div>
+<div class="meta">${bank} • ${account}</div>
+</div>
+<div class="popup-actions">
+<button class="btn" onclick="this.closest('.popup-overlay').remove(); closeDynamic();">Done</button>
+<button class="btn btn-outline" onclick="this.closest('.popup-overlay').remove(); if(onView) onView(); else showTransactionDetails('${tid}');">View receipt</button>
+</div>
+</div>
+`;
+document.body.appendChild(popup);
+window.__onViewReceipt = onView;
+}
+
+function showAirtimeSuccessPopup(amount, phone, network, tid, onView) {
+let popup = document.createElement('div');
+popup.className = 'popup-overlay';
+popup.innerHTML = `
+<div class="popup-box">
+<div class="emoji">📱✅</div>
+<div class="popup-title green">Airtime Purchase Successful!</div>
+<div class="popup-sub">You have successfully purchased</div>
+<div class="popup-amount negative">₦${amount.toLocaleString()}</div>
+<div class="popup-detail">
+<div class="name">${phone}</div>
+<div class="meta">Network: ${network}</div>
+</div>
+<div class="popup-actions">
+<button class="btn" onclick="this.closest('.popup-overlay').remove(); closeDynamic();">Done</button>
+<button class="btn btn-outline" onclick="this.closest('.popup-overlay').remove(); if(onView) onView(); else showTransactionDetails('${tid}');">View receipt</button>
+</div>
+</div>
+`;
+document.body.appendChild(popup);
+window.__onViewReceipt = onView;
+}
+
+function showDataSuccessPopup(amount, phone, plan, network, tid, onView) {
+let popup = document.createElement('div');
+popup.className = 'popup-overlay';
+popup.innerHTML = `
+<div class="popup-box">
+<div class="emoji">🌐✅</div>
+<div class="popup-title green">Data Purchase Successful!</div>
+<div class="popup-sub">You have successfully purchased</div>
+<div style="font-size:20px; font-weight:600; color:#34d399; margin-bottom:4px;">${plan} on ${network}</div>
+<div class="popup-amount negative">₦${amount.toLocaleString()}</div>
+<div class="popup-detail">
+<div class="name">${phone}</div>
+</div>
+<div class="popup-actions">
+<button class="btn" onclick="this.closest('.popup-overlay').remove(); closeDynamic();">Done</button>
+<button class="btn btn-outline" onclick="this.closest('.popup-overlay').remove(); if(onView) onView(); else showTransactionDetails('${tid}');">View receipt</button>
+</div>
+</div>
+`;
+document.body.appendChild(popup);
+window.__onViewReceipt = onView;
+}
+
+// ============================================================
+// TRANSACTION HISTORY
+// ============================================================
+function showTransactionHistory() {
+if (!currentUser) return;
+let txs = [...currentUser.transactions];
+let groups = {};
+txs.forEach(t => {
+let d = t.dateObj ? new Date(t.dateObj) : new Date(t.date);
+let today = new Date();
+let yesterday = new Date(today);
+yesterday.setDate(yesterday.getDate() - 1);
+let key = d.toDateString() === today.toDateString() ? 'Today' :
+(d.toDateString() === yesterday.toDateString() ? 'Yesterday' :
+d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }));
+if (!groups[key]) groups[key] = [];
+groups[key].push(t);
+});
+let html = '';
+for (let [date, items] of Object.entries(groups)) {
+html += `<div class="history-date-group"><div class="history-date">${date}</div>`;
+items.forEach(t => {
+let time = t.dateObj ? new Date(t.dateObj).toLocaleTimeString([], { hour: '2-digit',
+minute: '2-digit' }) : new Date(t.date).toLocaleTimeString([], { hour: '2-digit',
+minute: '2-digit' });
+let desc = '';
+let isNeg = true;
+let isNeutral = false;
+let isFailed = t.status === 'Failed' || t.type === 'PBC Purchase Failed';
+if (t.type === 'Withdrawal') desc = `You sent money to ${t.fullDetails?.recipient || 'Bank'}`;
+else if (t.type === 'Airtime') desc = `You bought airtime for ${t.phone} on ${t.network || ''}`;
+else if (t.type === 'Data') desc = `You bought ${t.plan} data for ${t.phone}`;
+else if (t.type === 'Bonus') { desc = 'You received a welcome bonus';
+isNeg = false; } else if (t.type === 'Mining Reward' || t.type === 'Mining Complete') { desc =
+'Mining reward';
+isNeg = false; } else if (t.type === 'PBC Purchase') { desc = 'PBC Code purchased';
+isNeg = false;
+isNeutral = true; } else if (t.type === 'PBC Purchase Failed') { desc = 'PBC Purchase Failed';
+isNeg = false;
+isFailed = true; }
+let cls = isFailed ? 'failed' : (isNeutral ? 'neutral' : (isNeg ? 'negative' : 'positive'));
+let prefix = isFailed ? '❌ ' : (isNeutral ? '📋 ' : (isNeg ? '-₦' : '+₦'));
+let badge = isFailed ? '<span class="failed-badge">Failed</span>' : '';
+html += `
+<div class="history-item ${isFailed ? 'failed-transaction' : ''}" onclick="showTransactionDetails('${t.id}')">
+<div class="history-row">
+<div class="history-desc">${desc} ${badge}<small>${time}</small></div>
+<div class="history-amount ${cls}">${prefix}${t.amount.toLocaleString()}</div>
+</div>
+</div>
+`;
+});
+html += '</div>';
+}
+document.getElementById('dynamicContent').innerHTML = `
+<div id="historyView">
+<div class="page-header">
+<button class="back-btn" onclick="closeDynamic()">←</button>
+<span class="title">Transaction History</span>
+<button class="help-btn" onclick="showHelp()">❓</button>
+</div>
+${html || '<div class="text-center" style="color:#9ca3af; padding:40px;">No transactions yet</div>'}
+</div>
+`;
+showPage('dashboardPage');
+document.getElementById('dashboardPage').classList.add('hidden');
+document.getElementById('historyView').style.display = 'block';
+document.getElementById('historyView').style.padding = '20px 0';
+}
+
+// ============================================================
+// TRANSACTION DETAIL
+// ============================================================
+function showTransactionDetails(tid) {
+if (!currentUser) return;
+let tx = currentUser.transactions.find(t => t.id == tid);
+if (!tx) { alert('Transaction not found'); return; }
+let d = tx.fullDetails || {};
+let amt = d.amount || tx.amount;
+let isPos = (tx.type === 'Bonus' || tx.type === 'Mining Reward' || tx.type === 'Mining Complete');
+let isPBC = (tx.type === 'PBC Purchase');
+let isFailed = (tx.type === 'PBC Purchase Failed');
+let color = isFailed ? '#f97316' : (isPos ? '#34d399' : (isPBC ? '#fbbf24' : '#f87171'));
+let symbol = isFailed ? '❌ ' : (isPos ? '+' : (isPBC ? '📋' : '-'));
+let statusText = tx.status || 'Success';
+
+document.getElementById('dynamicContent').innerHTML = `
+<div id="txDetailView">
+<div class="page-header">
+<button class="back-btn" onclick="showTransactionHistory()">←</button>
+<span class="title">Transaction Details</span>
+<button class="help-btn" onclick="showHelp()">❓</button>
+</div>
+<div style="text-align:center; margin:16px 0;">
+<div style="font-size:42px; font-weight:700; color:${color};">${symbol}₦${amt.toLocaleString()}.00</div>
+<div style="color:${isFailed ? '#f97316' : '#10b981'}; margin-top:4px;">${statusText}</div>
+${isPBC ? '<div style="color:#fbbf24; font-size:14px; margin-top:4px;">✅ Payment successful!</div>' : ''}
+${isFailed ? '<div style="color:#f97316; font-size:14px; margin-top:4px;">❌ Verification failed</div>' : ''}
+</div>
+<div class="transaction-detail-row"><span class="label">Date</span><span class="value">${tx.date}</span></div>
+<div class="transaction-detail-row"><span class="label">Amount</span><span class="value">₦${amt.toLocaleString()}.00</span></div>
+<div class="transaction-detail-row"><span class="label">Fees</span><span class="value">₦${(d.fees || 0).toFixed(2)}</span></div>
+<div class="transaction-detail-row"><span class="label">Taxes</span><span class="value">₦${(d.taxes || 0).toFixed(2)}</span></div>
+<div class="transaction-detail-row"><span class="label">Transaction Type</span><span class="value">${tx.type}</span></div>
+<div class="transaction-detail-row"><span class="label">Sender</span><span class="value">${d.sender || currentUser.firstname + ' ' + currentUser.surname}</span></div>
+<div class="transaction-detail-row"><span class="label">Recipient</span><span class="value">${d.recipient || 'N/A'}</span></div>
+<div class="transaction-detail-row"><span class="label">Recipient Account</span><span class="value">${d.recipientAccount || 'N/A'}</span></div>
+<div class="transaction-detail-row"><span class="label">Recipient Bank</span><span class="value">${d.recipientBank || 'N/A'}</span></div>
+<div class="transaction-detail-row"><span class="label">Transaction ID</span><span class="value">${d.transactionId || tx.id}</span></div>
+<div class="transaction-detail-row"><span class="label">Note</span><span class="value">${d.note || 'N/A'}</span></div>
+${isPBC ? `<div class="transaction-detail-row"><span class="label">Your PBC Code</span><span class="value" style="color:#10b981; font-size:20px; font-weight:700; letter-spacing:2px;">4234 <button onclick="copyPbcCode()" style="background:#1a1a2e; border:none; padding:4px 12px; border-radius:6px; color:#10b981; cursor:pointer; font-size:12px; margin-left:8px;">📋 Copy</button></span></div>` : ''}
+<div class="receipt-actions">
+<button class="btn" onclick="shareReceipt('${tx.id}')">📤 Share receipt</button>
+<button class="btn btn-outline" onclick="repeatTransaction('${tx.type}')">🔄 Repeat</button>
+</div>
+<div class="text-center mt-20"><span style="color:#10b981; cursor:pointer;" onclick="showHelp()">Trouble? Contact support</span></div>
+</div>
+`;
+showPage('dashboardPage');
+document.getElementById('dashboardPage').classList.add('hidden');
+document.getElementById('txDetailView').style.display = 'block';
+document.getElementById('txDetailView').style.padding = '20px 0';
+}
+
+function shareReceipt(tid) {
+let tx = currentUser.transactions.find(t => t.id == tid);
+if (tx) {
+let d = tx.fullDetails || {};
+let text =
+`Gpay Transaction\nAmount: ₦${(d.amount || tx.amount).toLocaleString()}\nType: ${tx.type}\nDate: ${tx.date}\nID: ${tx.id}`;
+navigator.clipboard.writeText(text);
+alert('✅ Receipt copied to clipboard!');
+}
+}
+
+function repeatTransaction(type) {
+closeDynamic();
+if (type === 'Withdrawal') showWithdrawPage();
+else if (type === 'Airtime') showBuyAirtime();
+else if (type === 'Data') showBuyData();
+else showDashboardPage();
+}
+
+function copyPbcCode() {
+navigator.clipboard.writeText('4234');
+alert('✅ PBC Code 4234 copied to clipboard!');
+}
+
+// ============================================================
+// HANDLE GET STARTED
+// ============================================================
+function handleGetStarted() {
+showSplashLoading('Loading...', () => showSignupPage(), 2500);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+loadUsers();
+autoLogin();
+});
+</script>
 
 </body>
 </html>
