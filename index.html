@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>Gpay - Complete</title>
+    <title>Gpay</title>
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js">
@@ -29,7 +29,7 @@
             margin: 0 auto;
             background: #0a0a0a;
             min-height: 100vh;
-            padding: 16px 16px 80px 16px;
+            padding: 12px 16px 80px 16px;
             position: relative;
         }
 
@@ -67,9 +67,6 @@
         }
         .gap-12 {
             gap: 12px;
-        }
-        .gap-16 {
-            gap: 16px;
         }
         .w-full {
             width: 100%;
@@ -122,7 +119,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 0 16px 0;
+            padding: 4px 0 12px 0;
         }
         .dashboard-header .greeting {
             font-size: 20px;
@@ -134,7 +131,7 @@
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
         .header-actions .bell {
             font-size: 22px;
@@ -143,6 +140,8 @@
             border: none;
             color: #fff;
             position: relative;
+            padding: 0;
+            line-height: 1;
         }
         .header-actions .bell .badge {
             position: absolute;
@@ -158,69 +157,84 @@
             text-align: center;
         }
         .header-actions .avatar {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background: linear-gradient(135deg, #10b981, #059669);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             color: #fff;
             cursor: pointer;
             border: 2px solid #1a1a1a;
+            position: relative;
+        }
+        .header-actions .avatar .badge-dot {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 10px;
+            height: 10px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid #0a0a0a;
+            display: none;
         }
 
         /* ===== BALANCE CARD ===== */
         .balance-card {
             background: linear-gradient(135deg, #10b981, #059669);
             border-radius: 20px;
-            padding: 20px 20px 24px 20px;
-            margin-bottom: 20px;
+            padding: 18px 20px 20px 20px;
+            margin-bottom: 14px;
         }
         .balance-card .label-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         .balance-card .label-row .label {
             font-size: 14px;
-            opacity: 0.8;
+            opacity: 0.85;
+            font-weight: 500;
         }
         .balance-card .label-row .history-link {
             font-size: 13px;
             color: #fff;
-            opacity: 0.8;
+            opacity: 0.85;
             text-decoration: none;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 4px;
+            font-weight: 500;
         }
         .balance-card .amount {
-            font-size: 40px;
+            font-size: 38px;
             font-weight: 700;
-            margin: 6px 0 14px 0;
+            margin: 4px 0 14px 0;
             letter-spacing: -0.5px;
         }
         .balance-card .action-row {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
         .balance-card .action-row .btn {
             flex: 1;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 14px;
+            padding: 10px 8px;
+            border-radius: 10px;
+            font-size: 13px;
             font-weight: 600;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.18);
             border: none;
             color: #fff;
             cursor: pointer;
             transition: background 0.2s;
             text-align: center;
+            min-width: 0;
         }
         .balance-card .action-row .btn:active {
             background: rgba(255, 255, 255, 0.35);
@@ -233,83 +247,57 @@
             background: #f0f0f0;
         }
 
-        /* ===== WARNING BANNER ===== */
-        .warning-banner {
+        /* ===== BVN WARNING BANNER ===== */
+        .bvn-banner {
             background: #1a1a2e;
             border-radius: 14px;
-            padding: 14px 16px;
-            margin-bottom: 16px;
+            padding: 12px 16px;
+            margin-bottom: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-left: 3px solid #f59e0b;
         }
-        .warning-banner .msg {
+        .bvn-banner .msg {
             font-size: 13px;
             color: #d1d5db;
             line-height: 1.4;
         }
-        .warning-banner .msg strong {
+        .bvn-banner .msg strong {
             color: #fff;
         }
-        .warning-banner .go-btn {
+        .bvn-banner .msg .sub {
+            font-size: 12px;
+            color: #9ca3af;
+            display: block;
+            margin-top: 2px;
+        }
+        .bvn-banner .go-btn {
             background: #f59e0b;
             color: #000;
             border: none;
-            padding: 6px 16px;
+            padding: 6px 18px;
             border-radius: 20px;
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
             white-space: nowrap;
             margin-left: 12px;
+            transition: opacity 0.2s;
         }
-        .warning-banner .go-btn:active {
+        .bvn-banner .go-btn:active {
             opacity: 0.7;
-        }
-
-        /* ===== PROMO CARD ===== */
-        .promo-card {
-            background: #111827;
-            border-radius: 14px;
-            padding: 14px 16px;
-            margin-bottom: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #1f2937;
-        }
-        .promo-card .left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .promo-card .left .icon {
-            font-size: 28px;
-        }
-        .promo-card .left .text .title {
-            font-size: 15px;
-            font-weight: 600;
-        }
-        .promo-card .left .text .sub {
-            font-size: 12px;
-            color: #9ca3af;
-        }
-        .promo-card .right {
-            font-size: 20px;
-            font-weight: 700;
-            color: #10b981;
         }
 
         /* ===== SERVICES GRID ===== */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 10px;
             background: #111827;
-            padding: 16px 12px;
+            padding: 16px 10px;
             border-radius: 16px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             border: 1px solid #1f2937;
         }
         .services-grid .service-item {
@@ -321,19 +309,21 @@
             transform: scale(0.94);
         }
         .services-grid .service-item .icon {
-            width: 48px;
-            height: 48px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
             background: #1f2937;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 6px auto;
-            font-size: 22px;
+            font-size: 20px;
+            color: #d1d5db;
         }
         .services-grid .service-item .label {
             font-size: 11px;
             color: #9ca3af;
+            font-weight: 500;
         }
 
         /* ===== TASK SECTION ===== */
@@ -341,17 +331,17 @@
             background: #111827;
             border-radius: 16px;
             padding: 16px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             border: 1px solid #1f2937;
         }
         .task-section .task-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         .task-section .task-header .title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
         }
         .task-section .task-header .title span {
@@ -359,8 +349,9 @@
         }
         .task-section .task-header .view-all {
             color: #10b981;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
+            font-weight: 500;
         }
         .task-section .task-row {
             display: flex;
@@ -377,6 +368,7 @@
         .task-section .task-row .left .task-sub {
             font-size: 12px;
             color: #9ca3af;
+            margin-top: 2px;
         }
         .task-section .task-row .claim-btn {
             background: #10b981;
@@ -387,6 +379,9 @@
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+            margin-left: 10px;
         }
         .task-section .task-row .claim-btn:active {
             opacity: 0.7;
@@ -403,7 +398,7 @@
             background: #111827;
             display: flex;
             justify-content: space-around;
-            padding: 8px 0 12px 0;
+            padding: 8px 0 14px 0;
             border-top: 1px solid #1f2937;
             z-index: 100;
         }
@@ -418,9 +413,12 @@
             background: none;
             border: none;
             padding: 4px 8px;
+            gap: 2px;
+            font-weight: 500;
         }
         .bottom-nav .nav-item .nav-icon {
             font-size: 22px;
+            line-height: 1;
             margin-bottom: 2px;
         }
         .bottom-nav .nav-item.active {
@@ -516,143 +514,7 @@
             font-size: 14px;
         }
 
-        /* ===== MINING STATUS ===== */
-        .mining-status-box {
-            background: #1a2a1f;
-            border-radius: 12px;
-            padding: 10px 0;
-            margin: 10px 0 14px 0;
-            font-size: 13px;
-            color: #10b981;
-            overflow: hidden;
-            white-space: nowrap;
-            position: relative;
-            width: 100%;
-            border: 1px solid #1f3a2f;
-        }
-        .mining-status-box .scrolling-text {
-            display: inline-block;
-            white-space: nowrap;
-            animation: scrollTextLoop 25s linear infinite;
-            padding-left: 10px;
-        }
-        @keyframes scrollTextLoop {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-100%);
-            }
-        }
-        .mining-status-box:hover .scrolling-text {
-            animation-play-state: paused;
-        }
-
-        /* ===== NOTIFICATION TOAST ===== */
-        .mining-notification {
-            position: fixed;
-            bottom: 80px;
-            left: 16px;
-            right: 16px;
-            background: #10b981;
-            color: #fff;
-            padding: 14px 18px;
-            border-radius: 14px;
-            text-align: center;
-            z-index: 3000;
-            font-weight: 500;
-            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);
-            animation: fadeOut 4.5s forwards;
-        }
-        @keyframes fadeOut {
-            0% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            70% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-30px);
-                display: none;
-            }
-        }
-
-        /* ===== POPUP SUCCESS ===== */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.92);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            padding: 20px;
-        }
-        .popup-overlay .popup-box {
-            background: #1a1a2e;
-            border-radius: 28px;
-            padding: 28px 20px;
-            width: 100%;
-            max-width: 380px;
-            text-align: center;
-            border: 1px solid #2a2a3e;
-        }
-        .popup-overlay .popup-box .emoji {
-            font-size: 56px;
-            margin-bottom: 12px;
-        }
-        .popup-overlay .popup-box .popup-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-        .popup-overlay .popup-box .popup-title.green {
-            color: #10b981;
-        }
-        .popup-overlay .popup-box .popup-sub {
-            color: #9ca3af;
-            font-size: 14px;
-            margin-bottom: 16px;
-        }
-        .popup-overlay .popup-box .popup-amount {
-            font-size: 38px;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-        .popup-overlay .popup-box .popup-amount.negative {
-            color: #f87171;
-        }
-        .popup-overlay .popup-box .popup-amount.positive {
-            color: #34d399;
-        }
-        .popup-overlay .popup-box .popup-detail {
-            background: #0a0a0a;
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 20px;
-        }
-        .popup-overlay .popup-box .popup-detail .name {
-            font-weight: 500;
-            font-size: 15px;
-        }
-        .popup-overlay .popup-box .popup-detail .meta {
-            font-size: 13px;
-            color: #9ca3af;
-        }
-        .popup-overlay .popup-box .popup-actions {
-            display: flex;
-            gap: 12px;
-        }
-        .popup-overlay .popup-box .popup-actions .btn {
-            flex: 1;
-        }
-
-        /* ===== INPUTS (for pages inside dynamic) ===== */
+        /* ===== INPUTS ===== */
         .input-field {
             width: 100%;
             padding: 14px 16px;
@@ -820,7 +682,7 @@
             flex: 1;
         }
 
-        /* ===== BACK BUTTON (for dynamic pages) ===== */
+        /* ===== PAGE HEADER ===== */
         .page-header {
             display: flex;
             justify-content: space-between;
@@ -931,40 +793,136 @@
             min-width: 160px;
         }
 
-        /* ===== PROFILE BADGE ON DASHBOARD ===== */
-        .profile-badge-dot {
-            position: absolute;
-            top: -2px;
-            right: -4px;
-            width: 12px;
-            height: 12px;
-            background: #ef4444;
-            border-radius: 50%;
-            border: 2px solid #0a0a0a;
-            display: none;
+        /* ===== LOGIN PAGE (from IMG_2666.png) ===== */
+        .login-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0 20px 0;
         }
-        .avatar-wrapper {
-            position: relative;
-            display: inline-block;
+        .login-header .time {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .login-header .right-actions {
+            display: flex;
+            gap: 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .login-header .right-actions .help {
+            color: #10b981;
+            cursor: pointer;
+        }
+        .login-header .right-actions .pay {
+            color: #fff;
+            cursor: pointer;
+        }
+        .login-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .login-sub {
+            color: #9ca3af;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .login-lost-link {
+            color: #10b981;
+            font-size: 13px;
+            cursor: pointer;
+            display: block;
+            margin: -8px 0 16px 0;
+        }
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #9ca3af;
+        }
+        .login-footer .signup-link {
+            color: #10b981;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .login-footer .cbn-text {
+            color: #6b7280;
+            font-size: 11px;
+            margin-top: 12px;
         }
 
-        /* ===== RESPONSIVE TWEAKS ===== */
-        @media (max-width: 400px) {
-            .balance-card .amount {
-                font-size: 32px;
-            }
-            .services-grid {
-                gap: 8px;
-                padding: 12px 8px;
-            }
-            .services-grid .service-item .icon {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-            }
-            .services-grid .service-item .label {
-                font-size: 10px;
-            }
+        /* ===== POPUP ===== */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.92);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 20px;
+        }
+        .popup-overlay .popup-box {
+            background: #1a1a2e;
+            border-radius: 28px;
+            padding: 28px 20px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            border: 1px solid #2a2a3e;
+        }
+        .popup-overlay .popup-box .emoji {
+            font-size: 56px;
+            margin-bottom: 12px;
+        }
+        .popup-overlay .popup-box .popup-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .popup-overlay .popup-box .popup-title.green {
+            color: #10b981;
+        }
+        .popup-overlay .popup-box .popup-sub {
+            color: #9ca3af;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        .popup-overlay .popup-box .popup-amount {
+            font-size: 38px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .popup-overlay .popup-box .popup-amount.negative {
+            color: #f87171;
+        }
+        .popup-overlay .popup-box .popup-amount.positive {
+            color: #34d399;
+        }
+        .popup-overlay .popup-box .popup-detail {
+            background: #0a0a0a;
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 20px;
+        }
+        .popup-overlay .popup-box .popup-detail .name {
+            font-weight: 500;
+            font-size: 15px;
+        }
+        .popup-overlay .popup-box .popup-detail .meta {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+        .popup-overlay .popup-box .popup-actions {
+            display: flex;
+            gap: 12px;
+        }
+        .popup-overlay .popup-box .popup-actions .btn {
+            flex: 1;
         }
     </style>
 </head>
@@ -977,7 +935,7 @@
             <div class="dashboard-header">
                 <div class="greeting" style="font-size:22px;">Gpay</div>
                 <div class="header-actions">
-                    <button class="bell" onclick="showHelp()" style="opacity:0.6;">🔔</button>
+                    <button class="bell" onclick="showHelp()" style="opacity:0.6; font-size:20px;">🔔</button>
                 </div>
             </div>
             <div class="welcome-container">
@@ -1007,24 +965,27 @@
             <div class="text-center mt-20" style="color:#9ca3af; font-size:14px;">Already have an account? <span style="color:#10b981; cursor:pointer; font-weight:600;" onclick="showLoginPage()">Sign in</span></div>
         </div>
 
-        <!-- ===== LOGIN PAGE ===== -->
+        <!-- ===== LOGIN PAGE (from IMG_2666.png) ===== -->
         <div id="loginPage" class="hidden">
-            <div class="page-header">
-                <button class="back-btn" onclick="showWelcomePage()">←</button>
-                <span class="title">Log In</span>
-                <button class="help-btn" onclick="showHelp()">❓</button>
+            <div class="login-header">
+                <span class="time">10:27</span>
+                <div class="right-actions">
+                    <span class="help" onclick="showHelp()">Help</span>
+                    <span class="pay" onclick="alert('Pay feature coming soon')">Pay</span>
+                </div>
             </div>
-            <div class="logo-center">Gpay</div>
-            <h2 style="font-size:22px; font-weight:700; margin-bottom:4px;">Welcome Back!</h2>
-            <div style="color:#9ca3af; margin-bottom:20px; font-size:14px;">Log in to your account to continue</div>
-            <input type="email" id="loginEmail" class="input-field" placeholder="Your Email">
-            <input type="password" id="loginPassword" class="input-field" placeholder="Password">
-            <div id="loginError" class="error"></div>
-            <button class="btn w-full" onclick="login()">Sign In</button>
-            <div class="text-center mt-20" style="color:#9ca3af; font-size:14px;">Don't have an account? <span style="color:#10b981; cursor:pointer; font-weight:600;" onclick="showSignupPage()">Create one</span></div>
+            <div class="login-title">Log in to your account</div>
+            <input type="text" id="loginEmail" class="input-field" placeholder="Enter your Mobile No./Email">
+            <span class="login-lost-link" onclick="showHelp()">Lost Your Mobile Number, Change Now</span>
+            <button class="btn w-full" onclick="login()" style="font-size:18px; padding:16px;">NEXT</button>
+            <div id="loginError" class="error" style="margin-top:10px;"></div>
+            <div class="login-footer">
+                Don't have an account? <span class="signup-link" onclick="showSignupPage()">Click here to Sign Up</span>
+                <div class="cbn-text">Licensed by the CBN and insured by the |NDIC</div>
+            </div>
         </div>
 
-        <!-- ===== DASHBOARD PAGE (REDESIGNED) ===== -->
+        <!-- ===== DASHBOARD PAGE ===== -->
         <div id="dashboardPage" class="hidden">
 
             <!-- Header -->
@@ -1032,15 +993,12 @@
                 <div class="greeting">Hi, <span id="userName">User</span></div>
                 <div class="header-actions">
                     <button class="bell" onclick="showTransactionHistory()">🔔 <span class="badge" id="notificationBadge" style="display:none;">1</span></button>
-                    <div class="avatar-wrapper" onclick="showProfile()">
-                        <div class="avatar" id="userAvatar">👤</div>
-                        <span class="profile-badge-dot" id="profileBadgeDot"></span>
+                    <div class="avatar" id="userAvatar" onclick="showProfile()">
+                        <span id="avatarText">👤</span>
+                        <span class="badge-dot" id="profileBadgeDot"></span>
                     </div>
                 </div>
             </div>
-
-            <!-- Mining Status (dynamic) -->
-            <div id="miningStatusContainer"></div>
 
             <!-- Balance Card -->
             <div class="balance-card">
@@ -1051,39 +1009,55 @@
                 <div class="amount" id="userBalance">₦0</div>
                 <div class="action-row">
                     <button class="btn btn-primary" onclick="showAddMoney()">+ Add Money</button>
+                    <button class="btn" onclick="alert('To OPay coming soon')">To OPay</button>
                     <button class="btn" onclick="showWithdrawPage()">To Bank</button>
                     <button class="btn" onclick="showWithdrawPage()">Withdraw</button>
                 </div>
             </div>
 
-            <!-- Warning Banner -->
-            <div class="warning-banner" id="warningBanner" style="display:none;">
-                <div class="msg"><strong>Your BVN and NIN info do not...</strong><br>Click to view more details</div>
-                <button class="go-btn" onclick="showHelp()">Go</button>
-            </div>
-
-            <!-- Promo Card -->
-            <div class="promo-card" onclick="alert('Promo details coming soon!')">
-                <div class="left">
-                    <span class="icon">📈</span>
-                    <div class="text">
-                        <div class="title">Up to 6%</div>
-                        <div class="sub">Earn up to 6% returns</div>
-                    </div>
+            <!-- BVN Warning Banner -->
+            <div class="bvn-banner" id="bvnBanner">
+                <div class="msg">
+                    <strong>Your BVN and NIN info do not...</strong>
+                    <span class="sub">Click to view more details</span>
                 </div>
-                <div class="right">6%</div>
+                <button class="go-btn" onclick="showHelp()">Go</button>
             </div>
 
             <!-- Services Grid -->
             <div class="services-grid">
-                <div class="service-item" onclick="showBuyAirtime()"><div class="icon">📱</div><div class="label">Airtime</div></div>
-                <div class="service-item" onclick="showBuyData()"><div class="icon">🌐</div><div class="label">Data</div></div>
-                <div class="service-item" onclick="alert('Betting coming soon')"><div class="icon">🎲</div><div class="label">Betting</div></div>
-                <div class="service-item" onclick="alert('TV coming soon')"><div class="icon">📺</div><div class="label">TV</div></div>
-                <div class="service-item" onclick="alert('SafeBox coming soon')"><div class="icon">🔒</div><div class="label">SafeBox</div></div>
-                <div class="service-item" onclick="alert('Loan coming soon')"><div class="icon">💰</div><div class="label">Loan</div></div>
-                <div class="service-item" onclick="openWhatsApp()"><div class="icon">👥</div><div class="label">Invitation</div></div>
-                <div class="service-item" onclick="showHelp()"><div class="icon">❓</div><div class="label">More</div></div>
+                <div class="service-item" onclick="showBuyAirtime()">
+                    <div class="icon">📱</div>
+                    <div class="label">Airtime</div>
+                </div>
+                <div class="service-item" onclick="showBuyData()">
+                    <div class="icon">🌐</div>
+                    <div class="label">Data</div>
+                </div>
+                <div class="service-item" onclick="alert('Betting coming soon')">
+                    <div class="icon">🎲</div>
+                    <div class="label">Betting</div>
+                </div>
+                <div class="service-item" onclick="alert('TV coming soon')">
+                    <div class="icon">📺</div>
+                    <div class="label">TV</div>
+                </div>
+                <div class="service-item" onclick="alert('SafeBox coming soon')">
+                    <div class="icon">🔒</div>
+                    <div class="label">SafeBox</div>
+                </div>
+                <div class="service-item" onclick="alert('Loan coming soon')">
+                    <div class="icon">💰</div>
+                    <div class="label">Loan</div>
+                </div>
+                <div class="service-item" onclick="openWhatsApp()">
+                    <div class="icon">👥</div>
+                    <div class="label">Invitation</div>
+                </div>
+                <div class="service-item" onclick="showHelp()">
+                    <div class="icon">❓</div>
+                    <div class="label">More</div>
+                </div>
             </div>
 
             <!-- Task Section -->
@@ -1103,16 +1077,31 @@
 
             <!-- Bottom Navigation -->
             <div class="bottom-nav">
-                <button class="nav-item active" onclick="alert('Home')"><span class="nav-icon">🏠</span>Home</button>
-                <button class="nav-item" onclick="alert('Rewards')"><span class="nav-icon">🎁</span>Rewards</button>
-                <button class="nav-item" onclick="alert('Finance')"><span class="nav-icon">💳</span>Finance</button>
-                <button class="nav-item" onclick="alert('Cards')"><span class="nav-icon">💳</span>Cards</button>
-                <button class="nav-item" onclick="showProfile()"><span class="nav-icon">👤</span>Me</button>
+                <button class="nav-item active" onclick="alert('Home')">
+                    <span class="nav-icon">⌂</span>
+                    Home
+                </button>
+                <button class="nav-item" onclick="alert('Rewards')">
+                    <span class="nav-icon">✦</span>
+                    Rewards
+                </button>
+                <button class="nav-item" onclick="alert('Finance')">
+                    <span class="nav-icon">◆</span>
+                    Finance
+                </button>
+                <button class="nav-item" onclick="alert('Cards')">
+                    <span class="nav-icon">▣</span>
+                    Cards
+                </button>
+                <button class="nav-item" onclick="showProfile()">
+                    <span class="nav-icon">◉</span>
+                    Me
+                </button>
             </div>
 
         </div>
 
-        <!-- ===== DYNAMIC CONTENT CONTAINER ===== -->
+        <!-- ===== DYNAMIC CONTENT ===== -->
         <div id="dynamicContent"></div>
     </div>
 
@@ -1158,7 +1147,6 @@
         // ============================================================
         let currentUser = null;
         let users = [];
-        let windowScrollInterval = null;
 
         // ============================================================
         // STORAGE HELPERS
@@ -1182,10 +1170,7 @@
             document.getElementById('dashboardPage').classList.add('hidden');
             let el = document.getElementById(id);
             if (el) el.classList.remove('hidden');
-            if (id === 'dashboardPage' && currentUser) {
-                updateDashboard();
-                updateProfileBadge();
-            }
+            if (id === 'dashboardPage' && currentUser) updateDashboard();
         }
 
         function showWelcomePage() { showPage('welcomePage'); }
@@ -1195,16 +1180,9 @@
         function showLoginPage() { showPage('loginPage'); }
 
         function showDashboardPage() {
-            if (windowScrollInterval) clearInterval(windowScrollInterval);
             showPage('dashboardPage');
             updateDashboard();
             updateProfileBadge();
-            if (currentUser && currentUser.miningActive) {
-                windowScrollInterval = setInterval(function() {
-                    if (currentUser && currentUser.miningActive) updateDashboard();
-                    else if (windowScrollInterval) clearInterval(windowScrollInterval);
-                }, 1000);
-            }
         }
 
         function closeDynamic() {
@@ -1352,7 +1330,6 @@
                     localStorage.setItem('graypay_current', em);
                     if (currentUser.miningActive) {
                         checkAndClaimMiningRewards();
-                        forceRecoverAllMissedRewards();
                     }
                     showDashboardPage();
                 } catch (error) {
@@ -1379,7 +1356,6 @@
                         } catch (e) {}
                         if (currentUser.miningActive) {
                             checkAndClaimMiningRewards();
-                            forceRecoverAllMissedRewards();
                         }
                         showDashboardPage();
                         return;
@@ -1458,7 +1434,7 @@
         }
 
         // ============================================================
-        // MINING
+        // MINING (background only - no popups, no status bar)
         // ============================================================
         function checkAndClaimMiningRewards() {
             if (!currentUser || !currentUser.miningActive) return false;
@@ -1471,7 +1447,6 @@
                     currentUser.miningClaimed = 20000;
                     currentUser.miningActive = false;
                     saveUsers();
-                    showMiningNotification(remaining, 'complete');
                     updateDashboard();
                 }
                 return true;
@@ -1487,48 +1462,18 @@
                 currentUser.miningClaimed = alreadyClaimed + reward;
                 currentUser.lastClaimTime = now;
                 saveUsers();
-                showMiningNotification(reward, reward / (20000 / 24));
                 updateDashboard();
                 claimed = true;
             }
             return claimed;
         }
 
-        function forceRecoverAllMissedRewards() {
-            if (!currentUser || !currentUser.miningActive) return false;
-            let startTime = currentUser.miningStart;
-            let now = Date.now();
-            let elapsedHours = (now - startTime) / (60 * 60 * 1000);
-            let totalEarned = Math.min(20000, Math.floor(elapsedHours * (20000 / 24)));
-            let alreadyClaimed = currentUser.miningClaimed || 0;
-            let pending = totalEarned - alreadyClaimed;
-            if (pending > 0) {
-                currentUser.balance += pending;
-                currentUser.miningClaimed = totalEarned;
-                currentUser.lastClaimTime = now;
-                saveUsers();
-                showMiningNotification(pending, pending / (20000 / 24));
-                updateDashboard();
-                return true;
-            }
-            return false;
-        }
-
         function startMining() {
             if (!currentUser) return;
             if (currentUser.miningActive) {
-                let claimed = checkAndClaimMiningRewards();
+                checkAndClaimMiningRewards();
                 updateDashboard();
-                if (claimed) alert('⛏️ Mining rewards have been added to your balance!');
-                else {
-                    let lastClaim = currentUser.lastClaimTime || currentUser.miningStart;
-                    let nextRewardTime = lastClaim + (60 * 60 * 1000);
-                    let remainingMs = nextRewardTime - Date.now();
-                    if (remainingMs > 0) {
-                        let remainingMinutes = Math.floor(remainingMs / (60 * 1000));
-                        alert('Mining is active! Next reward in about ' + remainingMinutes + ' minutes.');
-                    } else alert('Mining is active! Check again in a few moments.');
-                }
+                alert('⛏️ Mining rewards have been added to your balance!');
                 return;
             }
             currentUser.miningActive = true;
@@ -1537,21 +1482,8 @@
             currentUser.lastClaimTime = Date.now();
             currentUser.miningClaimed = 0;
             saveUsers();
-            alert('✅ Mining started! You will earn ₦20,000 over 24 hours. ₦833 will be added every hour.');
+            alert('✅ Mining started! You will earn ₦20,000 over 24 hours.');
             updateDashboard();
-        }
-
-        function showMiningNotification(amount, hours) {
-            let notif = document.createElement('div');
-            notif.className = 'mining-notification';
-            if (hours === 'complete') {
-                notif.innerHTML = '✅ MINING COMPLETE! You earned ₦' + amount.toLocaleString() + ' total!';
-            } else {
-                let h = Math.round(hours);
-                notif.innerHTML = '⛏️ You earned ₦' + amount.toLocaleString() + ' from ' + h + ' hour(s) of mining!';
-            }
-            document.body.appendChild(notif);
-            setTimeout(() => { if (notif) notif.remove(); }, 4500);
         }
 
         // ============================================================
@@ -1563,40 +1495,11 @@
             document.getElementById('userName').innerText = currentUser.firstname;
             document.getElementById('userBalance').innerHTML = '₦' + currentUser.balance.toLocaleString();
 
-            // Mining status
-            let container = document.getElementById('miningStatusContainer');
-            let existing = document.getElementById('miningStatusBox');
-            if (existing) existing.remove();
-
-            if (currentUser.miningActive) {
-                let remainingMs = currentUser.miningEnd - Date.now();
-                let remainingHours = Math.floor(remainingMs / (60 * 60 * 1000));
-                let remainingMinutes = Math.floor((remainingMs % (60 * 60 * 1000)) / (60 * 1000));
-                let remainingSeconds = Math.floor((remainingMs % (60 * 1000)) / 1000);
-                let lastClaim = currentUser.lastClaimTime || currentUser.miningStart;
-                let nextRewardMs = (lastClaim + (60 * 60 * 1000)) - Date.now();
-                let nextRewardMinutes = Math.floor(nextRewardMs / (60 * 1000));
-                let nextRewardSeconds = Math.floor((nextRewardMs % (60 * 1000)) / 1000);
-                if (nextRewardMs < 0) { nextRewardMinutes = 0;
-                    nextRewardSeconds = 0; }
-                let claimed = currentUser.miningClaimed || 0;
-                let msg =
-                    ' ⛏️ MINING ACTIVE! ' + remainingHours + 'h ' + remainingMinutes + 'm ' + remainingSeconds +
-                    's remaining | Next reward: ' + nextRewardMinutes + 'm ' + nextRewardSeconds +
-                    's | Claimed: ₦' + claimed.toLocaleString() + ' / ₦20,000 🚀 ••• ';
-                let fullMsg = msg + msg;
-                let div = document.createElement('div');
-                div.id = 'miningStatusBox';
-                div.className = 'mining-status-box';
-                div.innerHTML = '<div class="scrolling-text">' + fullMsg + '</div>';
-                container.appendChild(div);
-            }
-
             // Avatar
-            let avatar = document.getElementById('userAvatar');
-            if (avatar) {
+            let avatarText = document.getElementById('avatarText');
+            if (avatarText) {
                 let name = currentUser.firstname + ' ' + currentUser.surname;
-                avatar.innerText = getInitials(name);
+                avatarText.innerText = getInitials(name);
             }
         }
 
@@ -1621,7 +1524,7 @@
         }
 
         // ============================================================
-        // ADD MONEY (demo)
+        // ADD MONEY
         // ============================================================
         function showAddMoney() {
             alert('💳 Add Money feature coming soon!\n\nYou can earn more by mining or completing tasks.');
