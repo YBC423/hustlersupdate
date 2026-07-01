@@ -1541,7 +1541,7 @@ cursor: pointer;
 opacity: 0.7;
 }
 
-/* ===== ACCOUNT PREVIEW ===== */
+/* ===== ACCOUNT PREVIEW - Clickable ===== */
 .bank-account-preview {
 background: #1a1a2e;
 border-radius: 12px;
@@ -1550,9 +1550,13 @@ margin-bottom: 16px;
 border: 1px solid #10b981;
 animation: fadeIn 0.3s ease;
 display: none;
+cursor: pointer;
 }
 .bank-account-preview.show {
 display: block;
+}
+.bank-account-preview:active {
+opacity: 0.7;
 }
 .bank-account-preview-content {
 display: flex;
@@ -1563,15 +1567,21 @@ gap: 12px;
 width: 44px;
 height: 44px;
 border-radius: 50%;
-background: #10b981;
+background: #ffffff;
 display: flex;
 align-items: center;
 justify-content: center;
-font-size: 18px;
-font-weight: 600;
-color: #fff;
 overflow: hidden;
 flex-shrink: 0;
+}
+.bank-preview-avatar svg {
+width: 24px;
+height: 24px;
+stroke: #10b981;
+stroke-width: 2;
+fill: none;
+stroke-linecap: round;
+stroke-linejoin: round;
 }
 .bank-preview-info {
 flex: 1;
@@ -1592,7 +1602,7 @@ color: #10b981;
 margin-top: 2px;
 }
 
-/* ===== SUCCESS RATE MONITOR (SAME SIZE - NOT INCREASED) ===== */
+/* ===== SUCCESS RATE MONITOR ===== */
 .success-rate-section {
 background: #111827;
 border-radius: 12px;
@@ -1617,7 +1627,7 @@ transition: opacity 0.2s;
 opacity: 0.6;
 }
 
-/* ===== RECENTS SECTION (BIGGER SIZE) ===== */
+/* ===== RECENTS SECTION ===== */
 .bank-recents-section {
 background: #111827;
 border-radius: 16px;
@@ -1740,7 +1750,6 @@ color: #10b981;
 margin-bottom: 10px;
 }
 
-/* Frequently Used Banks - 3 columns, 2 rows like dashboard */
 .freq-banks-grid {
 display: grid;
 grid-template-columns: repeat(3, 1fr);
@@ -1785,7 +1794,6 @@ text-align: center;
 line-height: 1.2;
 }
 
-/* All Banks Grid */
 .all-banks-grid {
 display: grid;
 grid-template-columns: 1fr 1fr;
@@ -1869,6 +1877,173 @@ margin-top: 16px;
 }
 .save-recipient-actions .btn {
 flex: 1;
+}
+
+/* ============================================================
+   CONFIRM TRANSFER PAGE STYLES
+   ============================================================ */
+.confirm-transfer-container {
+padding: 0 0 20px 0;
+}
+.confirm-recipient-card {
+background: #111827;
+border-radius: 16px;
+padding: 16px;
+border: 1px solid #1f2937;
+margin-bottom: 16px;
+display: flex;
+align-items: center;
+gap: 14px;
+}
+.confirm-recipient-avatar {
+width: 44px;
+height: 44px;
+border-radius: 50%;
+background: #ffffff;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+}
+.confirm-recipient-avatar svg {
+width: 24px;
+height: 24px;
+stroke: #10b981;
+stroke-width: 2;
+fill: none;
+stroke-linecap: round;
+stroke-linejoin: round;
+}
+.confirm-recipient-info {
+flex: 1;
+}
+.confirm-recipient-name {
+font-size: 16px;
+font-weight: 600;
+color: #fff;
+}
+.confirm-recipient-detail {
+font-size: 13px;
+color: #9ca3af;
+margin-top: 2px;
+}
+
+.amount-label {
+font-size: 14px;
+font-weight: 500;
+color: #9ca3af;
+margin-bottom: 8px;
+display: block;
+}
+.amount-range {
+font-size: 13px;
+color: #6b7280;
+margin-bottom: 12px;
+}
+.quick-amount-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 8px;
+margin-bottom: 16px;
+}
+.quick-amount-btn {
+padding: 10px;
+background: #1a1a2e;
+border: 1px solid #2a2a3e;
+border-radius: 10px;
+color: #fff;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+transition: all 0.2s;
+text-align: center;
+}
+.quick-amount-btn:active {
+background: #10b981;
+border-color: #10b981;
+}
+.quick-amount-btn.selected {
+background: #10b981;
+border-color: #10b981;
+}
+.amount-input-wrapper {
+margin-bottom: 16px;
+}
+.amount-input-wrapper input {
+width: 100%;
+padding: 14px 16px;
+background: #0a0a0a;
+border: 1px solid #2a2a3e;
+border-radius: 12px;
+color: #fff;
+font-size: 16px;
+outline: none;
+transition: border 0.2s;
+}
+.amount-input-wrapper input:focus {
+border-color: #10b981;
+}
+.amount-input-wrapper input::placeholder {
+color: #6b7280;
+}
+
+.remark-section {
+margin-bottom: 16px;
+}
+.remark-label {
+font-size: 14px;
+font-weight: 500;
+color: #9ca3af;
+display: block;
+margin-bottom: 2px;
+}
+.remark-sub {
+font-size: 12px;
+color: #6b7280;
+margin-bottom: 10px;
+}
+.remark-options {
+display: flex;
+gap: 12px;
+}
+.remark-option {
+padding: 10px 20px;
+background: #1a1a2e;
+border: 1px solid #2a2a3e;
+border-radius: 10px;
+color: #fff;
+font-size: 14px;
+font-weight: 500;
+cursor: pointer;
+transition: all 0.2s;
+}
+.remark-option:active {
+background: #10b981;
+border-color: #10b981;
+}
+.remark-option.selected {
+background: #10b981;
+border-color: #10b981;
+}
+.confirm-btn {
+width: 100%;
+padding: 16px;
+background: #10b981;
+border: none;
+border-radius: 12px;
+color: #fff;
+font-size: 16px;
+font-weight: 600;
+cursor: pointer;
+transition: opacity 0.2s;
+}
+.confirm-btn:active {
+opacity: 0.7;
+}
+.confirm-btn:disabled {
+background: #2a2a2a;
+color: #9ca3af;
+cursor: not-allowed;
 }
 </style>
 </head>
@@ -3672,6 +3847,13 @@ freqHtml += `
 const currentAccountInput = document.getElementById('bankAccountInput');
 let currentAccountNumber = currentAccountInput ? currentAccountInput.value.replace(/\D/g, '') : '';
 
+// Bank icon SVG for avatar
+const bankIconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="2" y="7" width="20" height="14" rx="2"/>
+  <path d="M12 3v4"/>
+  <path d="M8 7l4-4 4 4"/>
+</svg>`;
+
 document.getElementById('dynamicContent').innerHTML = `
 <div class="bank-transfer-container">
 <div class="page-header">
@@ -3710,12 +3892,13 @@ Free transfers for the day: 3
 
 <!-- BOX 3: Next Button -->
 <div class="bank-next-box">
-<button class="bank-next-btn" id="bankNextBtn" onclick="proceedBankTransfer()">Next</button>
+<button class="bank-next-btn" id="bankNextBtn" onclick="openConfirmTransferPage()">Next</button>
 </div>
 
-<div id="bankAccountPreview" class="bank-account-preview">
+<!-- ACCOUNT PREVIEW - Clickable -->
+<div id="bankAccountPreview" class="bank-account-preview" onclick="openConfirmTransferPage()">
 <div class="bank-account-preview-content">
-<div class="bank-preview-avatar" id="bankPreviewAvatar">👤</div>
+<div class="bank-preview-avatar" id="bankPreviewAvatar">${bankIconSvg}</div>
 <div class="bank-preview-info">
 <div class="bank-preview-name" id="bankPreviewName">Invalid Account</div>
 <div class="bank-preview-number" id="bankPreviewNumber">---</div>
@@ -3802,8 +3985,7 @@ nameEl.textContent = 'Invalid Account';
 preview.classList.add('show');
 numberEl.textContent = cleanNumber;
 bankEl.textContent = selectedBank.name;
-const displayName = savedName || tempRecipientName || 'Invalid Account';
-avatarEl.textContent = (savedName || tempRecipientName) ? getInitials(displayName) : '👤';
+// Avatar stays as bank icon (no initials)
 } else {
 preview.classList.remove('show');
 }
@@ -3817,7 +3999,6 @@ const preview = document.getElementById('bankAccountPreview');
 const nameEl = document.getElementById('bankPreviewName');
 const numberEl = document.getElementById('bankPreviewNumber');
 const bankEl = document.getElementById('bankPreviewBank');
-const avatarEl = document.getElementById('bankPreviewAvatar');
 const label = document.getElementById('bankSelectLabel');
 
 if (input) {
@@ -3843,17 +4024,21 @@ nameEl.textContent = 'Invalid Account';
 preview.classList.add('show');
 numberEl.textContent = accountNumber;
 bankEl.textContent = bankName;
-const displayName = savedName || tempRecipientName || 'Invalid Account';
-avatarEl.textContent = (savedName || tempRecipientName) ? getInitials(displayName) : '👤';
+// Avatar stays as bank icon (no initials)
 
 updateNextButtonState();
 }
 
-function proceedBankTransfer() {
+// ============================================================
+// OPEN CONFIRM TRANSFER PAGE
+// ============================================================
+function openConfirmTransferPage() {
 const input = document.getElementById('bankAccountInput');
-const accountNumber = input.value.replace(/\D/g, '');
+const accountNumber = input ? input.value.replace(/\D/g, '') : '';
 const nameEl = document.getElementById('bankPreviewName');
 const name = nameEl ? nameEl.textContent : 'Invalid Account';
+const bankEl = document.getElementById('bankPreviewBank');
+const bankName = bankEl ? bankEl.textContent : '';
 
 if (accountNumber.length !== 10) {
 alert('Please enter a valid 10-digit account number');
@@ -3870,60 +4055,152 @@ alert('Please save the recipient name first by clicking the arrow > on the succe
 return;
 }
 
-const amount = prompt('Enter amount to send (₦):', '1000');
-if (!amount) return;
-const amt = parseInt(amount);
-if (isNaN(amt) || amt < 100) {
-alert('Minimum amount is ₦100');
+// Build confirm transfer page
+const bankIconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="2" y="7" width="20" height="14" rx="2"/>
+  <path d="M12 3v4"/>
+  <path d="M8 7l4-4 4 4"/>
+</svg>`;
+
+document.getElementById('dynamicContent').innerHTML = `
+<div class="confirm-transfer-container">
+<div class="page-header">
+<button class="back-btn" onclick="renderBankTransferPage()">←</button>
+<span class="title">Transfer To Bank Account</span>
+<button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
+</div>
+
+<div class="confirm-recipient-card">
+<div class="confirm-recipient-avatar">${bankIconSvg}</div>
+<div class="confirm-recipient-info">
+<div class="confirm-recipient-name">${name}</div>
+<div class="confirm-recipient-detail">${accountNumber} ${selectedBank.name}</div>
+</div>
+</div>
+
+<label class="amount-label">Amount</label>
+<div class="amount-range">₦100.00-5,000,000.00</div>
+
+<div class="quick-amount-grid">
+<button class="quick-amount-btn" onclick="setAmount(this, 500)">₦500</button>
+<button class="quick-amount-btn" onclick="setAmount(this, 1000)">₦1,000</button>
+<button class="quick-amount-btn" onclick="setAmount(this, 2000)">₦2,000</button>
+<button class="quick-amount-btn" onclick="setAmount(this, 5000)">₦5,000</button>
+<button class="quick-amount-btn" onclick="setAmount(this, 9999)">₦9,999</button>
+<button class="quick-amount-btn" onclick="setAmount(this, 10000)">₦10,000</button>
+</div>
+
+<div class="amount-input-wrapper">
+<input type="number" id="confirmAmountInput" placeholder="Enter amount" min="100" max="5000000">
+</div>
+
+<div class="remark-section">
+<label class="remark-label">Remark</label>
+<span class="remark-sub">What's this for? (Optional)</span>
+<div class="remark-options">
+<button class="remark-option" onclick="selectRemark(this, 'Purchase')">Purchase</button>
+<button class="remark-option" onclick="selectRemark(this, 'Personal')">Personal</button>
+</div>
+</div>
+
+<button class="confirm-btn" id="confirmBtn" onclick="processConfirmTransfer()">Confirm</button>
+</div>
+`;
+
+showPage('dashboardPage');
+document.getElementById('dashboardPage').classList.add('hidden');
+document.getElementById('dynamicContent').style.display = 'block';
+
+// Store recipient data for the confirm page
+window._confirmData = {
+name: name,
+accountNumber: accountNumber,
+bankName: selectedBank.name
+};
+}
+
+function setAmount(btn, amount) {
+// Remove selected class from all amount buttons
+document.querySelectorAll('.quick-amount-btn').forEach(b => b.classList.remove('selected'));
+btn.classList.add('selected');
+document.getElementById('confirmAmountInput').value = amount;
+}
+
+function selectRemark(btn, remark) {
+document.querySelectorAll('.remark-option').forEach(b => b.classList.remove('selected'));
+btn.classList.add('selected');
+window._selectedRemark = remark;
+}
+
+function processConfirmTransfer() {
+const amountInput = document.getElementById('confirmAmountInput');
+const amount = parseInt(amountInput.value);
+
+if (!amount || amount < 100) {
+alert('Please enter a valid amount (minimum ₦100)');
 return;
 }
-if (amt > currentUser.balance) {
+
+if (amount > 5000000) {
+alert('Maximum amount is ₦5,000,000');
+return;
+}
+
+if (amount > currentUser.balance) {
 alert('Insufficient balance. You have ₦' + currentUser.balance.toLocaleString());
 return;
 }
 
-if (!confirm(`Confirm transfer to:\n\n${name}\n${accountNumber}\n${selectedBank.name}\nAmount: ₦${amt.toLocaleString()}\n\nDo you want to proceed?`)) {
+const data = window._confirmData;
+if (!data) {
+alert('Recipient data not found');
+return;
+}
+
+const remark = window._selectedRemark || '';
+
+if (!confirm(`Confirm transfer to:\n\n${data.name}\n${data.accountNumber}\n${data.bankName}\nAmount: ₦${amount.toLocaleString()}\nRemark: ${remark || 'None'}\n\nDo you want to proceed?`)) {
 return;
 }
 
 showLoadingOverlay('Processing bank transfer...');
 setTimeout(() => {
-currentUser.balance -= amt;
+currentUser.balance -= amount;
 
 let tid = 'BNK' + Date.now() + Math.floor(Math.random() * 1000);
 let tx = {
 id: tid,
 type: 'Bank Transfer',
-amount: amt,
+amount: amount,
 date: new Date().toLocaleString(),
 dateObj: new Date(),
 status: 'Success',
 fullDetails: {
 transactionType: 'Bank Transfer',
-amount: amt,
+amount: amount,
 fees: 10,
 taxes: 0.75,
 sender: currentUser.firstname + ' ' + currentUser.surname,
-recipient: name,
-recipientAccount: accountNumber,
-recipientBank: selectedBank.name,
+recipient: data.name,
+recipientAccount: data.accountNumber,
+recipientBank: data.bankName,
 transactionId: tid,
-note: 'Bank transfer to ' + selectedBank.name
+note: 'Bank transfer to ' + data.bankName + (remark ? ' - ' + remark : '')
 }
 };
 currentUser.transactions.unshift(tx);
 saveUsers();
 
 // PERMANENTLY SAVE the name linked to account + bank
-saveRecipientName(accountNumber, selectedBank.name, name);
+saveRecipientName(data.accountNumber, data.bankName, data.name);
 
 const recentItem = {
-bankName: selectedBank.name,
-accountNumber: accountNumber,
-accountName: name,
+bankName: data.bankName,
+accountNumber: data.accountNumber,
+accountName: data.name,
 date: new Date().toISOString()
 };
-bankRecents = bankRecents.filter(r => !(r.accountNumber === accountNumber && r.bankName === selectedBank.name));
+bankRecents = bankRecents.filter(r => !(r.accountNumber === data.accountNumber && r.bankName === data.bankName));
 bankRecents.unshift(recentItem);
 if (bankRecents.length > 10) bankRecents.pop();
 saveBankData();
@@ -3932,7 +4209,7 @@ saveBankData();
 tempRecipientName = null;
 
 hideLoadingOverlay();
-showBankSuccessPopup(amt, name, accountNumber, selectedBank.name, tid);
+showBankSuccessPopup(amount, data.name, data.accountNumber, data.bankName, tid);
 }, 3000);
 }
 
@@ -4096,16 +4373,13 @@ const accountNumber = input2 ? input2.value.replace(/\D/g, '') : '';
 const preview = document.getElementById('bankAccountPreview');
 if (preview && accountNumber.length === 10 && selectedBank) {
 const nameEl = document.getElementById('bankPreviewName');
-const avatarEl = document.getElementById('bankPreviewAvatar');
 if (nameEl) {
 // Check if there's a saved name (permanent) first
 let savedName = getSavedName(accountNumber, selectedBank.name);
 if (savedName) {
 nameEl.textContent = savedName;
-avatarEl.textContent = getInitials(savedName);
 } else {
 nameEl.textContent = tempRecipientName;
-avatarEl.textContent = getInitials(tempRecipientName);
 }
 }
 preview.classList.add('show');
