@@ -1093,6 +1093,268 @@ border-radius: 50%;
 animation: spin 1s linear infinite;
 margin: 0 auto 12px auto;
 }
+
+/* ============================================================
+   OPAY TRANSFER PAGE STYLES
+   ============================================================ */
+.discount-banner {
+background: linear-gradient(135deg, #10b981, #059669);
+border-radius: 16px;
+padding: 16px 20px;
+margin-bottom: 12px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+position: relative;
+overflow: hidden;
+}
+.discount-banner::after {
+content: '🎉';
+position: absolute;
+right: -10px;
+top: -10px;
+font-size: 80px;
+opacity: 0.15;
+}
+.discount-content {
+display: flex;
+justify-content: space-between;
+align-items: center;
+width: 100%;
+}
+.discount-title {
+font-size: 14px;
+font-weight: 600;
+color: #fff;
+}
+.discount-sub {
+font-size: 12px;
+color: rgba(255,255,255,0.8);
+margin-top: 2px;
+}
+.claim-discount-btn {
+background: #000;
+color: #10b981;
+border: none;
+padding: 6px 20px;
+border-radius: 20px;
+font-weight: 600;
+font-size: 13px;
+cursor: pointer;
+}
+.discount-badge {
+position: absolute;
+right: 16px;
+top: 50%;
+transform: translateY(-50%);
+font-size: 28px;
+font-weight: 700;
+color: rgba(255,255,255,0.2);
+}
+
+.instant-info {
+background: #111827;
+border-radius: 12px;
+padding: 10px 16px;
+margin-bottom: 16px;
+font-size: 13px;
+color: #10b981;
+border: 1px solid #1f2937;
+text-align: center;
+}
+
+.recipient-section {
+background: #111827;
+border-radius: 16px;
+padding: 16px;
+margin-bottom: 16px;
+border: 1px solid #1f2937;
+}
+.recipient-label {
+font-size: 14px;
+font-weight: 500;
+color: #9ca3af;
+margin-bottom: 8px;
+}
+.recipient-input-wrapper {
+position: relative;
+}
+.recipient-input {
+width: 100%;
+padding: 12px 16px;
+background: #0a0a0a;
+border: 1px solid #2a2a3e;
+border-radius: 12px;
+color: #fff;
+font-size: 16px;
+outline: none;
+transition: border 0.2s;
+}
+.recipient-input:focus {
+border-color: #10b981;
+}
+.recipient-input::placeholder {
+color: #6b7280;
+}
+.ask-link {
+font-size: 13px;
+color: #9ca3af;
+margin-top: 10px;
+cursor: pointer;
+}
+.ask-link span {
+color: #10b981;
+font-weight: 500;
+}
+
+.account-preview {
+background: #1a1a2e;
+border-radius: 12px;
+padding: 14px 16px;
+margin-bottom: 16px;
+border: 1px solid #10b981;
+animation: fadeIn 0.3s ease;
+}
+.account-preview-content {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.account-preview-avatar {
+width: 44px;
+height: 44px;
+border-radius: 50%;
+background: #10b981;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 18px;
+font-weight: 600;
+color: #fff;
+overflow: hidden;
+flex-shrink: 0;
+}
+.account-preview-avatar img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+.account-preview-info {
+flex: 1;
+}
+.account-preview-name {
+font-size: 16px;
+font-weight: 600;
+color: #fff;
+}
+.account-preview-number {
+font-size: 13px;
+color: #9ca3af;
+margin-top: 2px;
+}
+
+.recents-section {
+background: #111827;
+border-radius: 16px;
+padding: 16px;
+border: 1px solid #1f2937;
+}
+.recents-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 6px;
+}
+.recents-title {
+font-size: 15px;
+font-weight: 600;
+color: #fff;
+}
+
+.recent-contact {
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 10px 0;
+border-bottom: 1px solid #1f2937;
+cursor: pointer;
+transition: background 0.2s;
+border-radius: 8px;
+padding: 10px 8px;
+}
+.recent-contact:active {
+background: #1a1a2e;
+}
+.recent-contact:last-child {
+border-bottom: none;
+}
+.recent-avatar {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+background: #2a2a3e;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 14px;
+font-weight: 600;
+color: #10b981;
+flex-shrink: 0;
+}
+.recent-info {
+flex: 1;
+}
+.recent-name {
+font-size: 14px;
+font-weight: 500;
+color: #fff;
+}
+.recent-number {
+font-size: 12px;
+color: #9ca3af;
+}
+
+.view-all-link {
+text-align: center;
+color: #10b981;
+font-size: 14px;
+font-weight: 500;
+padding: 12px 0 4px 0;
+cursor: pointer;
+}
+
+.opay-footer {
+display: flex;
+align-items: center;
+gap: 12px;
+background: #111827;
+border-radius: 16px;
+padding: 16px;
+margin-top: 16px;
+border: 1px solid #1f2937;
+cursor: pointer;
+transition: background 0.2s;
+}
+.opay-footer:active {
+background: #1a1a2e;
+}
+.opay-footer-icon {
+font-size: 28px;
+}
+.opay-footer-title {
+font-size: 14px;
+font-weight: 500;
+color: #fff;
+}
+.opay-footer-sub {
+font-size: 12px;
+color: #9ca3af;
+}
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(-10px); }
+to { opacity: 1; transform: translateY(0); }
+}
 </style>
 </head>
 <body>
@@ -1209,7 +1471,7 @@ Don't have an account? <span class="signup-link" onclick="showSignupPage()">Clic
 <!-- Action Buttons Card -->
 <div class="action-card">
 <div class="action-buttons">
-<button class="action-btn" onclick="alert('To OPay coming soon')">
+<button class="action-btn" onclick="showOpayTransfer()">
 <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 <circle cx="12" cy="12" r="10"/>
 <path d="M8 12h8"/>
@@ -2261,6 +2523,251 @@ if (type === 'Withdrawal') showWithdrawPage();
 else if (type === 'Airtime') showBuyAirtime();
 else if (type === 'Data') showBuyData();
 else showDashboardPage();
+}
+
+// ============================================================
+// OPAY TRANSFER FUNCTIONS
+// ============================================================
+function showOpayTransfer() {
+if (!currentUser) {
+alert('Please login first');
+return;
+}
+    
+const recentContacts = [
+{ name: 'HASSAN USMAN', number: '9153396491', type: 'BizPayment', favorite: true },
+{ name: 'DAHA AUWALU', number: '9078513030', type: '', favorite: false },
+{ name: 'MUSTAPHA HASSAN', number: '7072498050', type: '', favorite: false },
+{ name: 'TIJJANI ALIYU', number: '8132017850', type: '', favorite: true },
+{ name: 'FATIMA ABDULLAHI', number: '8165432109', type: '', favorite: false },
+];
+    
+let recentHtml = '';
+let favoritesHtml = '';
+const favorites = recentContacts.filter(c => c.favorite);
+const others = recentContacts.filter(c => !c.favorite);
+    
+if (favorites.length > 0) {
+favoritesHtml = `<div style="color:#9ca3af; font-size:12px; margin:12px 0 6px 0;">Favourites</div>`;
+favorites.forEach(contact => {
+favoritesHtml += `
+<div class="recent-contact" onclick="selectOpayContact('${contact.number}', '${contact.name}')">
+<div class="recent-avatar">${getInitials(contact.name)}</div>
+<div class="recent-info">
+<div class="recent-name">${contact.name}</div>
+<div class="recent-number">${contact.number} ${contact.type ? '• ' + contact.type : ''}</div>
+</div>
+</div>
+`;
+});
+}
+    
+others.forEach(contact => {
+recentHtml += `
+<div class="recent-contact" onclick="selectOpayContact('${contact.number}', '${contact.name}')">
+<div class="recent-avatar">${getInitials(contact.name)}</div>
+<div class="recent-info">
+<div class="recent-name">${contact.name}</div>
+<div class="recent-number">${contact.number} ${contact.type ? '• ' + contact.type : ''}</div>
+</div>
+</div>
+`;
+});
+    
+document.getElementById('dynamicContent').innerHTML = `
+<div id="opayTransferView">
+<div class="page-header">
+<button class="back-btn" onclick="closeDynamic()">←</button>
+<span class="title">Transfer To OPay Account</span>
+<button class="help-btn" onclick="showTransactionHistory()">📊</button>
+</div>
+        
+<div class="discount-banner">
+<div class="discount-content">
+<div>
+<div class="discount-title">Claim 8 Discounts with</div>
+<div class="discount-sub">on any Bill</div>
+</div>
+<button class="claim-discount-btn" onclick="alert('🎉 Discount claimed! Check your rewards.')">Claim</button>
+</div>
+<div class="discount-badge">120</div>
+</div>
+        
+<div class="instant-info">⚡ Instant, Zero Issues, Free</div>
+        
+<div class="recipient-section">
+<div class="recipient-label">Recipient Account</div>
+<div class="recipient-input-wrapper">
+<input type="tel" id="opayPhoneInput" class="recipient-input" placeholder="Phone No./OPay Account No./Name" oninput="checkOpayNumber(this.value)">
+</div>
+<div class="ask-link" onclick="alert('Share your OPay number with the recipient')">
+Don't know the recipient's OPay account number? <span>Ask them ></span>
+</div>
+</div>
+        
+<div id="opayAccountPreview" style="display:none;" class="account-preview">
+<div class="account-preview-content">
+<div class="account-preview-avatar" id="opayPreviewAvatar">👤</div>
+<div class="account-preview-info">
+<div class="account-preview-name" id="opayPreviewName">Loading...</div>
+<div class="account-preview-number" id="opayPreviewNumber">---</div>
+</div>
+</div>
+</div>
+        
+<div class="recents-section">
+<div class="recents-header">
+<span class="recents-title">Recents</span>
+</div>
+${favoritesHtml}
+${recentHtml}
+<div class="view-all-link" onclick="alert('View all contacts')">
+View All <span style="margin-left:4px;">></span>
+</div>
+</div>
+        
+<div class="opay-footer" onclick="alert('Share Gpay with your contacts!')">
+<div class="opay-footer-icon">📱</div>
+<div>
+<div class="opay-footer-title">See who else is using OPay</div>
+<div class="opay-footer-sub">Send money to your contacts for free</div>
+</div>
+</div>
+        
+<div id="continueSection" style="display:none; margin-top:16px;">
+<button class="btn w-full" onclick="proceedOpayTransfer()">Continue →</button>
+</div>
+</div>
+`;
+    
+showPage('dashboardPage');
+document.getElementById('dashboardPage').classList.add('hidden');
+document.getElementById('opayTransferView').style.display = 'block';
+document.getElementById('opayTransferView').style.padding = '20px 0';
+}
+
+function checkOpayNumber(number) {
+const preview = document.getElementById('opayAccountPreview');
+const continueSection = document.getElementById('continueSection');
+const nameEl = document.getElementById('opayPreviewName');
+const numberEl = document.getElementById('opayPreviewNumber');
+const avatarEl = document.getElementById('opayPreviewAvatar');
+    
+const cleanNumber = number.replace(/\D/g, '');
+    
+if (cleanNumber.length >= 10) {
+preview.style.display = 'block';
+continueSection.style.display = 'block';
+        
+const demoNames = {
+'8132017850': 'TIJJANI ALIYU',
+'9153396491': 'HASSAN USMAN',
+'9078513030': 'DAHA AUWALU',
+'7072498050': 'MUSTAPHA HASSAN',
+'8165432109': 'FATIMA ABDULLAHI',
+};
+        
+if (demoNames[cleanNumber]) {
+nameEl.textContent = demoNames[cleanNumber];
+avatarEl.textContent = getInitials(demoNames[cleanNumber]);
+} else {
+nameEl.textContent = 'Account Found';
+avatarEl.textContent = '👤';
+}
+numberEl.textContent = cleanNumber;
+} else {
+preview.style.display = 'none';
+continueSection.style.display = 'none';
+}
+}
+
+function selectOpayContact(number, name) {
+const input = document.getElementById('opayPhoneInput');
+if (input) {
+input.value = number;
+checkOpayNumber(number);
+}
+}
+
+function proceedOpayTransfer() {
+const input = document.getElementById('opayPhoneInput');
+const number = input.value.replace(/\D/g, '');
+const nameEl = document.getElementById('opayPreviewName');
+const name = nameEl ? nameEl.textContent : 'Unknown';
+    
+if (number.length < 10) {
+alert('Please enter a valid OPay account number');
+return;
+}
+    
+const amount = prompt('Enter amount to send (₦):', '500');
+if (!amount) return;
+const amt = parseInt(amount);
+if (isNaN(amt) || amt < 100) {
+alert('Minimum amount is ₦100');
+return;
+}
+if (amt > currentUser.balance) {
+alert('Insufficient balance. You have ₦' + currentUser.balance.toLocaleString());
+return;
+}
+    
+if (!confirm(`Confirm transfer to:\n\n${name}\n${number}\nAmount: ₦${amt.toLocaleString()}\n\nDo you want to proceed?`)) {
+return;
+}
+    
+showLoadingOverlay('Processing transfer...');
+setTimeout(() => {
+currentUser.balance -= amt;
+        
+let tid = 'OPAY' + Date.now() + Math.floor(Math.random() * 1000);
+let tx = {
+id: tid,
+type: 'OPay Transfer',
+amount: amt,
+date: new Date().toLocaleString(),
+dateObj: new Date(),
+status: 'Success',
+fullDetails: {
+transactionType: 'OPay Transfer',
+amount: amt,
+fees: 0,
+taxes: 0,
+sender: currentUser.firstname + ' ' + currentUser.surname,
+recipient: name,
+recipientAccount: number,
+recipientBank: 'OPay',
+transactionId: tid,
+note: 'Transfer to OPay account'
+}
+};
+currentUser.transactions.unshift(tx);
+saveUsers();
+hideLoadingOverlay();
+showOpaySuccessPopup(amt, name, number, tid);
+}, 3000);
+}
+
+function showOpaySuccessPopup(amount, name, number, tid) {
+let popup = document.createElement('div');
+popup.className = 'popup-overlay';
+popup.innerHTML = `
+<div class="popup-box">
+<div class="emoji">✅</div>
+<div class="popup-title green">Transfer Successful!</div>
+<div class="popup-sub">You have successfully sent</div>
+<div class="popup-amount negative">-₦${amount.toLocaleString()}</div>
+<div class="popup-detail">
+<div class="name">${name}</div>
+<div class="meta">OPay • ${number}</div>
+</div>
+<div class="popup-actions">
+<button class="btn" onclick="this.closest('.popup-overlay').remove(); closeDynamic();">Done</button>
+<button class="btn btn-outline" onclick="this.closest('.popup-overlay').remove(); showTransactionDetails('${tid}');">View receipt</button>
+</div>
+</div>
+`;
+document.body.appendChild(popup);
 }
 
 // ============================================================
