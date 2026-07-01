@@ -1140,8 +1140,7 @@ padding: 6px 20px;
 border-radius: 20px;
 font-weight: 600;
 font-size: 13px;
-cursor: default;
-pointer-events: none;
+cursor: pointer;
 }
 .discount-badge {
 position: absolute;
@@ -1162,8 +1161,6 @@ font-size: 13px;
 color: #10b981;
 border: 1px solid #1f2937;
 text-align: center;
-font-weight: 500;
-letter-spacing: 0.3px;
 }
 
 .recipient-section {
@@ -1342,9 +1339,7 @@ transition: background 0.2s;
 background: #1a1a2e;
 }
 .opay-footer-icon {
-font-size: 20px;
-color: #10b981;
-font-weight: 500;
+font-size: 28px;
 }
 .opay-footer-title {
 font-size: 14px;
@@ -2584,7 +2579,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <div class="page-header">
 <button class="back-btn" onclick="closeDynamic()">←</button>
 <span class="title">Transfer To OPay Account</span>
-<button class="help-btn" onclick="showTransactionHistory()" style="color:#10b981; font-size:14px; font-weight:500;">History</button>
+<button class="help-btn" onclick="showTransactionHistory()">📊</button>
 </div>
         
 <div class="discount-banner">
@@ -2593,12 +2588,12 @@ document.getElementById('dynamicContent').innerHTML = `
 <div class="discount-title">Claim 8 Discounts with</div>
 <div class="discount-sub">on any Bill</div>
 </div>
-<button class="claim-discount-btn">Claim</button>
+<button class="claim-discount-btn" onclick="alert('🎉 Discount claimed! Check your rewards.')">Claim</button>
 </div>
 <div class="discount-badge">120</div>
 </div>
         
-<div class="instant-info">Instant, Zero Issues, Free</div>
+<div class="instant-info">⚡ Instant, Zero Issues, Free</div>
         
 <div class="recipient-section">
 <div class="recipient-label">Recipient Account</div>
@@ -2632,7 +2627,7 @@ View All <span style="margin-left:4px;">></span>
 </div>
         
 <div class="opay-footer" onclick="alert('Share Gpay with your contacts!')">
-<div class="opay-footer-icon">●</div>
+<div class="opay-footer-icon">📱</div>
 <div>
 <div class="opay-footer-title">See who else is using OPay</div>
 <div class="opay-footer-sub">Send money to your contacts for free</div>
