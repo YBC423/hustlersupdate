@@ -1610,6 +1610,11 @@ height: 44px;
 font-size: 18px;
 color: #9ca3af;
 font-weight: 500;
+cursor: pointer;
+transition: opacity 0.2s;
+}
+.success-rate-section .rate-arrow:active {
+opacity: 0.6;
 }
 
 /* ===== RECENTS SECTION (BIGGER SIZE) ===== */
@@ -1818,6 +1823,52 @@ height: 20px;
 stroke: #10b981;
 stroke-width: 1.8;
 fill: none;
+}
+
+/* ============================================================
+   SAVE RECIPIENT PAGE STYLES
+   ============================================================ */
+.save-recipient-container {
+padding: 0 0 20px 0;
+}
+.save-recipient-box {
+background: #111827;
+border-radius: 16px;
+padding: 20px;
+border: 1px solid #1f2937;
+margin-bottom: 16px;
+}
+.save-recipient-box label {
+display: block;
+font-size: 14px;
+font-weight: 500;
+color: #9ca3af;
+margin-bottom: 8px;
+}
+.save-recipient-box input {
+width: 100%;
+padding: 14px 16px;
+background: #0a0a0a;
+border: 1px solid #2a2a3e;
+border-radius: 12px;
+color: #fff;
+font-size: 16px;
+outline: none;
+transition: border 0.2s;
+}
+.save-recipient-box input:focus {
+border-color: #10b981;
+}
+.save-recipient-box input::placeholder {
+color: #6b7280;
+}
+.save-recipient-actions {
+display: flex;
+gap: 12px;
+margin-top: 16px;
+}
+.save-recipient-actions .btn {
+flex: 1;
 }
 </style>
 </head>
@@ -2151,6 +2202,29 @@ if (favs) bankFavourites = JSON.parse(favs);
 function saveBankData() {
 localStorage.setItem('graypay_bank_recents', JSON.stringify(bankRecents));
 localStorage.setItem('graypay_bank_favourites', JSON.stringify(bankFavourites));
+}
+
+// ============================================================
+// SAVED RECIPIENT NAMES STORAGE
+// ============================================================
+function loadSavedNames() {
+let data = localStorage.getItem('graypay_saved_recipients');
+return data ? JSON.parse(data) : {};
+}
+
+function saveSavedNames(names) {
+localStorage.setItem('graypay_saved_recipients', JSON.stringify(names));
+}
+
+function getSavedName(accountNumber) {
+let names = loadSavedNames();
+return names[accountNumber] || null;
+}
+
+function saveRecipientName(accountNumber, name) {
+let names = loadSavedNames();
+names[accountNumber] = name;
+saveSavedNames(names);
 }
 
 // ============================================================
@@ -3590,6 +3664,10 @@ freqHtml += `
 }
 });
 
+// Get the current account number from the input (if any)
+const currentAccountInput = document.getElementById('bankAccountInput');
+let currentAccountNumber = currentAccountInput ? currentAccountInput.value.replace(/\D/g, '') : '';
+
 document.getElementById('dynamicContent').innerHTML = `
 <div class="bank-transfer-container">
 <div class="page-header">
@@ -3635,7 +3713,7 @@ Free transfers for the day: 3
 <div class="bank-account-preview-content">
 <div class="bank-preview-avatar" id="bankPreviewAvatar">👤</div>
 <div class="bank-preview-info">
-<div class="bank-preview-name" id="bankPreviewName">Loading...</div>
+<div class="bank-preview-name" id="bankPreviewName">Invalid Account</div>
 <div class="bank-preview-number" id="bankPreviewNumber">---</div>
 <div class="bank-preview-bank" id="bankPreviewBank">---</div>
 </div>
@@ -3644,7 +3722,7 @@ Free transfers for the day: 3
 
 <div class="success-rate-section">
 <span>Bank Transfer Success Rate Monitor</span>
-<span class="rate-arrow">></span>
+<span class="rate-arrow" onclick="openSaveRecipientPage()">></span>
 </div>
 
 <div class="bank-recents-section">
@@ -3668,6 +3746,11 @@ document.getElementById('dynamicContent').style.display = 'block';
 
 // Update next button state after rendering
 updateNextButtonState();
+
+// If we have a current account number and selected bank, check for saved name
+if (currentAccountNumber && selectedBank) {
+checkBankAccount(currentAccountNumber);
+}
 }
 
 function switchBankTab(tab) {
@@ -3702,25 +3785,17 @@ const bankEl = document.getElementById('bankPreviewBank');
 const avatarEl = document.getElementById('bankPreviewAvatar');
 
 if (cleanNumber.length === 10 && selectedBank) {
+// Check if there's a saved name for this account number
+let savedName = getSavedName(cleanNumber);
+if (savedName) {
+nameEl.textContent = savedName;
+} else {
+nameEl.textContent = 'Invalid Account';
+}
 preview.classList.add('show');
-
-const demoNames = {
-'8132116092': 'AHMED ISAH',
-'8132017850': 'TIJJANI ALIYU',
-'9153396491': 'HASSAN USMAN',
-'9078513030': 'DAHA AUWALU',
-'7072498050': 'MUSTAPHA HASSAN',
-'8165432109': 'FATIMA ABDULLAHI',
-'8123456789': 'JOHN DOE',
-'8012345678': 'MARY JANE',
-'0032271588': 'CHUKWUEMEKA CHRISTIAN',
-};
-
-const name = demoNames[cleanNumber] || 'Account Found';
-nameEl.textContent = name;
 numberEl.textContent = cleanNumber;
 bankEl.textContent = selectedBank.name;
-avatarEl.textContent = getInitials(name);
+avatarEl.textContent = savedName ? getInitials(savedName) : '👤';
 } else {
 preview.classList.remove('show');
 }
@@ -3747,11 +3822,18 @@ selectedBank = bank;
 if (label) label.textContent = bank.name;
 }
 
+// Check for saved name
+let savedName = getSavedName(accountNumber);
+if (savedName) {
+nameEl.textContent = savedName;
+} else {
+nameEl.textContent = 'Invalid Account';
+}
+
 preview.classList.add('show');
-nameEl.textContent = accountName;
 numberEl.textContent = accountNumber;
 bankEl.textContent = bankName;
-avatarEl.textContent = getInitials(accountName);
+avatarEl.textContent = savedName ? getInitials(savedName) : '👤';
 
 updateNextButtonState();
 }
@@ -3760,7 +3842,7 @@ function proceedBankTransfer() {
 const input = document.getElementById('bankAccountInput');
 const accountNumber = input.value.replace(/\D/g, '');
 const nameEl = document.getElementById('bankPreviewName');
-const name = nameEl ? nameEl.textContent : 'Unknown';
+const name = nameEl ? nameEl.textContent : 'Invalid Account';
 
 if (accountNumber.length !== 10) {
 alert('Please enter a valid 10-digit account number');
@@ -3769,6 +3851,11 @@ return;
 
 if (!selectedBank) {
 alert('Please select a bank');
+return;
+}
+
+if (name === 'Invalid Account') {
+alert('Please save the recipient name first by clicking the arrow > on the success rate box');
 return;
 }
 
@@ -3933,6 +4020,97 @@ if (bank) {
 selectedBank = bank;
 renderBankTransferPage();
 }
+}
+
+// ============================================================
+// SAVE RECIPIENT PAGE
+// ============================================================
+function openSaveRecipientPage() {
+// Get the current account number from the bank transfer page
+const input = document.getElementById('bankAccountInput');
+const accountNumber = input ? input.value.replace(/\D/g, '') : '';
+
+if (!accountNumber || accountNumber.length !== 10) {
+alert('Please enter a 10-digit account number first');
+return;
+}
+
+if (!selectedBank) {
+alert('Please select a bank first');
+return;
+}
+
+// Get existing saved name if any
+let existingName = getSavedName(accountNumber) || '';
+
+document.getElementById('dynamicContent').innerHTML = `
+<div class="save-recipient-container">
+<div class="page-header">
+<button class="back-btn" onclick="renderBankTransferPage()">←</button>
+<span class="title">Save Recipient Name</span>
+<button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
+</div>
+
+<div class="save-recipient-box">
+<label>Enter Recipient Name</label>
+<input type="text" id="recipientNameInput" placeholder="e.g. James Joseph" value="${existingName}">
+<div style="margin-top: 12px; font-size: 13px; color: #6b7280;">
+Account: ${accountNumber} • ${selectedBank.name}
+</div>
+</div>
+
+<div class="save-recipient-actions">
+<button class="btn btn-outline" onclick="renderBankTransferPage()">Cancel</button>
+<button class="btn" onclick="saveRecipientAndGoBack()">Save</button>
+</div>
+</div>
+`;
+
+showPage('dashboardPage');
+document.getElementById('dashboardPage').classList.add('hidden');
+document.getElementById('dynamicContent').style.display = 'block';
+}
+
+function saveRecipientAndGoBack() {
+const input = document.getElementById('recipientNameInput');
+const name = input ? input.value.trim() : '';
+
+if (!name) {
+alert('Please enter a recipient name');
+return;
+}
+
+// Get the current account number
+const accountInput = document.getElementById('bankAccountInput');
+const accountNumber = accountInput ? accountInput.value.replace(/\D/g, '') : '';
+
+if (!accountNumber || accountNumber.length !== 10) {
+alert('Account number not found. Please go back and try again.');
+return;
+}
+
+// Save the name
+saveRecipientName(accountNumber, name);
+
+// Go back to bank transfer page
+renderBankTransferPage();
+
+// Show a confirmation
+setTimeout(() => {
+// Update the preview with the saved name
+const preview = document.getElementById('bankAccountPreview');
+if (preview) {
+const nameEl = document.getElementById('bankPreviewName');
+if (nameEl) {
+nameEl.textContent = name;
+}
+const avatarEl = document.getElementById('bankPreviewAvatar');
+if (avatarEl) {
+avatarEl.textContent = getInitials(name);
+}
+preview.classList.add('show');
+}
+}, 100);
 }
 
 // ============================================================
