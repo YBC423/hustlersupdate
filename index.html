@@ -1415,88 +1415,98 @@ text-align: center;
 font-weight: 500;
 }
 
-/* One combined box for Recipient, Select Bank, and Next */
-.bank-input-group {
+/* ===== RECIPIENT ACCOUNT BOX (SEPARATE BOX) ===== */
+.bank-recipient-box {
 background: #111827;
 border-radius: 16px;
-padding: 16px;
-margin-bottom: 16px;
+padding: 12px 16px;
+margin-bottom: 12px;
 border: 1px solid #1f2937;
 display: flex;
-align-items: center;
-gap: 10px;
+flex-direction: column;
+height: 70px;
+justify-content: center;
 }
-
-.bank-input-group .bank-recipient-input {
-flex: 1;
-padding: 14px 16px;
-background: #0a0a0a;
-border: 1px solid #2a2a3e;
-border-radius: 12px;
+.bank-recipient-label {
+font-size: 13px;
+font-weight: 500;
+color: #9ca3af;
+margin-bottom: 4px;
+}
+.bank-recipient-input {
+width: 100%;
+padding: 8px 0;
+background: transparent;
+border: none;
 color: #fff;
 font-size: 15px;
 outline: none;
-transition: border 0.2s;
-height: 50px;
-min-width: 0;
 }
-.bank-input-group .bank-recipient-input:focus {
-border-color: #10b981;
-}
-.bank-input-group .bank-recipient-input::placeholder {
+.bank-recipient-input::placeholder {
 color: #6b7280;
 }
+.bank-recipient-input:focus {
+border-color: transparent;
+}
 
-.bank-select-clickable {
-flex: 1;
-padding: 14px 16px;
-background: #0a0a0a;
-border: 1px solid #2a2a3e;
-border-radius: 12px;
-cursor: pointer;
+/* ===== SELECT BANK BOX (SEPARATE BOX) ===== */
+.bank-select-box {
+background: #111827;
+border-radius: 16px;
+padding: 12px 16px;
+margin-bottom: 12px;
+border: 1px solid #1f2937;
 display: flex;
 justify-content: space-between;
 align-items: center;
-transition: border 0.2s;
-height: 50px;
-min-width: 0;
+height: 70px;
+cursor: pointer;
 }
-.bank-select-clickable:active {
+.bank-select-box:active {
 opacity: 0.7;
 }
-.bank-select-clickable .select-label {
+.bank-select-label {
 font-size: 14px;
 color: #9ca3af;
 }
-.bank-select-clickable .select-arrow {
+.bank-select-arrow {
 font-size: 18px;
 color: #9ca3af;
 font-weight: 500;
 }
-.bank-select-clickable .selected-bank-name {
+.bank-selected-name {
 font-size: 14px;
 color: #fff;
 font-weight: 500;
 }
 
+/* ===== NEXT BUTTON BOX (SEPARATE BOX) ===== */
+.bank-next-box {
+background: #111827;
+border-radius: 16px;
+padding: 12px 16px;
+margin-bottom: 12px;
+border: 1px solid #1f2937;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 70px;
+}
 .bank-next-btn {
-padding: 14px 20px;
+width: 100%;
+padding: 12px;
 background: #2a2a2a;
-border: 1px solid #2a2a3e;
+border: none;
 border-radius: 12px;
 color: #9ca3af;
 font-size: 15px;
 font-weight: 600;
 cursor: not-allowed;
 transition: all 0.3s;
-height: 50px;
-min-width: 70px;
 text-align: center;
-flex-shrink: 0;
 }
 .bank-next-btn.active {
 background: #10b981;
-border-color: #10b981;
 color: #fff;
 cursor: pointer;
 }
@@ -1504,6 +1514,7 @@ cursor: pointer;
 opacity: 0.7;
 }
 
+/* ===== ACCOUNT PREVIEW ===== */
 .bank-account-preview {
 background: #1a1a2e;
 border-radius: 12px;
@@ -1554,6 +1565,7 @@ color: #10b981;
 margin-top: 2px;
 }
 
+/* ===== SUCCESS RATE MONITOR ===== */
 .success-rate-section {
 background: #111827;
 border-radius: 12px;
@@ -1561,11 +1573,11 @@ padding: 10px 16px;
 margin-bottom: 16px;
 border: 1px solid #1f2937;
 display: flex;
-justify-content: center;
+justify-content: space-between;
 align-items: center;
-gap: 8px;
 font-size: 13px;
 color: #9ca3af;
+height: 50px;
 }
 .success-rate-section .rate-arrow {
 font-size: 18px;
@@ -1573,6 +1585,7 @@ color: #9ca3af;
 font-weight: 500;
 }
 
+/* ===== RECENTS SECTION ===== */
 .bank-recents-section {
 background: #111827;
 border-radius: 16px;
@@ -1686,43 +1699,53 @@ font-weight: 600;
 color: #10b981;
 margin-bottom: 10px;
 }
+
+/* Frequently Used Banks - 3 columns, 2 rows like dashboard */
+.freq-banks-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 10px;
+margin-bottom: 16px;
+}
 .freq-bank-item {
-padding: 10px 14px;
 background: #1a1a2e;
-border-radius: 10px;
-margin-bottom: 6px;
+border-radius: 12px;
+padding: 14px 8px;
+text-align: center;
 cursor: pointer;
-transition: background 0.2s;
+transition: all 0.2s;
 border: 1px solid transparent;
 display: flex;
+flex-direction: column;
 align-items: center;
-gap: 10px;
+gap: 4px;
+height: 70px;
+justify-content: center;
 }
 .freq-bank-item:active {
 background: #2a2a3e;
+transform: scale(0.94);
 }
 .freq-bank-item.selected {
 border-color: #10b981;
 background: #1a2a1e;
 }
-.freq-bank-item .bank-name {
-font-size: 14px;
-font-weight: 500;
-color: #fff;
-}
-.freq-bank-item .bank-icon {
-width: 24px;
-height: 24px;
-flex-shrink: 0;
-}
 .freq-bank-item .bank-icon svg {
-width: 20px;
-height: 20px;
+width: 22px;
+height: 22px;
 stroke: #10b981;
 stroke-width: 1.8;
 fill: none;
 }
+.freq-bank-item .bank-name {
+font-size: 11px;
+font-weight: 500;
+color: #d1d5db;
+text-align: center;
+line-height: 1.2;
+}
 
+/* All Banks Grid */
 .all-banks-grid {
 display: grid;
 grid-template-columns: 1fr 1fr;
@@ -1753,11 +1776,6 @@ transform: scale(0.96);
 border-color: #10b981;
 background: #1a2a1e;
 color: #fff;
-}
-.all-bank-item .bank-icon {
-width: 24px;
-height: 24px;
-flex-shrink: 0;
 }
 .all-bank-item .bank-icon svg {
 width: 20px;
@@ -3204,7 +3222,7 @@ document.body.appendChild(popup);
 // BANK TRANSFER FUNCTIONS
 // ============================================================
 
-// All Nigerian Banks - Complete List with icons
+// All Nigerian Banks - Complete List
 const allBanks = [
 // Commercial Banks
 { name: 'Access Bank' },
@@ -3471,7 +3489,6 @@ return;
 
 selectedBank = null;
 loadBankData();
-
 renderBankTransferPage();
 }
 
@@ -3506,7 +3523,24 @@ favouritesHtml += `
 `;
 });
 
-const selectedBankDisplay = selectedBank ? selectedBank.name : 'Select Bank';
+const selectedDisplay = selectedBank ? selectedBank.name : 'Select Bank';
+
+// Airtime icon SVG
+const airtimeIcon = `<svg viewBox="0 0 24 24" width="20" height="20" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>`;
+
+// Frequently Used Banks - 3 columns, 2 rows
+let freqHtml = '';
+frequentlyUsed.forEach(bankName => {
+const bank = allBanks.find(b => b.name === bankName);
+if (bank) {
+freqHtml += `
+<div class="freq-bank-item" onclick="selectBank('${bank.name}')">
+<span class="bank-icon">${airtimeIcon}</span>
+<span class="bank-name">${bank.name}</span>
+</div>
+`;
+}
+});
 
 document.getElementById('dynamicContent').innerHTML = `
 <div class="bank-transfer-container">
@@ -3528,15 +3562,20 @@ Claim 8 Discounts with ₦19 on any Bill
 Free transfers for the day: 3
 </div>
 
-<!-- One combined box for Recipient, Select Bank, and Next -->
-<div class="bank-input-group">
+<!-- BOX 1: Recipient Account -->
+<div class="bank-recipient-box">
+<div class="bank-recipient-label">Recipient Account</div>
 <input type="tel" id="bankAccountInput" class="bank-recipient-input" placeholder="Enter 10 digits Account Number" maxlength="10" oninput="checkBankAccount(this.value)">
-
-<div class="bank-select-clickable" onclick="showBankSelection()">
-<span class="select-label" id="bankSelectLabel">${selectedBankDisplay}</span>
-<span class="select-arrow">></span>
 </div>
 
+<!-- BOX 2: Select Bank -->
+<div class="bank-select-box" onclick="showBankSelection()">
+<span class="bank-select-label" id="bankSelectLabel">${selectedDisplay}</span>
+<span class="bank-select-arrow">></span>
+</div>
+
+<!-- BOX 3: Next Button -->
+<div class="bank-next-box">
 <button class="bank-next-btn" id="bankNextBtn" onclick="proceedBankTransfer()">Next</button>
 </div>
 
@@ -3569,6 +3608,17 @@ ${(bankTransferTab === 'favourites' && bankFavourites.length === 0) ? '<div styl
 </div>
 </div>
 `;
+
+// Add the frequently used banks to the page after rendering
+const freqContainer = document.createElement('div');
+freqContainer.className = 'freq-banks-grid';
+freqContainer.innerHTML = freqHtml;
+
+// Insert after the bank-select-box or somewhere appropriate
+const selectBox = document.querySelector('.bank-select-box');
+if (selectBox && selectBox.parentNode) {
+// We'll add it in the bank selection page instead
+}
 
 showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
@@ -3612,7 +3662,6 @@ const avatarEl = document.getElementById('bankPreviewAvatar');
 if (cleanNumber.length === 10 && selectedBank) {
 preview.classList.add('show');
 
-// Demo account name lookup based on number
 const demoNames = {
 '8132116092': 'AHMED ISAH',
 '8132017850': 'TIJJANI ALIYU',
@@ -3649,7 +3698,6 @@ if (input) {
 input.value = accountNumber;
 }
 
-// Find the bank
 const bank = allBanks.find(b => b.name === bankName);
 if (bank) {
 selectedBank = bank;
@@ -3725,7 +3773,6 @@ note: 'Bank transfer to ' + selectedBank.name
 currentUser.transactions.unshift(tx);
 saveUsers();
 
-// Save to recent
 const recentItem = {
 bankName: selectedBank.name,
 accountNumber: accountNumber,
@@ -3768,7 +3815,6 @@ document.body.appendChild(popup);
 // BANK SELECTION PAGE
 // ============================================================
 function showBankSelection() {
-// Get the airtime icon SVG
 const airtimeIcon = `<svg viewBox="0 0 24 24" width="20" height="20" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>`;
 
 let bankListHtml = '';
@@ -3805,7 +3851,9 @@ document.getElementById('dynamicContent').innerHTML = `
 <input type="text" id="bankSearchInput" class="bank-search-input" placeholder="Search Bank Name" oninput="filterBanks()">
 
 <div class="freq-banks-title">Frequently Used Bank</div>
+<div class="freq-banks-grid">
 ${freqHtml}
+</div>
 
 <div id="allBanksContainer">
 <div class="all-banks-grid" id="banksGrid">
