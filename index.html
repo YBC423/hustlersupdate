@@ -1082,6 +1082,17 @@ transition: opacity 0.2s;
 .grow-savings .save-btn:active {
 opacity: 0.7;
 }
+
+/* ===== LOADING OVERLAY ===== */
+#loadingOverlay .spinner-small {
+width: 40px;
+height: 40px;
+border: 3px solid #2a2a3e;
+border-top: 3px solid #10b981;
+border-radius: 50%;
+animation: spin 1s linear infinite;
+margin: 0 auto 12px auto;
+}
 </style>
 </head>
 <body>
@@ -1352,10 +1363,10 @@ Me
 </div>
 </div>
 
-<!-- ===== LOADING OVERLAY ===== -->
+<!-- ===== LOADING OVERLAY with SPINNER ===== -->
 <div id="loadingOverlay" class="modal-overlay" style="background:rgba(0,0,0,0.92);">
 <div class="modal-box" style="text-align:center; max-width:300px;">
-<div style="font-size:48px; margin-bottom:12px;">⏳</div>
+<div class="spinner-small"></div>
 <div id="loadingMsg" style="font-size:16px; color:#9ca3af;">Processing...</div>
 <div id="progressBar" style="width:100%; height:6px; background:#2a2a3e; border-radius:10px; margin-top:12px; display:none;">
 <div id="progressFill" style="width:0%; height:100%; background:#10b981; border-radius:10px; transition:width 0.3s;"></div>
@@ -1414,11 +1425,8 @@ if (id === 'dashboardPage' && currentUser) updateDashboard();
 }
 
 function showWelcomePage() { showPage('welcomePage'); }
-
 function showSignupPage() { showPage('signupPage'); }
-
 function showLoginPage() { showPage('loginPage'); }
-
 function showDashboardPage() {
 showPage('dashboardPage');
 updateDashboard();
@@ -1450,12 +1458,21 @@ document.body.appendChild(splash);
 setTimeout(() => { splash.remove(); if (callback) callback(); }, duration);
 }
 
-// ===== FIX 5: Updated loading overlay with progress tracking =====
-function showLoadingOverlay(msg = 'Processing...') {
+// ===== LOADING OVERLAY WITH SPINNER =====
+function showLoadingOverlay(msg = 'Processing...', showProgress = false) {
 document.getElementById('loadingMsg').innerText = msg;
-document.getElementById('progressBar').style.display = 'none';
-document.getElementById('progressText').style.display = 'none';
+let progressBar = document.getElementById('progressBar');
+let progressText = document.getElementById('progressText');
+if (showProgress) {
+progressBar.style.display = 'block';
+progressText.style.display = 'block';
 document.getElementById('progressFill').style.width = '0%';
+document.getElementById('progressText').innerText = '0% uploaded';
+} else {
+progressBar.style.display = 'none';
+progressText.style.display = 'none';
+document.getElementById('progressFill').style.width = '0%';
+}
 document.getElementById('loadingOverlay').classList.add('show');
 }
 
@@ -1489,21 +1506,18 @@ updateDashboard();
 }
 
 // ============================================================
-// ===== FIX 2, 3, 4: UPDATED PROFILE PICTURE FUNCTIONS =====
+// PROFILE PICTURE FUNCTIONS
 // ============================================================
 
-// FIX 2 & 3: Improved avatar display with fallback
 function updateAvatarDisplay() {
 if (!currentUser) return;
 let avatarEl = document.getElementById('userAvatar');
 if (currentUser.profilePic) {
-// Check if URL is valid by testing image load
 let img = new Image();
 img.onload = function() {
 avatarEl.innerHTML = `<img src="${currentUser.profilePic}" alt="Profile" id="avatarImg">`;
 };
 img.onerror = function() {
-// FIX 3: Fallback to initials if image fails to load
 avatarEl.innerHTML = `<span id="avatarText" class="avatar-text">${getInitials(currentUser.firstname + ' ' + currentUser.surname)}</span>`;
 currentUser.profilePic = null;
 saveUsers();
@@ -1514,10 +1528,9 @@ avatarEl.innerHTML = `<span id="avatarText" class="avatar-text">${getInitials(cu
 }
 }
 
-// FIX 5: Upload with progress tracking
 async function uploadProfilePicture(file) {
 if (!currentUser) return;
-showLoadingOverlay('Uploading profile picture...');
+showLoadingOverlay('Uploading profile picture...', true);
 updateProgress(0);
 try {
 const storageRef = storage.ref(`profile_pictures/${currentUser.firebaseUID}`);
@@ -1525,24 +1538,20 @@ const uploadTask = storageRef.put(file);
 
 uploadTask.on('state_changed',
 (snapshot) => {
-// Progress
 const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 updateProgress(percent);
 },
 (error) => {
-// Error
 hideLoadingOverlay();
 alert('❌ Upload failed: ' + error.message);
 },
 async () => {
-// Success
 const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
 currentUser.profilePic = downloadURL;
 saveUsers();
 hideLoadingOverlay();
 updateDashboard();
 alert('✅ Profile picture updated successfully!');
-// Re-render profile view if open
 if (window._profileViewOpen) {
 renderProfileContent();
 }
@@ -1555,12 +1564,10 @@ alert('❌ Failed to upload: ' + error.message);
 }
 
 function triggerProfilePicUpload() {
-// FIX 4: Get the file input by ID and trigger click
 let input = document.getElementById('profilePicInput');
 if (input) {
 input.click();
 } else {
-// If input doesn't exist, create it dynamically
 let newInput = document.createElement('input');
 newInput.type = 'file';
 newInput.id = 'profilePicInput';
@@ -1574,7 +1581,6 @@ newInput.click();
 }
 }
 
-// FIX 4: Proper event binding
 function handleProfilePicSelect(event) {
 const file = event.target.files[0];
 if (file) {
@@ -1588,7 +1594,6 @@ return;
 }
 uploadProfilePicture(file);
 }
-// Reset the input so the same file can be selected again
 event.target.value = '';
 }
 
@@ -1740,10 +1745,8 @@ showWelcomePage();
 function updateDashboard() {
 if (!currentUser) return;
 
-// Show first name in header
 document.getElementById('userName').innerText = currentUser.firstname;
 
-// Balance visibility toggle
 let balanceEl = document.getElementById('userBalance');
 if (balanceVisible) {
 balanceEl.innerHTML = '₦' + currentUser.balance.toLocaleString();
@@ -1751,7 +1754,6 @@ balanceEl.innerHTML = '₦' + currentUser.balance.toLocaleString();
 balanceEl.innerHTML = '****';
 }
 
-// ===== FIX 2: Updated avatar display =====
 updateAvatarDisplay();
 }
 
@@ -1783,7 +1785,7 @@ alert('💳 Add Money feature coming soon!\n\nYou can earn more by completing ta
 }
 
 // ============================================================
-// ===== FIX 1: IMPROVED PROFILE RENDER =====
+// PROFILE
 // ============================================================
 async function showProfile() {
 if (!currentUser) return;
@@ -1793,10 +1795,9 @@ renderProfileContent();
 
 function renderProfileContent() {
 let picHtml = currentUser.profilePic ?
-`<img src="${currentUser.profilePic}" alt="Profile" id="profileImg">` :
+`<img src="${currentUser.profilePic}" alt="Profile" id="profileImg" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\\'font-size:40px; font-weight:700; color:#fff;\\'>${getInitials(currentUser.firstname + ' ' + currentUser.surname)}</span>';">` :
 `<span style="font-size:40px; font-weight:700; color:#fff;">${getInitials(currentUser.firstname + ' ' + currentUser.surname)}</span>`;
 
-// FIX 1: Ensure file input is properly created with event binding
 document.getElementById('dynamicContent').innerHTML = `
 <div id="profileView">
 <div class="page-header">
@@ -1819,7 +1820,6 @@ ${picHtml}
 </div>
 `;
 
-// FIX 1 & 4: Create and bind file input properly
 let fileInput = document.createElement('input');
 fileInput.type = 'file';
 fileInput.id = 'profilePicInput';
@@ -1828,33 +1828,12 @@ fileInput.style.display = 'none';
 document.body.appendChild(fileInput);
 fileInput.addEventListener('change', function(e) {
 handleProfilePicSelect(e);
-// Remove old input after use to prevent duplicates
 setTimeout(() => {
 if (document.getElementById('profilePicInput')) {
 document.getElementById('profilePicInput').remove();
 }
 }, 100);
 });
-
-// FIX 3: Add image error fallback if profile pic fails to load
-setTimeout(() => {
-let img = document.getElementById('profileImg');
-if (img) {
-img.onerror = function() {
-this.style.display = 'none';
-let container = document.getElementById('profilePicContainer');
-if (container) {
-let fallback = document.createElement('span');
-fallback.style.cssText = 'font-size:40px; font-weight:700; color:#fff;';
-fallback.innerText = getInitials(currentUser.firstname + ' ' + currentUser.surname);
-container.insertBefore(fallback, container.firstChild);
-}
-currentUser.profilePic = null;
-saveUsers();
-updateDashboard();
-};
-}
-}, 100);
 
 showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
