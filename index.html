@@ -1650,7 +1650,7 @@ opacity: 0.7;
 .bank-recent-item {
 display: flex;
 align-items: center;
-gap: 14px;
+justify-content: space-between;
 padding: 12px 0;
 border-bottom: 1px solid #1f2937;
 cursor: pointer;
@@ -1663,23 +1663,6 @@ background: #1a1a2e;
 }
 .bank-recent-item:last-child {
 border-bottom: none;
-}
-.bank-recent-avatar {
-width: 44px;
-height: 44px;
-border-radius: 50%;
-background: #2a2a3e;
-display: flex;
-align-items: center;
-justify-content: center;
-flex-shrink: 0;
-}
-.bank-recent-avatar .bank-icon-svg {
-width: 22px;
-height: 22px;
-stroke: #10b981;
-stroke-width: 1.8;
-fill: none;
 }
 .bank-recent-info {
 flex: 1;
@@ -1698,6 +1681,17 @@ margin-top: 1px;
 font-size: 11px;
 color: #10b981;
 margin-top: 1px;
+}
+.bank-recent-icon {
+flex-shrink: 0;
+margin-left: 10px;
+}
+.bank-recent-icon svg {
+width: 22px;
+height: 22px;
+stroke: #10b981;
+stroke-width: 1.8;
+fill: none;
 }
 
 .bank-view-all-link {
@@ -3547,26 +3541,22 @@ renderBankTransferPage();
 }
 
 function renderBankTransferPage() {
-// Build recents and favourites lists
+// Build recents and favourites lists with icon on RIGHT
 let recentsHtml = '';
 let favouritesHtml = '';
 
-// Use the hardcoded recent banks data
+// Airtime icon SVG
+const airtimeIcon = `<svg viewBox="0 0 24 24" width="22" height="22" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>`;
+
 recentBanksData.forEach(item => {
 recentsHtml += `
 <div class="bank-recent-item" onclick="selectBankRecent('${item.bank}', '${item.number}', '${item.name}')">
-<div class="bank-recent-avatar">
-<svg viewBox="0 0 24 24" width="22" height="22" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
-<path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/>
-<path d="M2 6.5V12L12 16.5L22 12V6.5"/>
-<path d="M2 12V17.5L12 22L22 17.5V12"/>
-</svg>
-</div>
 <div class="bank-recent-info">
 <div class="bank-recent-name">${item.name}</div>
 <div class="bank-recent-number">${item.number}</div>
 <div class="bank-recent-bank">${item.bank}</div>
 </div>
+<div class="bank-recent-icon">${airtimeIcon}</div>
 </div>
 `;
 });
@@ -3574,26 +3564,17 @@ recentsHtml += `
 favouritesBanksData.forEach(item => {
 favouritesHtml += `
 <div class="bank-recent-item" onclick="selectBankRecent('${item.bank}', '${item.number}', '${item.name}')">
-<div class="bank-recent-avatar">
-<svg viewBox="0 0 24 24" width="22" height="22" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
-<path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/>
-<path d="M2 6.5V12L12 16.5L22 12V6.5"/>
-<path d="M2 12V17.5L12 22L22 17.5V12"/>
-</svg>
-</div>
 <div class="bank-recent-info">
 <div class="bank-recent-name">${item.name}</div>
 <div class="bank-recent-number">${item.number}</div>
 <div class="bank-recent-bank">${item.bank}</div>
 </div>
+<div class="bank-recent-icon">${airtimeIcon}</div>
 </div>
 `;
 });
 
 const selectedDisplay = selectedBank ? selectedBank.name : 'Select Bank';
-
-// Airtime icon SVG
-const airtimeIcon = `<svg viewBox="0 0 24 24" width="22" height="22" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>`;
 
 // Frequently Used Banks - 3 columns, 2 rows
 let freqHtml = '';
