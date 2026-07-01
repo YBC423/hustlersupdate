@@ -612,6 +612,12 @@ color: #9ca3af;
 margin-top: 10px;
 font-size: 14px;
 }
+.splash-loading .progress-text {
+color: #10b981;
+margin-top: 8px;
+font-size: 16px;
+font-weight: 600;
+}
 
 /* ===== INPUTS ===== */
 .input-field {
@@ -1135,6 +1141,7 @@ opacity: 0.7;
 </div>
 <div class="login-title">Log in to your account</div>
 <input type="text" id="loginEmail" class="input-field" placeholder="Enter your Mobile No./Email">
+<input type="password" id="loginPassword" class="input-field" placeholder="Password">
 <span class="login-lost-link" onclick="showHelp()">Lost Your Mobile Number, Change Now</span>
 <button class="btn w-full" onclick="login()" style="font-size:18px; padding:16px;">NEXT</button>
 <div id="loginError" class="error" style="margin-top:10px;"></div>
@@ -1350,6 +1357,10 @@ Me
 <div class="modal-box" style="text-align:center; max-width:300px;">
 <div style="font-size:48px; margin-bottom:12px;">⏳</div>
 <div id="loadingMsg" style="font-size:16px; color:#9ca3af;">Processing...</div>
+<div id="progressBar" style="width:100%; height:6px; background:#2a2a3e; border-radius:10px; margin-top:12px; display:none;">
+<div id="progressFill" style="width:0%; height:100%; background:#10b981; border-radius:10px; transition:width 0.3s;"></div>
+</div>
+<div id="progressText" style="color:#10b981; font-size:14px; margin-top:8px; display:none;"></div>
 </div>
 </div>
 
@@ -1439,13 +1450,27 @@ document.body.appendChild(splash);
 setTimeout(() => { splash.remove(); if (callback) callback(); }, duration);
 }
 
+// ===== FIX 5: Updated loading overlay with progress tracking =====
 function showLoadingOverlay(msg = 'Processing...') {
 document.getElementById('loadingMsg').innerText = msg;
+document.getElementById('progressBar').style.display = 'none';
+document.getElementById('progressText').style.display = 'none';
+document.getElementById('progressFill').style.width = '0%';
 document.getElementById('loadingOverlay').classList.add('show');
+}
+
+function updateProgress(percent) {
+document.getElementById('progressBar').style.display = 'block';
+document.getElementById('progressText').style.display = 'block';
+document.getElementById('progressFill').style.width = percent + '%';
+document.getElementById('progressText').innerText = Math.round(percent) + '% uploaded';
 }
 
 function hideLoadingOverlay() {
 document.getElementById('loadingOverlay').classList.remove('show');
+document.getElementById('progressBar').style.display = 'none';
+document.getElementById('progressText').style.display = 'none';
+document.getElementById('progressFill').style.width = '0%';
 }
 
 function getInitials(name) {
@@ -1464,21 +1489,65 @@ updateDashboard();
 }
 
 // ============================================================
-// PROFILE PICTURE FUNCTIONS
+// ===== FIX 2, 3, 4: UPDATED PROFILE PICTURE FUNCTIONS =====
 // ============================================================
+
+// FIX 2 & 3: Improved avatar display with fallback
+function updateAvatarDisplay() {
+if (!currentUser) return;
+let avatarEl = document.getElementById('userAvatar');
+if (currentUser.profilePic) {
+// Check if URL is valid by testing image load
+let img = new Image();
+img.onload = function() {
+avatarEl.innerHTML = `<img src="${currentUser.profilePic}" alt="Profile" id="avatarImg">`;
+};
+img.onerror = function() {
+// FIX 3: Fallback to initials if image fails to load
+avatarEl.innerHTML = `<span id="avatarText" class="avatar-text">${getInitials(currentUser.firstname + ' ' + currentUser.surname)}</span>`;
+currentUser.profilePic = null;
+saveUsers();
+};
+img.src = currentUser.profilePic;
+} else {
+avatarEl.innerHTML = `<span id="avatarText" class="avatar-text">${getInitials(currentUser.firstname + ' ' + currentUser.surname)}</span>`;
+}
+}
+
+// FIX 5: Upload with progress tracking
 async function uploadProfilePicture(file) {
 if (!currentUser) return;
 showLoadingOverlay('Uploading profile picture...');
+updateProgress(0);
 try {
 const storageRef = storage.ref(`profile_pictures/${currentUser.firebaseUID}`);
-await storageRef.put(file);
-const downloadURL = await storageRef.getDownloadURL();
+const uploadTask = storageRef.put(file);
+
+uploadTask.on('state_changed',
+(snapshot) => {
+// Progress
+const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+updateProgress(percent);
+},
+(error) => {
+// Error
+hideLoadingOverlay();
+alert('❌ Upload failed: ' + error.message);
+},
+async () => {
+// Success
+const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
 currentUser.profilePic = downloadURL;
 saveUsers();
-updateDashboard();
 hideLoadingOverlay();
+updateDashboard();
 alert('✅ Profile picture updated successfully!');
-if (window.renderProfileContent) window.renderProfileContent();
+// Re-render profile view if open
+if (window._profileViewOpen) {
+renderProfileContent();
+}
+}
+);
 } catch (error) {
 hideLoadingOverlay();
 alert('❌ Failed to upload: ' + error.message);
@@ -1486,9 +1555,26 @@ alert('❌ Failed to upload: ' + error.message);
 }
 
 function triggerProfilePicUpload() {
-document.getElementById('profilePicInput').click();
+// FIX 4: Get the file input by ID and trigger click
+let input = document.getElementById('profilePicInput');
+if (input) {
+input.click();
+} else {
+// If input doesn't exist, create it dynamically
+let newInput = document.createElement('input');
+newInput.type = 'file';
+newInput.id = 'profilePicInput';
+newInput.accept = 'image/*';
+newInput.style.display = 'none';
+document.body.appendChild(newInput);
+newInput.addEventListener('change', function(e) {
+handleProfilePicSelect(e);
+});
+newInput.click();
+}
 }
 
+// FIX 4: Proper event binding
 function handleProfilePicSelect(event) {
 const file = event.target.files[0];
 if (file) {
@@ -1502,6 +1588,8 @@ return;
 }
 uploadProfilePicture(file);
 }
+// Reset the input so the same file can be selected again
+event.target.value = '';
 }
 
 // ============================================================
@@ -1572,6 +1660,11 @@ document.getElementById('signupError').innerText = msg;
 async function login() {
 let em = document.getElementById('loginEmail').value.trim();
 let pw = document.getElementById('loginPassword').value;
+
+if (!em || !pw) {
+document.getElementById('loginError').innerText = 'Please enter email and password';
+return;
+}
 
 showSplashLoading('Logging in...', async () => {
 try {
@@ -1658,14 +1751,8 @@ balanceEl.innerHTML = '₦' + currentUser.balance.toLocaleString();
 balanceEl.innerHTML = '****';
 }
 
-// Avatar - show profile picture or initials
-let avatarEl = document.getElementById('userAvatar');
-let avatarText = document.getElementById('avatarText');
-if (currentUser.profilePic) {
-avatarEl.innerHTML = `<img src="${currentUser.profilePic}" alt="Profile" id="avatarImg">`;
-} else {
-avatarEl.innerHTML = `<span id="avatarText" class="avatar-text">${getInitials(currentUser.firstname + ' ' + currentUser.surname)}</span>`;
-}
+// ===== FIX 2: Updated avatar display =====
+updateAvatarDisplay();
 }
 
 // ============================================================
@@ -1696,30 +1783,33 @@ alert('💳 Add Money feature coming soon!\n\nYou can earn more by completing ta
 }
 
 // ============================================================
-// PROFILE
+// ===== FIX 1: IMPROVED PROFILE RENDER =====
 // ============================================================
 async function showProfile() {
 if (!currentUser) return;
+window._profileViewOpen = true;
+renderProfileContent();
+}
 
 function renderProfileContent() {
 let picHtml = currentUser.profilePic ?
-`<img src="${currentUser.profilePic}" alt="Profile">` :
+`<img src="${currentUser.profilePic}" alt="Profile" id="profileImg">` :
 `<span style="font-size:40px; font-weight:700; color:#fff;">${getInitials(currentUser.firstname + ' ' + currentUser.surname)}</span>`;
 
+// FIX 1: Ensure file input is properly created with event binding
 document.getElementById('dynamicContent').innerHTML = `
 <div id="profileView">
 <div class="page-header">
-<button class="back-btn" onclick="closeDynamic()">←</button>
+<button class="back-btn" onclick="closeDynamic(); window._profileViewOpen = false;">←</button>
 <span class="title">Profile</span>
 <button class="help-btn" onclick="showHelp()">❓</button>
 </div>
 <div class="profile-pic-container">
-<div class="profile-pic" onclick="triggerProfilePicUpload()">
+<div class="profile-pic" onclick="triggerProfilePicUpload()" id="profilePicContainer">
 ${picHtml}
 <div class="upload-overlay">📷 Change Photo</div>
 </div>
 <span class="pic-label" onclick="triggerProfilePicUpload()">Tap to change profile picture</span>
-<input type="file" id="profilePicInput" accept="image/*" onchange="handleProfilePicSelect(event)">
 </div>
 <div class="logo-center">Gpay</div>
 <div class="info-box"><strong>Full Name:</strong> ${currentUser.firstname} ${currentUser.surname}</div>
@@ -1728,13 +1818,48 @@ ${picHtml}
 <button class="btn w-full" onclick="logout()">Log Out</button>
 </div>
 `;
+
+// FIX 1 & 4: Create and bind file input properly
+let fileInput = document.createElement('input');
+fileInput.type = 'file';
+fileInput.id = 'profilePicInput';
+fileInput.accept = 'image/*';
+fileInput.style.display = 'none';
+document.body.appendChild(fileInput);
+fileInput.addEventListener('change', function(e) {
+handleProfilePicSelect(e);
+// Remove old input after use to prevent duplicates
+setTimeout(() => {
+if (document.getElementById('profilePicInput')) {
+document.getElementById('profilePicInput').remove();
+}
+}, 100);
+});
+
+// FIX 3: Add image error fallback if profile pic fails to load
+setTimeout(() => {
+let img = document.getElementById('profileImg');
+if (img) {
+img.onerror = function() {
+this.style.display = 'none';
+let container = document.getElementById('profilePicContainer');
+if (container) {
+let fallback = document.createElement('span');
+fallback.style.cssText = 'font-size:40px; font-weight:700; color:#fff;';
+fallback.innerText = getInitials(currentUser.firstname + ' ' + currentUser.surname);
+container.insertBefore(fallback, container.firstChild);
+}
+currentUser.profilePic = null;
+saveUsers();
+updateDashboard();
+};
+}
+}, 100);
+
 showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('profileView').style.display = 'block';
 document.getElementById('profileView').style.padding = '20px 0';
-}
-renderProfileContent();
-window.renderProfileContent = renderProfileContent;
 }
 
 // ============================================================
