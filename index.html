@@ -1935,23 +1935,49 @@ color: #9ca3af;
 margin-bottom: 4px;
 display: block;
 }
+
+/* ===== BIGGER AMOUNT INPUT & QUICK AMOUNT BUTTONS ===== */
+.amount-input-wrapper {
+margin-bottom: 12px;
+}
+.amount-input-wrapper input {
+width: 100%;
+padding: 20px 18px;
+background: #0a0a0a;
+border: 1px solid #2a2a3e;
+border-radius: 14px;
+color: #fff;
+font-size: 18px;
+outline: none;
+transition: border 0.2s;
+height: 68px;
+}
+.amount-input-wrapper input:focus {
+border-color: #10b981;
+}
+.amount-input-wrapper input::placeholder {
+color: #6b7280;
+font-size: 16px;
+}
+
 .quick-amount-grid {
 display: grid;
 grid-template-columns: repeat(3, 1fr);
-gap: 8px;
-margin-bottom: 12px;
+gap: 10px;
+margin-bottom: 16px;
 }
 .quick-amount-btn {
-padding: 10px;
+padding: 14px 8px;
 background: #1a1a2e;
 border: 1px solid #2a2a3e;
-border-radius: 10px;
+border-radius: 12px;
 color: #fff;
-font-size: 14px;
-font-weight: 500;
+font-size: 16px;
+font-weight: 600;
 cursor: pointer;
 transition: all 0.2s;
 text-align: center;
+height: 56px;
 }
 .quick-amount-btn:active {
 background: #10b981;
@@ -1962,30 +1988,7 @@ background: #10b981;
 border-color: #10b981;
 }
 
-/* ===== BIGGER INPUT FIELDS ===== */
-.amount-input-wrapper {
-margin-bottom: 12px;
-}
-.amount-input-wrapper input {
-width: 100%;
-padding: 18px 16px;
-background: #0a0a0a;
-border: 1px solid #2a2a3e;
-border-radius: 12px;
-color: #fff;
-font-size: 16px;
-outline: none;
-transition: border 0.2s;
-height: 60px;
-}
-.amount-input-wrapper input:focus {
-border-color: #10b981;
-}
-.amount-input-wrapper input::placeholder {
-color: #6b7280;
-font-size: 15px;
-}
-
+/* ===== REMARK SECTION ===== */
 .remark-section {
 margin-bottom: 16px;
 }
@@ -1995,11 +1998,6 @@ font-weight: 500;
 color: #9ca3af;
 display: block;
 margin-bottom: 2px;
-}
-.remark-sub {
-font-size: 12px;
-color: #6b7280;
-margin-bottom: 10px;
 }
 .remark-input-wrapper input {
 width: 100%;
@@ -2011,7 +2009,7 @@ color: #fff;
 font-size: 16px;
 outline: none;
 transition: border 0.2s;
-height: 60px;
+height: 56px;
 margin-bottom: 10px;
 }
 .remark-input-wrapper input:focus {
@@ -2044,6 +2042,8 @@ border-color: #10b981;
 background: #10b981;
 border-color: #10b981;
 }
+
+/* ===== CONFIRM BUTTON ===== */
 .confirm-btn {
 width: 100%;
 padding: 16px;
@@ -4041,7 +4041,7 @@ updateNextButtonState();
 }
 
 // ============================================================
-// OPEN CONFIRM TRANSFER PAGE (UPDATED)
+// OPEN CONFIRM TRANSFER PAGE (UPDATED - BIGGER INPUT & BUTTONS)
 // ============================================================
 function openConfirmTransferPage() {
 const input = document.getElementById('bankAccountInput');
@@ -4090,12 +4090,12 @@ document.getElementById('dynamicContent').innerHTML = `
 
 <label class="amount-label">Amount</label>
 
-<!-- INPUT FIELD FIRST - BIGGER SIZE -->
+<!-- AMOUNT INPUT - BIGGER SIZE -->
 <div class="amount-input-wrapper">
 <input type="number" id="confirmAmountInput" placeholder="₦100.00 - ₦5,000,000.00" min="100" max="5000000" oninput="updateAmountDisplay(this.value); validateConfirmButton();">
 </div>
 
-<!-- QUICK AMOUNTS BELOW -->
+<!-- QUICK AMOUNT BUTTONS - BIGGER SIZE -->
 <div class="quick-amount-grid">
 <button class="quick-amount-btn" onclick="setAmount(this, 500)">₦500</button>
 <button class="quick-amount-btn" onclick="setAmount(this, 1000)">₦1,000</button>
@@ -4105,13 +4105,12 @@ document.getElementById('dynamicContent').innerHTML = `
 <button class="quick-amount-btn" onclick="setAmount(this, 10000)">₦10,000</button>
 </div>
 
-<!-- REMARK TEXT INPUT - BIGGER SIZE -->
+<!-- REMARK SECTION -->
 <div class="remark-section">
 <label class="remark-label">Remark (Optional)</label>
 <div class="remark-input-wrapper">
 <input type="text" id="remarkTextInput" placeholder="What's this for?" oninput="validateConfirmButton()">
 </div>
-<!-- PURCHASE & PERSONAL BUTTONS BELOW -->
 <div class="remark-options">
 <button class="remark-option" onclick="setRemark(this, 'Purchase')">Purchase</button>
 <button class="remark-option" onclick="setRemark(this, 'Personal')">Personal</button>
@@ -4126,14 +4125,12 @@ showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('dynamicContent').style.display = 'block';
 
-// Store recipient data
 window._confirmData = {
 name: name,
 accountNumber: accountNumber,
 bankName: selectedBank.name
 };
 
-// Initialize button state
 validateConfirmButton();
 }
 
@@ -4172,7 +4169,6 @@ validateConfirmButton();
 }
 
 function updateAmountDisplay(value) {
-// Just validate, no range display needed anymore
 validateConfirmButton();
 }
 
