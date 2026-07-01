@@ -2029,22 +2029,22 @@ border-color: #10b981;
 .confirm-btn {
 width: 100%;
 padding: 16px;
-background: #10b981;
+background: #2a2a2a;
 border: none;
 border-radius: 12px;
-color: #fff;
+color: #9ca3af;
 font-size: 16px;
 font-weight: 600;
-cursor: pointer;
-transition: opacity 0.2s;
-}
-.confirm-btn:active {
-opacity: 0.7;
-}
-.confirm-btn:disabled {
-background: #2a2a2a;
-color: #9ca3af;
 cursor: not-allowed;
+transition: all 0.3s;
+}
+.confirm-btn.active {
+background: #10b981;
+color: #fff;
+cursor: pointer;
+}
+.confirm-btn.active:active {
+opacity: 0.7;
 }
 </style>
 </head>
@@ -2355,7 +2355,7 @@ let selectedBank = null;
 let bankTransferTab = 'recents';
 let bankRecents = [];
 let bankFavourites = [];
-let tempRecipientName = null; // Temporary name saved before transfer
+let tempRecipientName = null;
 
 // ============================================================
 // STORAGE HELPERS
@@ -2382,7 +2382,7 @@ localStorage.setItem('graypay_bank_favourites', JSON.stringify(bankFavourites));
 }
 
 // ============================================================
-// SAVED RECIPIENT NAMES STORAGE (Linked to account + bank)
+// SAVED RECIPIENT NAMES STORAGE
 // ============================================================
 function loadSavedNames() {
 let data = localStorage.getItem('graypay_saved_recipients');
@@ -2453,7 +2453,6 @@ document.body.appendChild(splash);
 setTimeout(() => { splash.remove(); if (callback) callback(); }, duration);
 }
 
-// ===== LOADING OVERLAY WITH SPINNER =====
 function showLoadingOverlay(msg = 'Processing...', showProgress = false) {
 document.getElementById('loadingMsg').innerText = msg;
 let progressBar = document.getElementById('progressBar');
@@ -3932,10 +3931,8 @@ showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('dynamicContent').style.display = 'block';
 
-// Update next button state after rendering
 updateNextButtonState();
 
-// If we have a current account number and selected bank, check for saved name
 if (currentAccountNumber && selectedBank) {
 checkBankAccount(currentAccountNumber);
 }
@@ -3972,12 +3969,10 @@ const numberEl = document.getElementById('bankPreviewNumber');
 const bankEl = document.getElementById('bankPreviewBank');
 
 if (cleanNumber.length === 10 && selectedBank) {
-// First check if there's a saved name for this account + bank combination
 let savedName = getSavedName(cleanNumber, selectedBank.name);
 if (savedName) {
 nameEl.textContent = savedName;
 } else if (tempRecipientName) {
-// Use temporary name if available
 nameEl.textContent = tempRecipientName;
 } else {
 nameEl.textContent = 'Invalid Account';
@@ -4010,7 +4005,6 @@ selectedBank = bank;
 if (label) label.textContent = bank.name;
 }
 
-// Check for saved name
 let savedName = getSavedName(accountNumber, bankName);
 if (savedName) {
 nameEl.textContent = savedName;
@@ -4028,7 +4022,7 @@ updateNextButtonState();
 }
 
 // ============================================================
-// OPEN CONFIRM TRANSFER PAGE
+// OPEN CONFIRM TRANSFER PAGE (UPDATED WITH ALL CHANGES)
 // ============================================================
 function openConfirmTransferPage() {
 const input = document.getElementById('bankAccountInput');
@@ -4053,7 +4047,6 @@ alert('Please save the recipient name first by clicking the arrow > on the succe
 return;
 }
 
-// Build confirm transfer page
 const bankIconSvg = `<svg viewBox="0 0 24 24" width="22" height="22" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/>
   <path d="M2 6.5V12L12 16.5L22 12V6.5"/>
@@ -4076,9 +4069,21 @@ document.getElementById('dynamicContent').innerHTML = `
 </div>
 </div>
 
+<!-- Balance Display -->
+<div style="background: #1a1a2e; padding: 10px 16px; border-radius: 12px; margin-bottom: 16px; border: 1px solid #2a2a3e; display: flex; justify-content: space-between; align-items: center;">
+<span style="color: #9ca3af; font-size: 14px;">Available Balance</span>
+<span style="color: #10b981; font-size: 16px; font-weight: 600;">₦${currentUser.balance.toLocaleString()}</span>
+</div>
+
 <label class="amount-label">Amount</label>
 <span class="amount-range" id="amountRangeDisplay">₦100.00-5,000,000.00</span>
 
+<!-- INPUT FIELD FIRST -->
+<div class="amount-input-wrapper">
+<input type="number" id="confirmAmountInput" placeholder="Enter amount" min="100" max="5000000" oninput="updateAmountDisplay(this.value); validateConfirmButton();">
+</div>
+
+<!-- QUICK AMOUNTS BELOW -->
 <div class="quick-amount-grid">
 <button class="quick-amount-btn" onclick="setAmount(this, 500)">₦500</button>
 <button class="quick-amount-btn" onclick="setAmount(this, 1000)">₦1,000</button>
@@ -4088,16 +4093,14 @@ document.getElementById('dynamicContent').innerHTML = `
 <button class="quick-amount-btn" onclick="setAmount(this, 10000)">₦10,000</button>
 </div>
 
-<div class="amount-input-wrapper">
-<input type="number" id="confirmAmountInput" placeholder="Enter amount" min="100" max="5000000" oninput="updateAmountDisplay(this.value)">
-</div>
-
+<!-- REMARK TEXT INPUT -->
 <div class="remark-section">
-<label class="remark-label">Remark</label>
-<span class="remark-sub">What's this for? (Optional)</span>
+<label class="remark-label">Remark (Optional)</label>
+<input type="text" id="remarkTextInput" class="input-field" placeholder="What's this for?" style="margin-bottom: 10px;" oninput="validateConfirmButton()">
+<!-- PURCHASE & PERSONAL BUTTONS BELOW -->
 <div class="remark-options">
-<button class="remark-option" onclick="selectRemark(this, 'Purchase')">Purchase</button>
-<button class="remark-option" onclick="selectRemark(this, 'Personal')">Personal</button>
+<button class="remark-option" onclick="setRemark(this, 'Purchase')">Purchase</button>
+<button class="remark-option" onclick="setRemark(this, 'Personal')">Personal</button>
 </div>
 </div>
 
@@ -4109,12 +4112,49 @@ showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('dynamicContent').style.display = 'block';
 
-// Store recipient data for the confirm page
+// Store recipient data
 window._confirmData = {
 name: name,
 accountNumber: accountNumber,
 bankName: selectedBank.name
 };
+
+// Initialize button state
+validateConfirmButton();
+}
+
+// ============================================================
+// CONFIRM BUTTON VALIDATION
+// ============================================================
+function validateConfirmButton() {
+const amountInput = document.getElementById('confirmAmountInput');
+const confirmBtn = document.getElementById('confirmBtn');
+const amount = parseInt(amountInput ? amountInput.value : 0);
+
+const isValid = amount >= 100 && amount <= currentUser.balance;
+
+if (isValid) {
+confirmBtn.classList.add('active');
+confirmBtn.disabled = false;
+} else {
+confirmBtn.classList.remove('active');
+confirmBtn.disabled = true;
+}
+}
+
+function setRemark(btn, text) {
+document.querySelectorAll('.remark-option').forEach(b => b.classList.remove('selected'));
+btn.classList.add('selected');
+document.getElementById('remarkTextInput').value = text;
+validateConfirmButton();
+}
+
+function setAmount(btn, amount) {
+document.querySelectorAll('.quick-amount-btn').forEach(b => b.classList.remove('selected'));
+btn.classList.add('selected');
+document.getElementById('confirmAmountInput').value = amount;
+updateAmountDisplay(amount);
+validateConfirmButton();
 }
 
 function updateAmountDisplay(value) {
@@ -4124,22 +4164,12 @@ display.textContent = '₦' + parseInt(value).toLocaleString();
 } else {
 display.textContent = '₦100.00-5,000,000.00';
 }
+validateConfirmButton();
 }
 
-function setAmount(btn, amount) {
-// Remove selected class from all amount buttons
-document.querySelectorAll('.quick-amount-btn').forEach(b => b.classList.remove('selected'));
-btn.classList.add('selected');
-document.getElementById('confirmAmountInput').value = amount;
-updateAmountDisplay(amount);
-}
-
-function selectRemark(btn, remark) {
-document.querySelectorAll('.remark-option').forEach(b => b.classList.remove('selected'));
-btn.classList.add('selected');
-window._selectedRemark = remark;
-}
-
+// ============================================================
+// PROCESS CONFIRM TRANSFER (UPDATED)
+// ============================================================
 function processConfirmTransfer() {
 const amountInput = document.getElementById('confirmAmountInput');
 const amount = parseInt(amountInput.value);
@@ -4165,7 +4195,7 @@ alert('Recipient data not found');
 return;
 }
 
-const remark = window._selectedRemark || '';
+const remark = document.getElementById('remarkTextInput').value.trim() || '';
 
 if (!confirm(`Confirm transfer to:\n\n${data.name}\n${data.accountNumber}\n${data.bankName}\nAmount: ₦${amount.toLocaleString()}\nRemark: ${remark || 'None'}\n\nDo you want to proceed?`)) {
 return;
@@ -4199,7 +4229,6 @@ note: 'Bank transfer to ' + data.bankName + (remark ? ' - ' + remark : '')
 currentUser.transactions.unshift(tx);
 saveUsers();
 
-// PERMANENTLY SAVE the name linked to account + bank
 saveRecipientName(data.accountNumber, data.bankName, data.name);
 
 const recentItem = {
@@ -4213,7 +4242,6 @@ bankRecents.unshift(recentItem);
 if (bankRecents.length > 10) bankRecents.pop();
 saveBankData();
 
-// Clear temporary name after transfer
 tempRecipientName = null;
 
 hideLoadingOverlay();
@@ -4325,10 +4353,9 @@ renderBankTransferPage();
 }
 
 // ============================================================
-// SAVE RECIPIENT PAGE - Opens anytime (NO validation!)
+// SAVE RECIPIENT PAGE
 // ============================================================
 function openSaveRecipientPage() {
-// Get existing temporary name if any
 let existingName = tempRecipientName || '';
 
 document.getElementById('dynamicContent').innerHTML = `
@@ -4368,13 +4395,9 @@ alert('Please enter a recipient name');
 return;
 }
 
-// Save temporarily
 tempRecipientName = name;
-
-// Go back to bank transfer page
 renderBankTransferPage();
 
-// Update the preview with the temporary name if account and bank are set
 setTimeout(() => {
 const input2 = document.getElementById('bankAccountInput');
 const accountNumber = input2 ? input2.value.replace(/\D/g, '') : '';
@@ -4382,7 +4405,6 @@ const preview = document.getElementById('bankAccountPreview');
 if (preview && accountNumber.length === 10 && selectedBank) {
 const nameEl = document.getElementById('bankPreviewName');
 if (nameEl) {
-// Check if there's a saved name (permanent) first
 let savedName = getSavedName(accountNumber, selectedBank.name);
 if (savedName) {
 nameEl.textContent = savedName;
