@@ -1368,10 +1368,11 @@ to { opacity: 1; transform: translateY(0); }
 padding: 0 0 20px 0;
 }
 
+/* Discount banner - SAME as To OPay */
 .bank-discount-banner {
 background: linear-gradient(135deg, #10b981, #059669);
 border-radius: 16px;
-padding: 14px 18px;
+padding: 16px 20px;
 margin-bottom: 12px;
 display: flex;
 justify-content: space-between;
@@ -1379,28 +1380,49 @@ align-items: center;
 position: relative;
 overflow: hidden;
 }
-.bank-discount-banner .discount-text {
-font-size: 13px;
+.bank-discount-banner::after {
+content: '🎉';
+position: absolute;
+right: -10px;
+top: -10px;
+font-size: 80px;
+opacity: 0.15;
+}
+.bank-discount-content {
+display: flex;
+justify-content: space-between;
+align-items: center;
+width: 100%;
+}
+.bank-discount-title {
+font-size: 14px;
 font-weight: 600;
 color: #fff;
 }
-.bank-discount-banner .discount-text span {
-font-size: 11px;
-font-weight: 400;
-opacity: 0.85;
-display: block;
+.bank-discount-sub {
+font-size: 12px;
+color: rgba(255,255,255,0.8);
 margin-top: 2px;
 }
 .bank-claim-btn {
 background: #000;
 color: #10b981;
 border: none;
-padding: 4px 16px;
+padding: 6px 20px;
 border-radius: 20px;
 font-weight: 600;
-font-size: 12px;
+font-size: 13px;
 cursor: default;
 pointer-events: none;
+}
+.bank-discount-badge {
+position: absolute;
+right: 16px;
+top: 50%;
+transform: translateY(-50%);
+font-size: 28px;
+font-weight: 700;
+color: rgba(255,255,255,0.2);
 }
 
 .free-transfers-info {
@@ -1413,22 +1435,26 @@ color: #10b981;
 border: 1px solid #1f2937;
 text-align: center;
 font-weight: 500;
+height: 44px;
+display: flex;
+align-items: center;
+justify-content: center;
 }
 
-/* ===== RECIPIENT ACCOUNT BOX (SEPARATE BOX) ===== */
+/* ===== RECIPIENT ACCOUNT BOX (BIGGER SIZE) ===== */
 .bank-recipient-box {
 background: #111827;
 border-radius: 16px;
-padding: 12px 16px;
-margin-bottom: 12px;
+padding: 16px 18px;
+margin-bottom: 14px;
 border: 1px solid #1f2937;
 display: flex;
 flex-direction: column;
-height: 70px;
 justify-content: center;
+height: 85px;
 }
 .bank-recipient-label {
-font-size: 13px;
+font-size: 14px;
 font-weight: 500;
 color: #9ca3af;
 margin-bottom: 4px;
@@ -1439,27 +1465,28 @@ padding: 8px 0;
 background: transparent;
 border: none;
 color: #fff;
-font-size: 15px;
+font-size: 16px;
 outline: none;
 }
 .bank-recipient-input::placeholder {
 color: #6b7280;
+font-size: 16px;
 }
 .bank-recipient-input:focus {
 border-color: transparent;
 }
 
-/* ===== SELECT BANK BOX (SEPARATE BOX) ===== */
+/* ===== SELECT BANK BOX (BIGGER SIZE) ===== */
 .bank-select-box {
 background: #111827;
 border-radius: 16px;
-padding: 12px 16px;
-margin-bottom: 12px;
+padding: 16px 18px;
+margin-bottom: 14px;
 border: 1px solid #1f2937;
 display: flex;
 justify-content: space-between;
 align-items: center;
-height: 70px;
+height: 85px;
 cursor: pointer;
 }
 .bank-select-box:active {
@@ -1480,26 +1507,26 @@ color: #fff;
 font-weight: 500;
 }
 
-/* ===== NEXT BUTTON BOX (SEPARATE BOX) ===== */
+/* ===== NEXT BUTTON BOX (BIGGER SIZE) ===== */
 .bank-next-box {
 background: #111827;
 border-radius: 16px;
-padding: 12px 16px;
-margin-bottom: 12px;
+padding: 16px 18px;
+margin-bottom: 14px;
 border: 1px solid #1f2937;
 display: flex;
 justify-content: center;
 align-items: center;
-height: 70px;
+height: 85px;
 }
 .bank-next-btn {
 width: 100%;
-padding: 12px;
+padding: 14px;
 background: #2a2a2a;
 border: none;
 border-radius: 12px;
 color: #9ca3af;
-font-size: 15px;
+font-size: 16px;
 font-weight: 600;
 cursor: not-allowed;
 transition: all 0.3s;
@@ -1565,7 +1592,7 @@ color: #10b981;
 margin-top: 2px;
 }
 
-/* ===== SUCCESS RATE MONITOR ===== */
+/* ===== SUCCESS RATE MONITOR (SAME SIZE - NOT INCREASED) ===== */
 .success-rate-section {
 background: #111827;
 border-radius: 12px;
@@ -1577,7 +1604,7 @@ justify-content: space-between;
 align-items: center;
 font-size: 13px;
 color: #9ca3af;
-height: 50px;
+height: 44px;
 }
 .success-rate-section .rate-arrow {
 font-size: 18px;
@@ -1585,28 +1612,28 @@ color: #9ca3af;
 font-weight: 500;
 }
 
-/* ===== RECENTS SECTION ===== */
+/* ===== RECENTS SECTION (BIGGER SIZE) ===== */
 .bank-recents-section {
 background: #111827;
 border-radius: 16px;
-padding: 16px;
+padding: 18px;
 border: 1px solid #1f2937;
 }
 .bank-recents-tabs {
 display: flex;
 gap: 4px;
-margin-bottom: 12px;
+margin-bottom: 14px;
 background: #1a1a2e;
 border-radius: 10px;
 padding: 4px;
 }
 .bank-tab {
 flex: 1;
-padding: 8px 0;
+padding: 10px 0;
 border: none;
 background: transparent;
 color: #6b7280;
-font-size: 13px;
+font-size: 14px;
 font-weight: 500;
 cursor: pointer;
 border-radius: 8px;
@@ -1623,13 +1650,13 @@ opacity: 0.7;
 .bank-recent-item {
 display: flex;
 align-items: center;
-gap: 12px;
-padding: 10px 0;
+gap: 14px;
+padding: 12px 0;
 border-bottom: 1px solid #1f2937;
 cursor: pointer;
 transition: background 0.2s;
 border-radius: 8px;
-padding: 10px 8px;
+padding: 12px 8px;
 }
 .bank-recent-item:active {
 background: #1a1a2e;
@@ -1638,17 +1665,21 @@ background: #1a1a2e;
 border-bottom: none;
 }
 .bank-recent-avatar {
-width: 40px;
-height: 40px;
+width: 44px;
+height: 44px;
 border-radius: 50%;
 background: #2a2a3e;
 display: flex;
 align-items: center;
 justify-content: center;
-font-size: 14px;
-font-weight: 600;
-color: #10b981;
 flex-shrink: 0;
+}
+.bank-recent-avatar .bank-icon-svg {
+width: 22px;
+height: 22px;
+stroke: #10b981;
+stroke-width: 1.8;
+fill: none;
 }
 .bank-recent-info {
 flex: 1;
@@ -1661,11 +1692,21 @@ color: #fff;
 .bank-recent-number {
 font-size: 12px;
 color: #9ca3af;
+margin-top: 1px;
 }
 .bank-recent-bank {
 font-size: 11px;
 color: #10b981;
 margin-top: 1px;
+}
+
+.bank-view-all-link {
+text-align: center;
+color: #10b981;
+font-size: 14px;
+font-weight: 500;
+padding: 14px 0 4px 0;
+cursor: pointer;
 }
 
 /* ============================================================
@@ -1719,7 +1760,7 @@ display: flex;
 flex-direction: column;
 align-items: center;
 gap: 4px;
-height: 70px;
+height: 75px;
 justify-content: center;
 }
 .freq-bank-item:active {
@@ -1819,7 +1860,7 @@ fill: none;
 <div class="page-header">
 <button class="back-btn" onclick="showWelcomePage()">←</button>
 <span class="title">Create Account</span>
-<button class="help-btn" onclick="showHelp()">❓</button>
+<button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
 </div>
 <div class="logo-center">Gpay</div>
 <input type="text" id="signupFirstname" class="input-field" placeholder="First Name">
@@ -2511,7 +2552,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <div class="page-header">
 <button class="back-btn" onclick="closeDynamic(); window._profileViewOpen = false;">←</button>
 <span class="title">Profile</span>
-<button class="help-btn" onclick="showHelp()">❓</button>
+<button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
 </div>
 <div class="profile-pic-container">
 <div class="profile-pic" onclick="triggerProfilePicUpload()" id="profilePicContainer">
@@ -2563,7 +2604,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <div class="page-header">
 <button class="back-btn" onclick="closeDynamic()">←</button>
 <span class="title">Transfer To Bank</span>
-<button class="help-btn" onclick="showHelp()">❓</button>
+<button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
 </div>
 <input type="text" id="accName" class="input-field" placeholder="Account Name">
 <input type="text" id="accNumber" class="input-field" placeholder="Account Number">
@@ -2630,7 +2671,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <div class="page-header">
 <button class="back-btn" onclick="closeDynamic()">←</button>
 <span class="title">Buy Airtime</span>
-<button class="help-btn" onclick="showHelp()">❓</button>
+<button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
 </div>
 <input type="text" id="airPhone" class="input-field" placeholder="Phone Number">
 <select id="airNetwork" class="input-field">
@@ -2698,7 +2739,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <div class="page-header">
 <button class="back-btn" onclick="closeDynamic()">←</button>
 <span class="title">Buy Data</span>
-<button class="help-btn" onclick="showHelp()">❓</button>
+<button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
 </div>
 <input type="text" id="dataPhone" class="input-field" placeholder="Phone Number">
 <select id="dataNetwork" class="input-field">
@@ -2891,7 +2932,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <div class="page-header">
 <button class="back-btn" onclick="closeDynamic()">←</button>
 <span class="title">Transaction History</span>
-<button class="help-btn" onclick="showHelp()">❓</button>
+<button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
 </div>
 ${html || '<div class="text-center" style="color:#9ca3af; padding:40px;">No transactions yet</div>'}
 </div>
@@ -2922,7 +2963,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <div class="page-header">
 <button class="back-btn" onclick="showTransactionHistory()">←</button>
 <span class="title">Transaction Details</span>
-<button class="help-btn" onclick="showHelp()">❓</button>
+<button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
 </div>
 <div style="text-align:center; margin:16px 0;">
 <div style="font-size:42px; font-weight:700; color:${color};">${symbol}₦${amt.toLocaleString()}.00</div>
@@ -3481,6 +3522,19 @@ const allBanks = [
 // Frequently used banks
 const frequentlyUsed = ['OPay', 'Access Bank', 'United Bank for Africa (UBA)', 'First Bank of Nigeria', 'Guaranty Trust Bank (GTBank)', 'Zenith Bank'];
 
+// Recent banks data
+const recentBanksData = [
+{ name: 'AHMED ISAH', number: '8132116092', bank: 'PalmPay' },
+{ name: 'Ahmed Isah', number: '8132116092', bank: 'Momo Payment Service Bank' },
+{ name: 'CHUKWUEMEKA CHRISTIAN', number: '0032271588', bank: 'Access Bank' },
+];
+
+// Favourites banks data
+const favouritesBanksData = [
+{ name: 'AHMED ISAH', number: '8132116092', bank: 'PalmPay' },
+{ name: 'CHUKWUEMEKA CHRISTIAN', number: '0032271588', bank: 'Access Bank' },
+];
+
 function showBankTransfer() {
 if (!currentUser) {
 alert('Please login first');
@@ -3497,27 +3551,40 @@ function renderBankTransferPage() {
 let recentsHtml = '';
 let favouritesHtml = '';
 
-bankRecents.forEach(item => {
+// Use the hardcoded recent banks data
+recentBanksData.forEach(item => {
 recentsHtml += `
-<div class="bank-recent-item" onclick="selectBankRecent('${item.bankName}', '${item.accountNumber}', '${item.accountName}')">
-<div class="bank-recent-avatar">${getInitials(item.accountName)}</div>
+<div class="bank-recent-item" onclick="selectBankRecent('${item.bank}', '${item.number}', '${item.name}')">
+<div class="bank-recent-avatar">
+<svg viewBox="0 0 24 24" width="22" height="22" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/>
+<path d="M2 6.5V12L12 16.5L22 12V6.5"/>
+<path d="M2 12V17.5L12 22L22 17.5V12"/>
+</svg>
+</div>
 <div class="bank-recent-info">
-<div class="bank-recent-name">${item.accountName}</div>
-<div class="bank-recent-number">${item.accountNumber}</div>
-<div class="bank-recent-bank">${item.bankName}</div>
+<div class="bank-recent-name">${item.name}</div>
+<div class="bank-recent-number">${item.number}</div>
+<div class="bank-recent-bank">${item.bank}</div>
 </div>
 </div>
 `;
 });
 
-bankFavourites.forEach(item => {
+favouritesBanksData.forEach(item => {
 favouritesHtml += `
-<div class="bank-recent-item" onclick="selectBankRecent('${item.bankName}', '${item.accountNumber}', '${item.accountName}')">
-<div class="bank-recent-avatar">${getInitials(item.accountName)}</div>
+<div class="bank-recent-item" onclick="selectBankRecent('${item.bank}', '${item.number}', '${item.name}')">
+<div class="bank-recent-avatar">
+<svg viewBox="0 0 24 24" width="22" height="22" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/>
+<path d="M2 6.5V12L12 16.5L22 12V6.5"/>
+<path d="M2 12V17.5L12 22L22 17.5V12"/>
+</svg>
+</div>
 <div class="bank-recent-info">
-<div class="bank-recent-name">${item.accountName}</div>
-<div class="bank-recent-number">${item.accountNumber}</div>
-<div class="bank-recent-bank">${item.bankName}</div>
+<div class="bank-recent-name">${item.name}</div>
+<div class="bank-recent-number">${item.number}</div>
+<div class="bank-recent-bank">${item.bank}</div>
 </div>
 </div>
 `;
@@ -3526,7 +3593,7 @@ favouritesHtml += `
 const selectedDisplay = selectedBank ? selectedBank.name : 'Select Bank';
 
 // Airtime icon SVG
-const airtimeIcon = `<svg viewBox="0 0 24 24" width="20" height="20" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>`;
+const airtimeIcon = `<svg viewBox="0 0 24 24" width="22" height="22" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>`;
 
 // Frequently Used Banks - 3 columns, 2 rows
 let freqHtml = '';
@@ -3550,12 +3617,16 @@ document.getElementById('dynamicContent').innerHTML = `
 <button class="help-btn" onclick="showTransactionHistory()" style="color:#10b981; font-size:14px; font-weight:500;">History</button>
 </div>
 
+<!-- Discount Banner - SAME as To OPay -->
 <div class="bank-discount-banner">
-<div class="discount-text">
-Claim 8 Discounts with ₦19 on any Bill
-<span>Free transfers for the day: 3</span>
+<div class="bank-discount-content">
+<div>
+<div class="bank-discount-title">Claim 8 Discounts with</div>
+<div class="bank-discount-sub">on any Bill</div>
 </div>
 <button class="bank-claim-btn">Claim</button>
+</div>
+<div class="bank-discount-badge">120</div>
 </div>
 
 <div class="free-transfers-info">
@@ -3602,23 +3673,13 @@ Free transfers for the day: 3
 </div>
 <div id="bankTabContent">
 ${bankTransferTab === 'recents' ? recentsHtml : favouritesHtml}
-${(bankTransferTab === 'recents' && bankRecents.length === 0) ? '<div style="color:#6b7280; text-align:center; padding:20px; font-size:14px;">No recent bank transfers</div>' : ''}
-${(bankTransferTab === 'favourites' && bankFavourites.length === 0) ? '<div style="color:#6b7280; text-align:center; padding:20px; font-size:14px;">No favourite banks</div>' : ''}
+</div>
+<div class="bank-view-all-link" onclick="alert('View all contacts')">
+View All <span style="margin-left:4px;">></span>
 </div>
 </div>
 </div>
 `;
-
-// Add the frequently used banks to the page after rendering
-const freqContainer = document.createElement('div');
-freqContainer.className = 'freq-banks-grid';
-freqContainer.innerHTML = freqHtml;
-
-// Insert after the bank-select-box or somewhere appropriate
-const selectBox = document.querySelector('.bank-select-box');
-if (selectBox && selectBox.parentNode) {
-// We'll add it in the bank selection page instead
-}
 
 showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
@@ -3671,6 +3732,7 @@ const demoNames = {
 '8165432109': 'FATIMA ABDULLAHI',
 '8123456789': 'JOHN DOE',
 '8012345678': 'MARY JANE',
+'0032271588': 'CHUKWUEMEKA CHRISTIAN',
 };
 
 const name = demoNames[cleanNumber] || 'Account Found';
@@ -3845,7 +3907,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <div class="page-header">
 <button class="back-btn" onclick="renderBankTransferPage()">←</button>
 <span class="title">Select Bank</span>
-<button class="help-btn" onclick="showHelp()">❓</button>
+<button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
 </div>
 
 <input type="text" id="bankSearchInput" class="bank-search-input" placeholder="Search Bank Name" oninput="filterBanks()">
