@@ -1097,6 +1097,61 @@ margin: 0 auto 12px auto;
 /* ============================================================
    OPAY TRANSFER PAGE STYLES
    ============================================================ */
+.discount-banner {
+background: linear-gradient(135deg, #10b981, #059669);
+border-radius: 16px;
+padding: 16px 20px;
+margin-bottom: 12px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+position: relative;
+overflow: hidden;
+}
+.discount-banner::after {
+content: '🎉';
+position: absolute;
+right: -10px;
+top: -10px;
+font-size: 80px;
+opacity: 0.15;
+}
+.discount-content {
+display: flex;
+justify-content: space-between;
+align-items: center;
+width: 100%;
+}
+.discount-title {
+font-size: 14px;
+font-weight: 600;
+color: #fff;
+}
+.discount-sub {
+font-size: 12px;
+color: rgba(255,255,255,0.8);
+margin-top: 2px;
+}
+.claim-discount-btn {
+background: #000;
+color: #10b981;
+border: none;
+padding: 6px 20px;
+border-radius: 20px;
+font-weight: 600;
+font-size: 13px;
+cursor: default;
+pointer-events: none;
+}
+.discount-badge {
+position: absolute;
+right: 16px;
+top: 50%;
+transform: translateY(-50%);
+font-size: 28px;
+font-weight: 700;
+color: rgba(255,255,255,0.2);
+}
 
 .instant-info {
 background: #111827;
@@ -2530,6 +2585,17 @@ document.getElementById('dynamicContent').innerHTML = `
 <button class="back-btn" onclick="closeDynamic()">←</button>
 <span class="title">Transfer To OPay Account</span>
 <button class="help-btn" onclick="showTransactionHistory()" style="color:#10b981; font-size:14px; font-weight:500;">History</button>
+</div>
+        
+<div class="discount-banner">
+<div class="discount-content">
+<div>
+<div class="discount-title">Claim 8 Discounts with</div>
+<div class="discount-sub">on any Bill</div>
+</div>
+<button class="claim-discount-btn">Claim</button>
+</div>
+<div class="discount-badge">120</div>
 </div>
         
 <div class="instant-info">Instant, Zero Issues, Free</div>
