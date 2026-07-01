@@ -1415,85 +1415,93 @@ text-align: center;
 font-weight: 500;
 }
 
-.bank-recipient-section {
+/* One combined box for Recipient, Select Bank, and Next */
+.bank-input-group {
 background: #111827;
 border-radius: 16px;
 padding: 16px;
 margin-bottom: 16px;
 border: 1px solid #1f2937;
+display: flex;
+align-items: center;
+gap: 10px;
 }
-.bank-recipient-label {
-font-size: 14px;
-font-weight: 500;
-color: #9ca3af;
-margin-bottom: 8px;
-}
-.bank-recipient-input {
-width: 100%;
-padding: 12px 16px;
+
+.bank-input-group .bank-recipient-input {
+flex: 1;
+padding: 14px 16px;
 background: #0a0a0a;
 border: 1px solid #2a2a3e;
 border-radius: 12px;
 color: #fff;
-font-size: 16px;
+font-size: 15px;
 outline: none;
 transition: border 0.2s;
+height: 50px;
+min-width: 0;
 }
-.bank-recipient-input:focus {
+.bank-input-group .bank-recipient-input:focus {
 border-color: #10b981;
 }
-.bank-recipient-input::placeholder {
+.bank-input-group .bank-recipient-input::placeholder {
 color: #6b7280;
 }
 
-.bank-select-section {
-background: #111827;
-border-radius: 16px;
-padding: 16px;
-margin-bottom: 16px;
-border: 1px solid #1f2937;
+.bank-select-clickable {
+flex: 1;
+padding: 14px 16px;
+background: #0a0a0a;
+border: 1px solid #2a2a3e;
+border-radius: 12px;
+cursor: pointer;
 display: flex;
 justify-content: space-between;
 align-items: center;
+transition: border 0.2s;
+height: 50px;
+min-width: 0;
 }
-.bank-select-label {
-font-size: 14px;
-font-weight: 500;
-color: #9ca3af;
-}
-.bank-select-btn {
-background: #10b981;
-color: #fff;
-border: none;
-padding: 8px 24px;
-border-radius: 20px;
-font-weight: 600;
-font-size: 14px;
-cursor: pointer;
-transition: opacity 0.2s;
-}
-.bank-select-btn:active {
+.bank-select-clickable:active {
 opacity: 0.7;
 }
-.bank-select-btn:disabled {
-opacity: 0.4;
-cursor: not-allowed;
+.bank-select-clickable .select-label {
+font-size: 14px;
+color: #9ca3af;
+}
+.bank-select-clickable .select-arrow {
+font-size: 18px;
+color: #9ca3af;
+font-weight: 500;
+}
+.bank-select-clickable .selected-bank-name {
+font-size: 14px;
+color: #fff;
+font-weight: 500;
 }
 
-.selected-bank-display {
-display: flex;
-align-items: center;
-gap: 10px;
-padding: 8px 12px;
-background: #1a1a2e;
-border-radius: 10px;
-border: 1px solid #10b981;
-margin-top: 8px;
+.bank-next-btn {
+padding: 14px 20px;
+background: #2a2a2a;
+border: 1px solid #2a2a3e;
+border-radius: 12px;
+color: #9ca3af;
+font-size: 15px;
+font-weight: 600;
+cursor: not-allowed;
+transition: all 0.3s;
+height: 50px;
+min-width: 70px;
+text-align: center;
+flex-shrink: 0;
 }
-.selected-bank-name {
-font-size: 14px;
-font-weight: 500;
+.bank-next-btn.active {
+background: #10b981;
+border-color: #10b981;
 color: #fff;
+cursor: pointer;
+}
+.bank-next-btn.active:active {
+opacity: 0.7;
 }
 
 .bank-account-preview {
@@ -1503,6 +1511,10 @@ padding: 14px 16px;
 margin-bottom: 16px;
 border: 1px solid #10b981;
 animation: fadeIn 0.3s ease;
+display: none;
+}
+.bank-account-preview.show {
+display: block;
 }
 .bank-account-preview-content {
 display: flex;
@@ -1544,37 +1556,22 @@ margin-top: 2px;
 
 .success-rate-section {
 background: #111827;
-border-radius: 16px;
-padding: 16px;
+border-radius: 12px;
+padding: 10px 16px;
 margin-bottom: 16px;
 border: 1px solid #1f2937;
-}
-.success-rate-title {
-font-size: 14px;
-font-weight: 500;
-color: #9ca3af;
-margin-bottom: 10px;
-}
-.success-rate-indicators {
 display: flex;
-gap: 20px;
-}
-.rate-item {
-display: flex;
+justify-content: center;
 align-items: center;
 gap: 8px;
 font-size: 13px;
-color: #d1d5db;
+color: #9ca3af;
 }
-.rate-dot {
-width: 10px;
-height: 10px;
-border-radius: 50%;
-display: inline-block;
+.success-rate-section .rate-arrow {
+font-size: 18px;
+color: #9ca3af;
+font-weight: 500;
 }
-.rate-dot.green { background: #10b981; }
-.rate-dot.orange { background: #f59e0b; }
-.rate-dot.red { background: #ef4444; }
 
 .bank-recents-section {
 background: #111827;
@@ -1658,10 +1655,6 @@ color: #10b981;
 margin-top: 1px;
 }
 
-.bank-continue-btn {
-margin-top: 16px;
-}
-
 /* ============================================================
    BANK SELECTION PAGE STYLES
    ============================================================ */
@@ -1701,6 +1694,9 @@ margin-bottom: 6px;
 cursor: pointer;
 transition: background 0.2s;
 border: 1px solid transparent;
+display: flex;
+align-items: center;
+gap: 10px;
 }
 .freq-bank-item:active {
 background: #2a2a3e;
@@ -1713,6 +1709,18 @@ background: #1a2a1e;
 font-size: 14px;
 font-weight: 500;
 color: #fff;
+}
+.freq-bank-item .bank-icon {
+width: 24px;
+height: 24px;
+flex-shrink: 0;
+}
+.freq-bank-item .bank-icon svg {
+width: 20px;
+height: 20px;
+stroke: #10b981;
+stroke-width: 1.8;
+fill: none;
 }
 
 .all-banks-grid {
@@ -1732,6 +1740,10 @@ font-size: 12px;
 font-weight: 500;
 color: #d1d5db;
 border: 1px solid transparent;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 4px;
 }
 .all-bank-item:active {
 background: #2a2a3e;
@@ -1743,9 +1755,16 @@ background: #1a2a1e;
 color: #fff;
 }
 .all-bank-item .bank-icon {
-font-size: 20px;
-display: block;
-margin-bottom: 4px;
+width: 24px;
+height: 24px;
+flex-shrink: 0;
+}
+.all-bank-item .bank-icon svg {
+width: 20px;
+height: 20px;
+stroke: #10b981;
+stroke-width: 1.8;
+fill: none;
 }
 </style>
 </head>
@@ -3185,260 +3204,260 @@ document.body.appendChild(popup);
 // BANK TRANSFER FUNCTIONS
 // ============================================================
 
-// All Nigerian Banks - Complete List
+// All Nigerian Banks - Complete List with icons
 const allBanks = [
 // Commercial Banks
-{ name: 'Access Bank', icon: '🏦' },
-{ name: 'Guaranty Trust Bank (GTBank)', icon: '🏦' },
-{ name: 'First Bank of Nigeria', icon: '🏦' },
-{ name: 'Zenith Bank', icon: '🏦' },
-{ name: 'United Bank for Africa (UBA)', icon: '🏦' },
-{ name: 'Ecobank Nigeria', icon: '🏦' },
-{ name: 'Fidelity Bank', icon: '🏦' },
-{ name: 'First City Monument Bank (FCMB)', icon: '🏦' },
-{ name: 'Union Bank', icon: '🏦' },
-{ name: 'Stanbic IBTC Bank', icon: '🏦' },
-{ name: 'Sterling Bank', icon: '🏦' },
-{ name: 'WEMA Bank', icon: '🏦' },
-{ name: 'Polaris Bank', icon: '🏦' },
-{ name: 'Keystone Bank', icon: '🏦' },
-{ name: 'Heritage Bank', icon: '🏦' },
-{ name: 'Unity Bank', icon: '🏦' },
-{ name: 'Suntrust Bank', icon: '🏦' },
-{ name: 'Titan Trust Bank', icon: '🏦' },
-{ name: 'Globus Bank', icon: '🏦' },
-{ name: 'Premium Trust Bank', icon: '🏦' },
-{ name: 'Signature Bank', icon: '🏦' },
-{ name: 'Providus Bank', icon: '🏦' },
-{ name: 'Lotus Bank', icon: '🏦' },
-{ name: 'Parallex Bank', icon: '🏦' },
-{ name: 'Neobank', icon: '🏦' },
-{ name: 'Sparkle Bank', icon: '✨' },
-{ name: 'Rubies Bank', icon: '💎' },
+{ name: 'Access Bank' },
+{ name: 'Guaranty Trust Bank (GTBank)' },
+{ name: 'First Bank of Nigeria' },
+{ name: 'Zenith Bank' },
+{ name: 'United Bank for Africa (UBA)' },
+{ name: 'Ecobank Nigeria' },
+{ name: 'Fidelity Bank' },
+{ name: 'First City Monument Bank (FCMB)' },
+{ name: 'Union Bank' },
+{ name: 'Stanbic IBTC Bank' },
+{ name: 'Sterling Bank' },
+{ name: 'WEMA Bank' },
+{ name: 'Polaris Bank' },
+{ name: 'Keystone Bank' },
+{ name: 'Heritage Bank' },
+{ name: 'Unity Bank' },
+{ name: 'Suntrust Bank' },
+{ name: 'Titan Trust Bank' },
+{ name: 'Globus Bank' },
+{ name: 'Premium Trust Bank' },
+{ name: 'Signature Bank' },
+{ name: 'Providus Bank' },
+{ name: 'Lotus Bank' },
+{ name: 'Parallex Bank' },
+{ name: 'Neobank' },
+{ name: 'Sparkle Bank' },
+{ name: 'Rubies Bank' },
 // Digital/Online Banks
-{ name: 'OPay', icon: '💳' },
-{ name: 'PalmPay', icon: '💳' },
-{ name: 'Moniepoint', icon: '💳' },
-{ name: 'Kuda Bank', icon: '💳' },
-{ name: 'VFD Bank', icon: '💳' },
-{ name: 'Eyowo', icon: '💳' },
-{ name: 'Carbon', icon: '💳' },
-{ name: 'FairMoney', icon: '💳' },
-{ name: 'Mint Bank', icon: '💳' },
-{ name: 'Bankly', icon: '💳' },
+{ name: 'OPay' },
+{ name: 'PalmPay' },
+{ name: 'Moniepoint' },
+{ name: 'Kuda Bank' },
+{ name: 'VFD Bank' },
+{ name: 'Eyowo' },
+{ name: 'Carbon' },
+{ name: 'FairMoney' },
+{ name: 'Mint Bank' },
+{ name: 'Bankly' },
 // Microfinance Banks
-{ name: 'AB Microfinance Bank', icon: '🏛️' },
-{ name: 'Accion Microfinance Bank', icon: '🏛️' },
-{ name: 'LAPO Microfinance Bank', icon: '🏛️' },
-{ name: 'Trust Microfinance Bank', icon: '🏛️' },
-{ name: 'Fortis Microfinance Bank', icon: '🏛️' },
-{ name: 'Esan Microfinance Bank', icon: '🏛️' },
-{ name: 'AACB MFB', icon: '🏛️' },
-{ name: 'ABSU MFB', icon: '🏛️' },
-{ name: 'ABU MFB', icon: '🏛️' },
-{ name: 'ABUCOOP MFB', icon: '🏛️' },
-{ name: 'ADA MFB', icon: '🏛️' },
-{ name: 'Adazi-Enu MFB', icon: '🏛️' },
-{ name: 'Ado-Ekiti MFB', icon: '🏛️' },
-{ name: 'Agbede MFB', icon: '🏛️' },
-{ name: 'Aku MFB', icon: '🏛️' },
-{ name: 'Al-Barakah MFB', icon: '🏛️' },
-{ name: 'All Seasons MFB', icon: '🏛️' },
-{ name: 'Amoyen MFB', icon: '🏛️' },
-{ name: 'Aramoko MFB', icon: '🏛️' },
-{ name: 'Arewa MFB', icon: '🏛️' },
-{ name: 'Aso Savings & Loans', icon: '🏛️' },
-{ name: 'Auchi MFB', icon: '🏛️' },
-{ name: 'Awka MFB', icon: '🏛️' },
-{ name: 'Baines Credit MFB', icon: '🏛️' },
-{ name: 'Balogun MFB', icon: '🏛️' },
-{ name: 'Banc Corp MFB', icon: '🏛️' },
-{ name: 'Bosak MFB', icon: '🏛️' },
-{ name: 'Bowen MFB', icon: '🏛️' },
-{ name: 'Branch MFB', icon: '🏛️' },
-{ name: 'Brent MFB', icon: '🏛️' },
-{ name: 'Brilliant MFB', icon: '🏛️' },
-{ name: 'Capital MFB', icon: '🏛️' },
-{ name: 'Cedar MFB', icon: '🏛️' },
-{ name: 'CEMCS MFB', icon: '🏛️' },
-{ name: 'Chartered MFB', icon: '🏛️' },
-{ name: 'City MFB', icon: '🏛️' },
-{ name: 'Covenant MFB', icon: '🏛️' },
-{ name: 'Crown MFB', icon: '🏛️' },
-{ name: 'Daylight MFB', icon: '🏛️' },
-{ name: 'Diamond MFB', icon: '🏛️' },
-{ name: 'Eagle MFB', icon: '🏛️' },
-{ name: 'Eartholeum MFB', icon: '🏛️' },
-{ name: 'Edu MFB', icon: '🏛️' },
-{ name: 'Eko MFB', icon: '🏛️' },
-{ name: 'Empire MFB', icon: '🏛️' },
-{ name: 'Express MFB', icon: '🏛️' },
-{ name: 'Fadac MFB', icon: '🏛️' },
-{ name: 'Fair MFB', icon: '🏛️' },
-{ name: 'Family Homes MFB', icon: '🏛️' },
-{ name: 'FBNQuest MFB', icon: '🏛️' },
-{ name: 'Finca MFB', icon: '🏛️' },
-{ name: 'First Generation MFB', icon: '🏛️' },
-{ name: 'First Royal MFB', icon: '🏛️' },
-{ name: 'First Trust MFB', icon: '🏛️' },
-{ name: 'Focus MFB', icon: '🏛️' },
-{ name: 'Fortress MFB', icon: '🏛️' },
-{ name: 'Full Range MFB', icon: '🏛️' },
-{ name: 'Gain MFB', icon: '🏛️' },
-{ name: 'Gambo MFB', icon: '🏛️' },
-{ name: 'Gateway MFB', icon: '🏛️' },
-{ name: 'Girei MFB', icon: '🏛️' },
-{ name: 'Glamour MFB', icon: '🏛️' },
-{ name: 'Glory MFB', icon: '🏛️' },
-{ name: 'Gold MFB', icon: '🏛️' },
-{ name: 'Golden MFB', icon: '🏛️' },
-{ name: 'Good MFB', icon: '🏛️' },
-{ name: 'Greenwich MFB', icon: '🏛️' },
-{ name: 'Habitat MFB', icon: '🏛️' },
-{ name: 'Haggai MFB', icon: '🏛️' },
-{ name: 'Hasal MFB', icon: '🏛️' },
-{ name: 'Haven MFB', icon: '🏛️' },
-{ name: 'HBF MFB', icon: '🏛️' },
-{ name: 'Herald MFB', icon: '🏛️' },
-{ name: 'Highstreet MFB', icon: '🏛️' },
-{ name: 'Honeywell MFB', icon: '🏛️' },
-{ name: 'HOPE MFB', icon: '🏛️' },
-{ name: 'Ibile MFB', icon: '🏛️' },
-{ name: 'Ikire MFB', icon: '🏛️' },
-{ name: 'Ile-Ife MFB', icon: '🏛️' },
-{ name: 'Ilisan MFB', icon: '🏛️' },
-{ name: 'Imperial MFB', icon: '🏛️' },
-{ name: 'Infinity MFB', icon: '🏛️' },
-{ name: 'Innoson MFB', icon: '🏛️' },
-{ name: 'Integrity MFB', icon: '🏛️' },
-{ name: 'Intercontinental MFB', icon: '🏛️' },
-{ name: 'Iree MFB', icon: '🏛️' },
-{ name: 'Isale-Oyo MFB', icon: '🏛️' },
-{ name: 'Iwo MFB', icon: '🏛️' },
-{ name: 'Iyeru MFB', icon: '🏛️' },
-{ name: 'Jaiz Bank', icon: '🏦' },
-{ name: 'Jubilee MFB', icon: '🏛️' },
-{ name: 'Kadpoly MFB', icon: '🏛️' },
-{ name: 'Kebbi MFB', icon: '🏛️' },
-{ name: 'Kogi MFB', icon: '🏛️' },
-{ name: 'Kontagora MFB', icon: '🏛️' },
-{ name: 'Kuje MFB', icon: '🏛️' },
-{ name: 'Kutigi MFB', icon: '🏛️' },
-{ name: 'Lagos Building MFB', icon: '🏛️' },
-{ name: 'Lapo MFB', icon: '🏛️' },
-{ name: 'Laudable MFB', icon: '🏛️' },
-{ name: 'Life MFB', icon: '🏛️' },
-{ name: 'Lighthouse MFB', icon: '🏛️' },
-{ name: 'Lion MFB', icon: '🏛️' },
-{ name: 'Lobitos MFB', icon: '🏛️' },
-{ name: 'Lotus MFB', icon: '🏛️' },
-{ name: 'Mainstreet MFB', icon: '🏛️' },
-{ name: 'Malachy MFB', icon: '🏛️' },
-{ name: 'Mayfair MFB', icon: '🏛️' },
-{ name: 'Megapraise MFB', icon: '🏛️' },
-{ name: 'Midas MFB', icon: '🏛️' },
-{ name: 'Mikado MFB', icon: '🏛️' },
-{ name: 'Mint MFB', icon: '🏛️' },
-{ name: 'Money Trust MFB', icon: '🏛️' },
-{ name: 'Mutual MFB', icon: '🏛️' },
-{ name: 'Naga MFB', icon: '🏛️' },
-{ name: 'Nasarawa MFB', icon: '🏛️' },
-{ name: 'Nations MFB', icon: '🏛️' },
-{ name: 'New Dawn MFB', icon: '🏛️' },
-{ name: 'New Prudential MFB', icon: '🏛️' },
-{ name: 'Nigerian Navy MFB', icon: '🏛️' },
-{ name: 'Nnewi MFB', icon: '🏛️' },
-{ name: 'Noble MFB', icon: '🏛️' },
-{ name: 'Obaseki MFB', icon: '🏛️' },
-{ name: 'Obinna MFB', icon: '🏛️' },
-{ name: 'Ocean MFB', icon: '🏛️' },
-{ name: 'Okpoga MFB', icon: '🏛️' },
-{ name: 'Olabisi MFB', icon: '🏛️' },
-{ name: 'Omni MFB', icon: '🏛️' },
-{ name: 'Ondo MFB', icon: '🏛️' },
-{ name: 'Ore MFB', icon: '🏛️' },
-{ name: 'Orisun MFB', icon: '🏛️' },
-{ name: 'Oshogbo MFB', icon: '🏛️' },
-{ name: 'Osun MFB', icon: '🏛️' },
-{ name: 'Oto MFB', icon: '🏛️' },
-{ name: 'Owerri MFB', icon: '🏛️' },
-{ name: 'Paga MFB', icon: '🏛️' },
-{ name: 'Palm MFB', icon: '🏛️' },
-{ name: 'Paragon MFB', icon: '🏛️' },
-{ name: 'Park MFB', icon: '🏛️' },
-{ name: 'Pathfinder MFB', icon: '🏛️' },
-{ name: 'Peace MFB', icon: '🏛️' },
-{ name: 'Pennywise MFB', icon: '🏛️' },
-{ name: 'Pentecost MFB', icon: '🏛️' },
-{ name: 'People\'s MFB', icon: '🏛️' },
-{ name: 'Pinnacle MFB', icon: '🏛️' },
-{ name: 'Pioneer MFB', icon: '🏛️' },
-{ name: 'Poly MFB', icon: '🏛️' },
-{ name: 'Premium MFB', icon: '🏛️' },
-{ name: 'Prime MFB', icon: '🏛️' },
-{ name: 'Prudent MFB', icon: '🏛️' },
-{ name: 'Rahama MFB', icon: '🏛️' },
-{ name: 'Rapido MFB', icon: '🏛️' },
-{ name: 'Regent MFB', icon: '🏛️' },
-{ name: 'Reliance MFB', icon: '🏛️' },
-{ name: 'Renaissance MFB', icon: '🏛️' },
-{ name: 'Rigo MFB', icon: '🏛️' },
-{ name: 'Rivers MFB', icon: '🏛️' },
-{ name: 'Rock MFB', icon: '🏛️' },
-{ name: 'Royal MFB', icon: '🏛️' },
-{ name: 'Safeguard MFB', icon: '🏛️' },
-{ name: 'Sagamu MFB', icon: '🏛️' },
-{ name: 'Sapele MFB', icon: '🏛️' },
-{ name: 'Savannah MFB', icon: '🏛️' },
-{ name: 'Seed MFB', icon: '🏛️' },
-{ name: 'Solid Allianz MFB', icon: '🏛️' },
-{ name: 'Solid Rock MFB', icon: '🏛️' },
-{ name: 'Soul MFB', icon: '🏛️' },
-{ name: 'South South MFB', icon: '🏛️' },
-{ name: 'Sovereign MFB', icon: '🏛️' },
-{ name: 'Standard MFB', icon: '🏛️' },
-{ name: 'Star MFB', icon: '🏛️' },
-{ name: 'Sulspap MFB', icon: '🏛️' },
-{ name: 'Summit MFB', icon: '🏛️' },
-{ name: 'Sunshine MFB', icon: '🏛️' },
-{ name: 'Super MFB', icon: '🏛️' },
-{ name: 'Supreme MFB', icon: '🏛️' },
-{ name: 'Taj MFB', icon: '🏛️' },
-{ name: 'Tangerine MFB', icon: '🏛️' },
-{ name: 'Terra MFB', icon: '🏛️' },
-{ name: 'Thrive MFB', icon: '🏛️' },
-{ name: 'Titan MFB', icon: '🏛️' },
-{ name: 'Tony MFB', icon: '🏛️' },
-{ name: 'Tower MFB', icon: '🏛️' },
-{ name: 'Triple MFB', icon: '🏛️' },
-{ name: 'Trustfund MFB', icon: '🏛️' },
-{ name: 'Unicorn MFB', icon: '🏛️' },
-{ name: 'Unique MFB', icon: '🏛️' },
-{ name: 'United MFB', icon: '🏛️' },
-{ name: 'Universe MFB', icon: '🏛️' },
-{ name: 'Univ MFB', icon: '🏛️' },
-{ name: 'Uphill MFB', icon: '🏛️' },
-{ name: 'Uruguay MFB', icon: '🏛️' },
-{ name: 'Vanguard MFB', icon: '🏛️' },
-{ name: 'Ventures MFB', icon: '🏛️' },
-{ name: 'Veritas MFB', icon: '🏛️' },
-{ name: 'VFD MFB', icon: '🏛️' },
-{ name: 'Victory MFB', icon: '🏛️' },
-{ name: 'Virtue MFB', icon: '🏛️' },
-{ name: 'Wema MFB', icon: '🏛️' },
-{ name: 'Wesbanco MFB', icon: '🏛️' },
-{ name: 'Whitefield MFB', icon: '🏛️' },
-{ name: 'Winners MFB', icon: '🏛️' },
-{ name: 'Wise MFB', icon: '🏛️' },
-{ name: 'Women MFB', icon: '🏛️' },
-{ name: 'Worx MFB', icon: '🏛️' },
-{ name: 'X-Factor MFB', icon: '🏛️' },
-{ name: 'Xpress MFB', icon: '🏛️' },
-{ name: 'Yaba MFB', icon: '🏛️' },
-{ name: 'Yobe MFB', icon: '🏛️' },
-{ name: 'Zamfara MFB', icon: '🏛️' },
-{ name: 'Zenith MFB', icon: '🏛️' },
-{ name: 'Zuri MFB', icon: '🏛️' },
+{ name: 'AB Microfinance Bank' },
+{ name: 'Accion Microfinance Bank' },
+{ name: 'LAPO Microfinance Bank' },
+{ name: 'Trust Microfinance Bank' },
+{ name: 'Fortis Microfinance Bank' },
+{ name: 'Esan Microfinance Bank' },
+{ name: 'AACB MFB' },
+{ name: 'ABSU MFB' },
+{ name: 'ABU MFB' },
+{ name: 'ABUCOOP MFB' },
+{ name: 'ADA MFB' },
+{ name: 'Adazi-Enu MFB' },
+{ name: 'Ado-Ekiti MFB' },
+{ name: 'Agbede MFB' },
+{ name: 'Aku MFB' },
+{ name: 'Al-Barakah MFB' },
+{ name: 'All Seasons MFB' },
+{ name: 'Amoyen MFB' },
+{ name: 'Aramoko MFB' },
+{ name: 'Arewa MFB' },
+{ name: 'Aso Savings & Loans' },
+{ name: 'Auchi MFB' },
+{ name: 'Awka MFB' },
+{ name: 'Baines Credit MFB' },
+{ name: 'Balogun MFB' },
+{ name: 'Banc Corp MFB' },
+{ name: 'Bosak MFB' },
+{ name: 'Bowen MFB' },
+{ name: 'Branch MFB' },
+{ name: 'Brent MFB' },
+{ name: 'Brilliant MFB' },
+{ name: 'Capital MFB' },
+{ name: 'Cedar MFB' },
+{ name: 'CEMCS MFB' },
+{ name: 'Chartered MFB' },
+{ name: 'City MFB' },
+{ name: 'Covenant MFB' },
+{ name: 'Crown MFB' },
+{ name: 'Daylight MFB' },
+{ name: 'Diamond MFB' },
+{ name: 'Eagle MFB' },
+{ name: 'Eartholeum MFB' },
+{ name: 'Edu MFB' },
+{ name: 'Eko MFB' },
+{ name: 'Empire MFB' },
+{ name: 'Express MFB' },
+{ name: 'Fadac MFB' },
+{ name: 'Fair MFB' },
+{ name: 'Family Homes MFB' },
+{ name: 'FBNQuest MFB' },
+{ name: 'Finca MFB' },
+{ name: 'First Generation MFB' },
+{ name: 'First Royal MFB' },
+{ name: 'First Trust MFB' },
+{ name: 'Focus MFB' },
+{ name: 'Fortress MFB' },
+{ name: 'Full Range MFB' },
+{ name: 'Gain MFB' },
+{ name: 'Gambo MFB' },
+{ name: 'Gateway MFB' },
+{ name: 'Girei MFB' },
+{ name: 'Glamour MFB' },
+{ name: 'Glory MFB' },
+{ name: 'Gold MFB' },
+{ name: 'Golden MFB' },
+{ name: 'Good MFB' },
+{ name: 'Greenwich MFB' },
+{ name: 'Habitat MFB' },
+{ name: 'Haggai MFB' },
+{ name: 'Hasal MFB' },
+{ name: 'Haven MFB' },
+{ name: 'HBF MFB' },
+{ name: 'Herald MFB' },
+{ name: 'Highstreet MFB' },
+{ name: 'Honeywell MFB' },
+{ name: 'HOPE MFB' },
+{ name: 'Ibile MFB' },
+{ name: 'Ikire MFB' },
+{ name: 'Ile-Ife MFB' },
+{ name: 'Ilisan MFB' },
+{ name: 'Imperial MFB' },
+{ name: 'Infinity MFB' },
+{ name: 'Innoson MFB' },
+{ name: 'Integrity MFB' },
+{ name: 'Intercontinental MFB' },
+{ name: 'Iree MFB' },
+{ name: 'Isale-Oyo MFB' },
+{ name: 'Iwo MFB' },
+{ name: 'Iyeru MFB' },
+{ name: 'Jaiz Bank' },
+{ name: 'Jubilee MFB' },
+{ name: 'Kadpoly MFB' },
+{ name: 'Kebbi MFB' },
+{ name: 'Kogi MFB' },
+{ name: 'Kontagora MFB' },
+{ name: 'Kuje MFB' },
+{ name: 'Kutigi MFB' },
+{ name: 'Lagos Building MFB' },
+{ name: 'Lapo MFB' },
+{ name: 'Laudable MFB' },
+{ name: 'Life MFB' },
+{ name: 'Lighthouse MFB' },
+{ name: 'Lion MFB' },
+{ name: 'Lobitos MFB' },
+{ name: 'Lotus MFB' },
+{ name: 'Mainstreet MFB' },
+{ name: 'Malachy MFB' },
+{ name: 'Mayfair MFB' },
+{ name: 'Megapraise MFB' },
+{ name: 'Midas MFB' },
+{ name: 'Mikado MFB' },
+{ name: 'Mint MFB' },
+{ name: 'Money Trust MFB' },
+{ name: 'Mutual MFB' },
+{ name: 'Naga MFB' },
+{ name: 'Nasarawa MFB' },
+{ name: 'Nations MFB' },
+{ name: 'New Dawn MFB' },
+{ name: 'New Prudential MFB' },
+{ name: 'Nigerian Navy MFB' },
+{ name: 'Nnewi MFB' },
+{ name: 'Noble MFB' },
+{ name: 'Obaseki MFB' },
+{ name: 'Obinna MFB' },
+{ name: 'Ocean MFB' },
+{ name: 'Okpoga MFB' },
+{ name: 'Olabisi MFB' },
+{ name: 'Omni MFB' },
+{ name: 'Ondo MFB' },
+{ name: 'Ore MFB' },
+{ name: 'Orisun MFB' },
+{ name: 'Oshogbo MFB' },
+{ name: 'Osun MFB' },
+{ name: 'Oto MFB' },
+{ name: 'Owerri MFB' },
+{ name: 'Paga MFB' },
+{ name: 'Palm MFB' },
+{ name: 'Paragon MFB' },
+{ name: 'Park MFB' },
+{ name: 'Pathfinder MFB' },
+{ name: 'Peace MFB' },
+{ name: 'Pennywise MFB' },
+{ name: 'Pentecost MFB' },
+{ name: 'People\'s MFB' },
+{ name: 'Pinnacle MFB' },
+{ name: 'Pioneer MFB' },
+{ name: 'Poly MFB' },
+{ name: 'Premium MFB' },
+{ name: 'Prime MFB' },
+{ name: 'Prudent MFB' },
+{ name: 'Rahama MFB' },
+{ name: 'Rapido MFB' },
+{ name: 'Regent MFB' },
+{ name: 'Reliance MFB' },
+{ name: 'Renaissance MFB' },
+{ name: 'Rigo MFB' },
+{ name: 'Rivers MFB' },
+{ name: 'Rock MFB' },
+{ name: 'Royal MFB' },
+{ name: 'Safeguard MFB' },
+{ name: 'Sagamu MFB' },
+{ name: 'Sapele MFB' },
+{ name: 'Savannah MFB' },
+{ name: 'Seed MFB' },
+{ name: 'Solid Allianz MFB' },
+{ name: 'Solid Rock MFB' },
+{ name: 'Soul MFB' },
+{ name: 'South South MFB' },
+{ name: 'Sovereign MFB' },
+{ name: 'Standard MFB' },
+{ name: 'Star MFB' },
+{ name: 'Sulspap MFB' },
+{ name: 'Summit MFB' },
+{ name: 'Sunshine MFB' },
+{ name: 'Super MFB' },
+{ name: 'Supreme MFB' },
+{ name: 'Taj MFB' },
+{ name: 'Tangerine MFB' },
+{ name: 'Terra MFB' },
+{ name: 'Thrive MFB' },
+{ name: 'Titan MFB' },
+{ name: 'Tony MFB' },
+{ name: 'Tower MFB' },
+{ name: 'Triple MFB' },
+{ name: 'Trustfund MFB' },
+{ name: 'Unicorn MFB' },
+{ name: 'Unique MFB' },
+{ name: 'United MFB' },
+{ name: 'Universe MFB' },
+{ name: 'Univ MFB' },
+{ name: 'Uphill MFB' },
+{ name: 'Uruguay MFB' },
+{ name: 'Vanguard MFB' },
+{ name: 'Ventures MFB' },
+{ name: 'Veritas MFB' },
+{ name: 'VFD MFB' },
+{ name: 'Victory MFB' },
+{ name: 'Virtue MFB' },
+{ name: 'Wema MFB' },
+{ name: 'Wesbanco MFB' },
+{ name: 'Whitefield MFB' },
+{ name: 'Winners MFB' },
+{ name: 'Wise MFB' },
+{ name: 'Women MFB' },
+{ name: 'Worx MFB' },
+{ name: 'X-Factor MFB' },
+{ name: 'Xpress MFB' },
+{ name: 'Yaba MFB' },
+{ name: 'Yobe MFB' },
+{ name: 'Zamfara MFB' },
+{ name: 'Zenith MFB' },
+{ name: 'Zuri MFB' },
 ];
 
 // Frequently used banks
@@ -3457,12 +3476,6 @@ renderBankTransferPage();
 }
 
 function renderBankTransferPage() {
-const selectedBankDisplay = selectedBank ? 
-`<div class="selected-bank-display">
-<span style="font-size:20px;">${selectedBank.icon || '🏦'}</span>
-<span class="selected-bank-name">${selectedBank.name}</span>
-</div>` : '';
-
 // Build recents and favourites lists
 let recentsHtml = '';
 let favouritesHtml = '';
@@ -3493,6 +3506,8 @@ favouritesHtml += `
 `;
 });
 
+const selectedBankDisplay = selectedBank ? selectedBank.name : 'Select Bank';
+
 document.getElementById('dynamicContent').innerHTML = `
 <div class="bank-transfer-container">
 <div class="page-header">
@@ -3513,19 +3528,19 @@ Claim 8 Discounts with ₦19 on any Bill
 Free transfers for the day: 3
 </div>
 
-<div class="bank-recipient-section">
-<div class="bank-recipient-label">Recipient Account</div>
+<!-- One combined box for Recipient, Select Bank, and Next -->
+<div class="bank-input-group">
 <input type="tel" id="bankAccountInput" class="bank-recipient-input" placeholder="Enter 10 digits Account Number" maxlength="10" oninput="checkBankAccount(this.value)">
+
+<div class="bank-select-clickable" onclick="showBankSelection()">
+<span class="select-label" id="bankSelectLabel">${selectedBankDisplay}</span>
+<span class="select-arrow">></span>
 </div>
 
-<div class="bank-select-section">
-<span class="bank-select-label">Select Bank</span>
-<button class="bank-select-btn" id="selectBankBtn" onclick="showBankSelection()">Next</button>
+<button class="bank-next-btn" id="bankNextBtn" onclick="proceedBankTransfer()">Next</button>
 </div>
 
-<div id="selectedBankDisplay">${selectedBankDisplay}</div>
-
-<div id="bankAccountPreview" style="display:none;" class="bank-account-preview">
+<div id="bankAccountPreview" class="bank-account-preview">
 <div class="bank-account-preview-content">
 <div class="bank-preview-avatar" id="bankPreviewAvatar">👤</div>
 <div class="bank-preview-info">
@@ -3537,12 +3552,8 @@ Free transfers for the day: 3
 </div>
 
 <div class="success-rate-section">
-<div class="success-rate-title">Bank Transfer Success Rate Monitor</div>
-<div class="success-rate-indicators">
-<span class="rate-item"><span class="rate-dot green"></span> High</span>
-<span class="rate-item"><span class="rate-dot orange"></span> Medium</span>
-<span class="rate-item"><span class="rate-dot red"></span> Low</span>
-</div>
+<span>Bank Transfer Success Rate Monitor</span>
+<span class="rate-arrow">></span>
 </div>
 
 <div class="bank-recents-section">
@@ -3556,14 +3567,15 @@ ${(bankTransferTab === 'recents' && bankRecents.length === 0) ? '<div style="col
 ${(bankTransferTab === 'favourites' && bankFavourites.length === 0) ? '<div style="color:#6b7280; text-align:center; padding:20px; font-size:14px;">No favourite banks</div>' : ''}
 </div>
 </div>
-
-<button class="btn w-full bank-continue-btn" id="bankContinueBtn" onclick="proceedBankTransfer()" disabled>Continue →</button>
 </div>
 `;
 
 showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('dynamicContent').style.display = 'block';
+
+// Update next button state after rendering
+updateNextButtonState();
 }
 
 function switchBankTab(tab) {
@@ -3571,20 +3583,36 @@ bankTransferTab = tab;
 renderBankTransferPage();
 }
 
+function updateNextButtonState() {
+const input = document.getElementById('bankAccountInput');
+const nextBtn = document.getElementById('bankNextBtn');
+if (!input || !nextBtn) return;
+
+const accountNumber = input.value.replace(/\D/g, '');
+const hasValidAccount = accountNumber.length === 10;
+const hasSelectedBank = selectedBank !== null;
+
+if (hasValidAccount && hasSelectedBank) {
+nextBtn.classList.add('active');
+nextBtn.disabled = false;
+} else {
+nextBtn.classList.remove('active');
+nextBtn.disabled = true;
+}
+}
+
 function checkBankAccount(number) {
 const cleanNumber = number.replace(/\D/g, '');
 const preview = document.getElementById('bankAccountPreview');
-const continueBtn = document.getElementById('bankContinueBtn');
 const nameEl = document.getElementById('bankPreviewName');
 const numberEl = document.getElementById('bankPreviewNumber');
 const bankEl = document.getElementById('bankPreviewBank');
 const avatarEl = document.getElementById('bankPreviewAvatar');
 
 if (cleanNumber.length === 10 && selectedBank) {
-preview.style.display = 'block';
-continueBtn.disabled = false;
+preview.classList.add('show');
 
-// Demo account name lookup based on number and bank
+// Demo account name lookup based on number
 const demoNames = {
 '8132116092': 'AHMED ISAH',
 '8132017850': 'TIJJANI ALIYU',
@@ -3602,19 +3630,20 @@ numberEl.textContent = cleanNumber;
 bankEl.textContent = selectedBank.name;
 avatarEl.textContent = getInitials(name);
 } else {
-preview.style.display = 'none';
-continueBtn.disabled = true;
+preview.classList.remove('show');
 }
+
+updateNextButtonState();
 }
 
 function selectBankRecent(bankName, accountNumber, accountName) {
 const input = document.getElementById('bankAccountInput');
 const preview = document.getElementById('bankAccountPreview');
-const continueBtn = document.getElementById('bankContinueBtn');
 const nameEl = document.getElementById('bankPreviewName');
 const numberEl = document.getElementById('bankPreviewNumber');
 const bankEl = document.getElementById('bankPreviewBank');
 const avatarEl = document.getElementById('bankPreviewAvatar');
+const label = document.getElementById('bankSelectLabel');
 
 if (input) {
 input.value = accountNumber;
@@ -3624,20 +3653,16 @@ input.value = accountNumber;
 const bank = allBanks.find(b => b.name === bankName);
 if (bank) {
 selectedBank = bank;
-document.getElementById('selectedBankDisplay').innerHTML = `
-<div class="selected-bank-display">
-<span style="font-size:20px;">${bank.icon || '🏦'}</span>
-<span class="selected-bank-name">${bank.name}</span>
-</div>
-`;
+if (label) label.textContent = bank.name;
 }
 
-preview.style.display = 'block';
-continueBtn.disabled = false;
+preview.classList.add('show');
 nameEl.textContent = accountName;
 numberEl.textContent = accountNumber;
 bankEl.textContent = bankName;
 avatarEl.textContent = getInitials(accountName);
+
+updateNextButtonState();
 }
 
 function proceedBankTransfer() {
@@ -3743,11 +3768,14 @@ document.body.appendChild(popup);
 // BANK SELECTION PAGE
 // ============================================================
 function showBankSelection() {
+// Get the airtime icon SVG
+const airtimeIcon = `<svg viewBox="0 0 24 24" width="20" height="20" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>`;
+
 let bankListHtml = '';
 allBanks.forEach(bank => {
 bankListHtml += `
 <div class="all-bank-item" onclick="selectBank('${bank.name}')">
-<span class="bank-icon">${bank.icon || '🏦'}</span>
+<span class="bank-icon">${airtimeIcon}</span>
 ${bank.name}
 </div>
 `;
@@ -3759,7 +3787,8 @@ const bank = allBanks.find(b => b.name === bankName);
 if (bank) {
 freqHtml += `
 <div class="freq-bank-item" onclick="selectBank('${bank.name}')">
-<span class="bank-name">${bank.icon || '🏦'} ${bank.name}</span>
+<span class="bank-icon">${airtimeIcon}</span>
+<span class="bank-name">${bank.name}</span>
 </div>
 `;
 }
@@ -3800,7 +3829,7 @@ const items = grid.querySelectorAll('.all-bank-item');
 items.forEach(item => {
 const name = item.textContent.toLowerCase();
 if (name.includes(search)) {
-item.style.display = 'block';
+item.style.display = 'flex';
 } else {
 item.style.display = 'none';
 }
