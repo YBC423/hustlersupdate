@@ -1575,10 +1575,10 @@ overflow: hidden;
 flex-shrink: 0;
 }
 .bank-preview-avatar svg {
-width: 24px;
-height: 24px;
+width: 22px;
+height: 22px;
 stroke: #10b981;
-stroke-width: 2;
+stroke-width: 1.8;
 fill: none;
 stroke-linecap: round;
 stroke-linejoin: round;
@@ -1906,10 +1906,10 @@ justify-content: center;
 flex-shrink: 0;
 }
 .confirm-recipient-avatar svg {
-width: 24px;
-height: 24px;
+width: 22px;
+height: 22px;
 stroke: #10b981;
-stroke-width: 2;
+stroke-width: 1.8;
 fill: none;
 stroke-linecap: round;
 stroke-linejoin: round;
@@ -1932,19 +1932,20 @@ margin-top: 2px;
 font-size: 14px;
 font-weight: 500;
 color: #9ca3af;
-margin-bottom: 8px;
+margin-bottom: 4px;
 display: block;
 }
 .amount-range {
 font-size: 13px;
 color: #6b7280;
 margin-bottom: 12px;
+display: block;
 }
 .quick-amount-grid {
 display: grid;
 grid-template-columns: repeat(3, 1fr);
 gap: 8px;
-margin-bottom: 16px;
+margin-bottom: 12px;
 }
 .quick-amount-btn {
 padding: 10px;
@@ -3798,7 +3799,7 @@ function renderBankTransferPage() {
 let recentsHtml = '';
 let favouritesHtml = '';
 
-// Airtime icon SVG
+// Airtime icon SVG (same as recents)
 const airtimeIcon = `<svg viewBox="0 0 24 24" width="22" height="22" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>`;
 
 recentBanksData.forEach(item => {
@@ -3847,11 +3848,11 @@ freqHtml += `
 const currentAccountInput = document.getElementById('bankAccountInput');
 let currentAccountNumber = currentAccountInput ? currentAccountInput.value.replace(/\D/g, '') : '';
 
-// Bank icon SVG for avatar
-const bankIconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="2" y="7" width="20" height="14" rx="2"/>
-  <path d="M12 3v4"/>
-  <path d="M8 7l4-4 4 4"/>
+// Bank icon SVG for avatar (same as recents)
+const bankIconSvg = `<svg viewBox="0 0 24 24" width="22" height="22" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/>
+  <path d="M2 6.5V12L12 16.5L22 12V6.5"/>
+  <path d="M2 12V17.5L12 22L22 17.5V12"/>
 </svg>`;
 
 document.getElementById('dynamicContent').innerHTML = `
@@ -3969,7 +3970,6 @@ const preview = document.getElementById('bankAccountPreview');
 const nameEl = document.getElementById('bankPreviewName');
 const numberEl = document.getElementById('bankPreviewNumber');
 const bankEl = document.getElementById('bankPreviewBank');
-const avatarEl = document.getElementById('bankPreviewAvatar');
 
 if (cleanNumber.length === 10 && selectedBank) {
 // First check if there's a saved name for this account + bank combination
@@ -3985,7 +3985,6 @@ nameEl.textContent = 'Invalid Account';
 preview.classList.add('show');
 numberEl.textContent = cleanNumber;
 bankEl.textContent = selectedBank.name;
-// Avatar stays as bank icon (no initials)
 } else {
 preview.classList.remove('show');
 }
@@ -4024,7 +4023,6 @@ nameEl.textContent = 'Invalid Account';
 preview.classList.add('show');
 numberEl.textContent = accountNumber;
 bankEl.textContent = bankName;
-// Avatar stays as bank icon (no initials)
 
 updateNextButtonState();
 }
@@ -4056,10 +4054,10 @@ return;
 }
 
 // Build confirm transfer page
-const bankIconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="2" y="7" width="20" height="14" rx="2"/>
-  <path d="M12 3v4"/>
-  <path d="M8 7l4-4 4 4"/>
+const bankIconSvg = `<svg viewBox="0 0 24 24" width="22" height="22" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/>
+  <path d="M2 6.5V12L12 16.5L22 12V6.5"/>
+  <path d="M2 12V17.5L12 22L22 17.5V12"/>
 </svg>`;
 
 document.getElementById('dynamicContent').innerHTML = `
@@ -4079,7 +4077,7 @@ document.getElementById('dynamicContent').innerHTML = `
 </div>
 
 <label class="amount-label">Amount</label>
-<div class="amount-range">₦100.00-5,000,000.00</div>
+<span class="amount-range" id="amountRangeDisplay">₦100.00-5,000,000.00</span>
 
 <div class="quick-amount-grid">
 <button class="quick-amount-btn" onclick="setAmount(this, 500)">₦500</button>
@@ -4091,7 +4089,7 @@ document.getElementById('dynamicContent').innerHTML = `
 </div>
 
 <div class="amount-input-wrapper">
-<input type="number" id="confirmAmountInput" placeholder="Enter amount" min="100" max="5000000">
+<input type="number" id="confirmAmountInput" placeholder="Enter amount" min="100" max="5000000" oninput="updateAmountDisplay(this.value)">
 </div>
 
 <div class="remark-section">
@@ -4119,11 +4117,21 @@ bankName: selectedBank.name
 };
 }
 
+function updateAmountDisplay(value) {
+const display = document.getElementById('amountRangeDisplay');
+if (value && parseInt(value) > 0) {
+display.textContent = '₦' + parseInt(value).toLocaleString();
+} else {
+display.textContent = '₦100.00-5,000,000.00';
+}
+}
+
 function setAmount(btn, amount) {
 // Remove selected class from all amount buttons
 document.querySelectorAll('.quick-amount-btn').forEach(b => b.classList.remove('selected'));
 btn.classList.add('selected');
 document.getElementById('confirmAmountInput').value = amount;
+updateAmountDisplay(amount);
 }
 
 function selectRemark(btn, remark) {
