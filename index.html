@@ -2804,6 +2804,7 @@ let bankFavourites = [];
 let tempRecipientName = null;
 let pinEntry = '';
 let pinSetupEntry = '';
+let pinSetupFirst = '';
 let pinSetupStep = 'new'; // 'new' or 'confirm'
 
 // ============================================================
@@ -3314,10 +3315,11 @@ document.getElementById('profileView').style.padding = '20px 0';
 }
 
 // ============================================================
-// PIN SETUP
+// PIN SETUP (FIXED)
 // ============================================================
 function openPinSetup() {
 pinSetupEntry = '';
+pinSetupFirst = '';
 pinSetupStep = 'new';
 showPinSetupPage();
 }
@@ -3334,8 +3336,8 @@ document.getElementById('dynamicContent').innerHTML = `
 <span class="title">${title}</span>
 <button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
 </div>
-<div class="pin-title">${title}</div>
-<div class="pin-sub">${subText}</div>
+<div class="pin-title" id="pinSetupTitle">${title}</div>
+<div class="pin-sub" id="pinSetupSub">${subText}</div>
 <div class="pin-display" id="pinSetupDisplay">
 <div class="dot" id="pinSetupDot1"></div>
 <div class="dot" id="pinSetupDot2"></div>
@@ -3383,63 +3385,63 @@ updatePinSetupDots();
 
 if (pinSetupEntry.length === 4) {
 if (pinSetupStep === 'new') {
-// First step - ask to confirm
-pinSetupStep = 'confirm';
-const savedPin = pinSetupEntry;
+// Store the first PIN and move to confirm step
+pinSetupFirst = pinSetupEntry;
 pinSetupEntry = '';
+pinSetupStep = 'confirm';
 updatePinSetupDots();
+                
+// Update UI
+const titleEl = document.getElementById('pinSetupTitle');
+const subEl = document.getElementById('pinSetupSub');
+if (titleEl) titleEl.textContent = 'Confirm Payment PIN';
+if (subEl) subEl.textContent = 'Re-enter your 4-digit payment PIN to confirm';
+                
 const statusEl2 = document.getElementById('pinSetupStatus');
 if (statusEl2) {
 statusEl2.textContent = 'Confirm your PIN';
 statusEl2.className = 'pin-status';
 }
-// Update title to confirm
-const titleEl = document.querySelector('.pin-title');
-if (titleEl) titleEl.textContent = 'Confirm Payment PIN';
-const subEl = document.querySelector('.pin-sub');
-if (subEl) subEl.textContent = 'Re-enter your 4-digit payment PIN to confirm';
 } else {
 // Confirm step - check if matches
-const newPin = pinSetupEntry;
-const savedPin = document.querySelector('.pin-title') ? 
-// Get the saved pin from first entry
-localStorage.getItem('_temp_pin') || '' : '';
-
-// Actually we need to store the first PIN
-const storedPin = localStorage.getItem('_temp_pin');
-if (storedPin && storedPin === newPin) {
+if (pinSetupFirst === pinSetupEntry) {
 // PIN matched!
-saveUserPin(newPin);
-localStorage.removeItem('_temp_pin');
-document.getElementById('pinSetupStatus').textContent = 'PIN set successfully!';
-document.getElementById('pinSetupStatus').className = 'pin-status success';
+saveUserPin(pinSetupEntry);
+const statusEl3 = document.getElementById('pinSetupStatus');
+if (statusEl3) {
+statusEl3.textContent = 'PIN set successfully!';
+statusEl3.className = 'pin-status success';
+}
 setTimeout(() => {
 showProfile();
 }, 1500);
 } else {
-document.getElementById('pinSetupStatus').textContent = 'PINs do not match. Try again.';
-document.getElementById('pinSetupStatus').className = 'pin-status error';
-pinSetupEntry = '';
-pinSetupStep = 'new';
-updatePinSetupDots();
-// Reset title
-const titleEl = document.querySelector('.pin-title');
-if (titleEl) titleEl.textContent = 'Create Payment PIN';
-const subEl = document.querySelector('.pin-sub');
-if (subEl) subEl.textContent = 'Enter your 4-digit payment PIN';
-localStorage.removeItem('_temp_pin');
-setTimeout(() => {
+// PINs don't match
 const statusEl3 = document.getElementById('pinSetupStatus');
 if (statusEl3) {
-statusEl3.textContent = '';
-statusEl3.className = 'pin-status';
+statusEl3.textContent = 'PINs do not match. Try again.';
+statusEl3.className = 'pin-status error';
+}
+// Reset
+pinSetupEntry = '';
+pinSetupFirst = '';
+pinSetupStep = 'new';
+updatePinSetupDots();
+                
+const titleEl = document.getElementById('pinSetupTitle');
+const subEl = document.getElementById('pinSetupSub');
+if (titleEl) titleEl.textContent = 'Create Payment PIN';
+if (subEl) subEl.textContent = 'Enter your 4-digit payment PIN';
+                
+setTimeout(() => {
+const statusEl4 = document.getElementById('pinSetupStatus');
+if (statusEl4) {
+statusEl4.textContent = '';
+statusEl4.className = 'pin-status';
 }
 }, 2000);
 }
 }
-} else {
-// Store the first PIN temporarily
-localStorage.setItem('_temp_pin', pinSetupEntry);
 }
 }
 }
@@ -4405,13 +4407,6 @@ const favouritesBanksData = [
 function showBankTransfer() {
 if (!currentUser) {
 alert('Please login first');
-return;
-}
-
-// Check if user has a PIN set
-if (!hasUserPin()) {
-alert('Please set a payment PIN first in your profile settings.');
-showProfile();
 return;
 }
 
