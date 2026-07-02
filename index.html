@@ -2813,6 +2813,7 @@ let pinSetupStep = 'new'; // 'new' or 'confirm'
 function loadUsers() {
 let s = localStorage.getItem('graypay_users');
 if (s) users = JSON.parse(s);
+else users = [];
 }
 
 function saveUsers() {
@@ -3405,8 +3406,10 @@ statusEl2.className = 'pin-status';
 } else {
 // Confirm step - check if matches
 if (pinSetupFirst === pinSetupEntry) {
-// PIN matched!
-saveUserPin(pinSetupEntry);
+// PIN matched! Save it directly
+currentUser.pin = pinSetupEntry;
+saveUsers();
+                
 const statusEl3 = document.getElementById('pinSetupStatus');
 if (statusEl3) {
 statusEl3.textContent = 'PIN set successfully!';
