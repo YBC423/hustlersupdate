@@ -2417,7 +2417,7 @@ opacity: 0.7;
 <div class="welcome-title">Welcome!</div>
 <div class="welcome-text">Create your account and get welcome bonus.</div>
 <div class="get-started-wrapper">
-<button class="btn" id="getStartedBtn">Get Started</button>
+<button class="btn" onclick="handleGetStarted()">Get Started</button>
 </div>
 </div>
 </div>
@@ -2655,8 +2655,8 @@ Me
 <h3>Contact Support</h3>
 <p>We're here to help you 24/7</p>
 <div class="modal-actions">
-<button class="btn" onclick="window.open('https://wa.me/2348168909003','_blank')">WhatsApp</button>
-<button class="btn btn-outline" onclick="location.href='mailto:graypay423492@gmail.com'">Email</button>
+<button class="btn" onclick="window.open('https://wa.me/2348168909003','_blank')">💬 WhatsApp</button>
+<button class="btn btn-outline" onclick="location.href='mailto:graypay423492@gmail.com'">📧 Email</button>
 </div>
 <button class="btn btn-outline w-full mt-10" onclick="closeHelp()">Close</button>
 </div>
@@ -2757,30 +2757,18 @@ saveSavedNames(names);
 // UI HELPERS
 // ============================================================
 function showPage(id) {
-// Hide all pages first
 document.getElementById('welcomePage').classList.add('hidden');
 document.getElementById('signupPage').classList.add('hidden');
 document.getElementById('loginPage').classList.add('hidden');
 document.getElementById('dashboardPage').classList.add('hidden');
-// Show the target page
 let el = document.getElementById(id);
 if (el) el.classList.remove('hidden');
-// Update dashboard if showing it
 if (id === 'dashboardPage' && currentUser) updateDashboard();
 }
 
-function showWelcomePage() { 
-showPage('welcomePage'); 
-}
-
-function showSignupPage() { 
-showPage('signupPage'); 
-}
-
-function showLoginPage() { 
-showPage('loginPage'); 
-}
-
+function showWelcomePage() { showPage('welcomePage'); }
+function showSignupPage() { showPage('signupPage'); }
+function showLoginPage() { showPage('loginPage'); }
 function showDashboardPage() {
 showPage('dashboardPage');
 updateDashboard();
@@ -2804,19 +2792,12 @@ window.open('https://wa.me/2348168909003', '_blank');
 }
 
 function showSplashLoading(message, callback, duration = 3000) {
-// Remove any existing splash first
-let existing = document.querySelector('.splash-loading');
-if (existing) existing.remove();
-    
 let splash = document.createElement('div');
 splash.className = 'splash-loading';
-splash.innerHTML = 
+splash.innerHTML =
 `<div class="spinner"></div><div class="logo-text">Gpay</div><div class="loading-text">${message}</div>`;
 document.body.appendChild(splash);
-setTimeout(() => { 
-splash.remove(); 
-if (callback) callback(); 
-}, duration);
+setTimeout(() => { splash.remove(); if (callback) callback(); }, duration);
 }
 
 function showLoadingOverlay(msg = 'Processing...', showProgress = false) {
@@ -2903,7 +2884,7 @@ updateProgress(percent);
 },
 (error) => {
 hideLoadingOverlay();
-alert('Upload failed: ' + error.message);
+alert('❌ Upload failed: ' + error.message);
 },
 async () => {
 const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
@@ -2911,7 +2892,7 @@ currentUser.profilePic = downloadURL;
 saveUsers();
 hideLoadingOverlay();
 updateDashboard();
-alert('Profile picture updated successfully!');
+alert('✅ Profile picture updated successfully!');
 if (window._profileViewOpen) {
 renderProfileContent();
 }
@@ -2919,7 +2900,7 @@ renderProfileContent();
 );
 } catch (error) {
 hideLoadingOverlay();
-alert('Failed to upload: ' + error.message);
+alert('❌ Failed to upload: ' + error.message);
 }
 }
 
@@ -2945,11 +2926,11 @@ function handleProfilePicSelect(event) {
 const file = event.target.files[0];
 if (file) {
 if (file.size > 5 * 1024 * 1024) {
-alert('Image must be less than 5MB');
+alert('❌ Image must be less than 5MB');
 return;
 }
 if (!file.type.startsWith('image/')) {
-alert('Please select an image file');
+alert('❌ Please select an image file');
 return;
 }
 uploadProfilePicture(file);
@@ -3063,31 +3044,27 @@ document.getElementById('loginError').innerText = 'Invalid email or password';
 }
 
 // ============================================================
-// AUTH: AUTO LOGIN - FIXED
+// AUTH: AUTO LOGIN
 // ============================================================
 async function autoLogin() {
 loadUsers();
 loadBankData();
 let saved = localStorage.getItem('graypay_current');
-if (saved && users.length > 0) {
+if (saved) {
 for (let u of users) {
 if (u.email === saved) {
 currentUser = u;
-// Try Firebase auth but don't let it break the flow
 try {
 const firebaseUser = auth.currentUser;
 if (firebaseUser && firebaseUser.email === saved) {
 await firebaseUser.reload();
 }
-} catch (e) {
-console.log('Firebase error, using local data only');
-}
+} catch (e) {}
 showDashboardPage();
 return;
 }
 }
 }
-// No user found or no saved session - show welcome
 showWelcomePage();
 }
 
@@ -3146,7 +3123,7 @@ document.body.appendChild(popup);
 // ADD MONEY
 // ============================================================
 function showAddMoney() {
-alert('Add Money feature coming soon!\n\nYou can earn more by completing tasks.');
+alert('💳 Add Money feature coming soon!\n\nYou can earn more by completing tasks.');
 }
 
 // ============================================================
@@ -3173,7 +3150,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <div class="profile-pic-container">
 <div class="profile-pic" onclick="triggerProfilePicUpload()" id="profilePicContainer">
 ${picHtml}
-<div class="upload-overlay">Change Photo</div>
+<div class="upload-overlay">📷 Change Photo</div>
 </div>
 <span class="pic-label" onclick="triggerProfilePicUpload()">Tap to change profile picture</span>
 </div>
@@ -3227,7 +3204,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <select id="bankName" class="input-field">${opts}</select>
 <input type="number" id="withdrawAmount" class="input-field" placeholder="Amount">
 <div class="info-box">Available: ₦${currentUser.balance.toLocaleString()}</div>
-<div class="min-withdrawal">Minimum withdrawal: ₦100</div>
+<div class="min-withdrawal">⚠️ Minimum withdrawal: ₦100</div>
 <button class="btn w-full" onclick="processWithdraw()">Submit</button>
 </div>
 `;
@@ -3584,7 +3561,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <div style="text-align:center; margin:16px 0;">
 <div style="font-size:42px; font-weight:700; color:${color};">${symbol}₦${amt.toLocaleString()}.00</div>
 <div style="color:${isFailed ? '#f97316' : '#10b981'}; margin-top:4px;">${statusText}</div>
-${isFailed ? '<div style="color:#f97316; font-size:14px; margin-top:4px;">Transaction failed</div>' : ''}
+${isFailed ? '<div style="color:#f97316; font-size:14px; margin-top:4px;">❌ Transaction failed</div>' : ''}
 </div>
 <div class="transaction-detail-row"><span class="label">Date</span><span class="value">${tx.date}</span></div>
 <div class="transaction-detail-row"><span class="label">Amount</span><span class="value">₦${amt.toLocaleString()}.00</span></div>
@@ -3598,8 +3575,8 @@ ${isFailed ? '<div style="color:#f97316; font-size:14px; margin-top:4px;">Transa
 <div class="transaction-detail-row"><span class="label">Transaction ID</span><span class="value">${d.transactionId || tx.id}</span></div>
 <div class="transaction-detail-row"><span class="label">Note</span><span class="value">${d.note || 'N/A'}</span></div>
 <div class="receipt-actions">
-<button class="btn" onclick="shareReceipt('${tx.id}')">Share receipt</button>
-<button class="btn btn-outline" onclick="repeatTransaction('${tx.type}')">Repeat</button>
+<button class="btn" onclick="shareReceipt('${tx.id}')">📤 Share receipt</button>
+<button class="btn btn-outline" onclick="repeatTransaction('${tx.type}')">🔄 Repeat</button>
 </div>
 <div class="text-center mt-20"><span style="color:#10b981; cursor:pointer;" onclick="showHelp()">Trouble? Contact support</span></div>
 </div>
@@ -3617,7 +3594,7 @@ let d = tx.fullDetails || {};
 let text =
 `Gpay Transaction\nAmount: ₦${(d.amount || tx.amount).toLocaleString()}\nType: ${tx.type}\nDate: ${tx.date}\nID: ${tx.id}`;
 navigator.clipboard.writeText(text);
-alert('Receipt copied to clipboard!');
+alert('✅ Receipt copied to clipboard!');
 }
 }
 
@@ -4638,8 +4615,6 @@ showPinEntryPopup();
 // ============================================================
 // PIN ENTRY POPUP
 // ============================================================
-let pinEntry = '';
-
 function showPinEntryPopup() {
 pinEntry = '';
 let popup = document.createElement('div');
@@ -4995,12 +4970,10 @@ preview.classList.add('show');
 }
 
 // ============================================================
-// HANDLE GET STARTED - FIXED
+// HANDLE GET STARTED
 // ============================================================
 function handleGetStarted() {
-showSplashLoading('Loading...', function() {
-showSignupPage();
-}, 2500);
+showSplashLoading('Loading...', () => showSignupPage(), 2500);
 }
 
 // ============================================================
@@ -5009,17 +4982,6 @@ showSignupPage();
 document.addEventListener('DOMContentLoaded', function() {
 loadUsers();
 loadBankData();
-    
-// Fix: Make sure the Get Started button is properly bound
-const getStartedBtn = document.getElementById('getStartedBtn');
-if (getStartedBtn) {
-// Remove any existing listeners and add fresh one
-getStartedBtn.onclick = function(e) {
-e.preventDefault();
-handleGetStarted();
-};
-}
-    
 autoLogin();
 });
 </script>
