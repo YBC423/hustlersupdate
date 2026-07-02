@@ -115,6 +115,11 @@ background: transparent;
 border: 1px solid #10b981;
 color: #10b981;
 }
+.btn-danger-outline {
+background: transparent;
+border: 1px solid #ef4444;
+color: #ef4444;
+}
 
 /* ===== HEADER ===== */
 .dashboard-header {
@@ -692,6 +697,11 @@ color: #ef4444;
 font-size: 13px;
 margin-bottom: 10px;
 }
+.success {
+color: #10b981;
+font-size: 13px;
+margin-bottom: 10px;
+}
 
 /* ===== PROFILE PICTURE ===== */
 .profile-pic-container {
@@ -748,6 +758,92 @@ color: #10b981;
 }
 #profilePicInput {
 display: none;
+}
+
+/* ===== PIN SETUP ===== */
+.pin-setup-container {
+padding: 20px 0;
+}
+.pin-setup-container .pin-title {
+font-size: 22px;
+font-weight: 700;
+color: #fff;
+text-align: center;
+margin-bottom: 8px;
+}
+.pin-setup-container .pin-sub {
+font-size: 14px;
+color: #9ca3af;
+text-align: center;
+margin-bottom: 24px;
+}
+.pin-setup-container .pin-display {
+display: flex;
+justify-content: center;
+gap: 16px;
+margin-bottom: 24px;
+}
+.pin-setup-container .pin-display .dot {
+width: 20px;
+height: 20px;
+border-radius: 50%;
+border: 2px solid #2a2a3e;
+background: transparent;
+transition: all 0.2s;
+}
+.pin-setup-container .pin-display .dot.filled {
+background: #10b981;
+border-color: #10b981;
+}
+.pin-setup-container .pin-keypad {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 12px;
+max-width: 280px;
+margin: 0 auto;
+}
+.pin-setup-container .pin-keypad .key {
+padding: 16px;
+background: #1a1a2e;
+border: 1px solid #2a2a3e;
+border-radius: 12px;
+color: #fff;
+font-size: 22px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.15s;
+text-align: center;
+}
+.pin-setup-container .pin-keypad .key:active {
+background: #10b981;
+border-color: #10b981;
+transform: scale(0.94);
+}
+.pin-setup-container .pin-keypad .key.empty {
+background: transparent;
+border: none;
+cursor: default;
+}
+.pin-setup-container .pin-keypad .key.empty:active {
+background: transparent;
+transform: none;
+}
+.pin-setup-container .pin-keypad .key.back {
+font-size: 18px;
+color: #ef4444;
+}
+.pin-setup-container .pin-status {
+text-align: center;
+font-size: 14px;
+color: #9ca3af;
+margin-top: 16px;
+min-height: 24px;
+}
+.pin-setup-container .pin-status.error {
+color: #ef4444;
+}
+.pin-setup-container .pin-status.success {
+color: #10b981;
 }
 
 /* ===== HISTORY ===== */
@@ -2246,6 +2342,10 @@ color: #10b981;
 cursor: pointer;
 margin-bottom: 16px;
 display: block;
+text-align: center;
+}
+.pin-popup .pin-forgot:active {
+opacity: 0.7;
 }
 .pin-popup .pin-display {
 display: flex;
@@ -2703,6 +2803,8 @@ let bankRecents = [];
 let bankFavourites = [];
 let tempRecipientName = null;
 let pinEntry = '';
+let pinSetupEntry = '';
+let pinSetupStep = 'new'; // 'new' or 'confirm'
 
 // ============================================================
 // STORAGE HELPERS
@@ -2751,6 +2853,24 @@ let names = loadSavedNames();
 let key = accountNumber + '|' + bankName;
 names[key] = name;
 saveSavedNames(names);
+}
+
+// ============================================================
+// PIN FUNCTIONS
+// ============================================================
+function getUserPin() {
+if (!currentUser) return null;
+return currentUser.pin || null;
+}
+
+function saveUserPin(pin) {
+if (!currentUser) return;
+currentUser.pin = pin;
+saveUsers();
+}
+
+function hasUserPin() {
+return getUserPin() !== null;
 }
 
 // ============================================================
@@ -2884,7 +3004,7 @@ updateProgress(percent);
 },
 (error) => {
 hideLoadingOverlay();
-alert('❌ Upload failed: ' + error.message);
+alert('Upload failed: ' + error.message);
 },
 async () => {
 const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
@@ -2892,7 +3012,7 @@ currentUser.profilePic = downloadURL;
 saveUsers();
 hideLoadingOverlay();
 updateDashboard();
-alert('✅ Profile picture updated successfully!');
+alert('Profile picture updated successfully!');
 if (window._profileViewOpen) {
 renderProfileContent();
 }
@@ -2900,7 +3020,7 @@ renderProfileContent();
 );
 } catch (error) {
 hideLoadingOverlay();
-alert('❌ Failed to upload: ' + error.message);
+alert('Failed to upload: ' + error.message);
 }
 }
 
@@ -2926,11 +3046,11 @@ function handleProfilePicSelect(event) {
 const file = event.target.files[0];
 if (file) {
 if (file.size > 5 * 1024 * 1024) {
-alert('❌ Image must be less than 5MB');
+alert('Image must be less than 5MB');
 return;
 }
 if (!file.type.startsWith('image/')) {
-alert('❌ Please select an image file');
+alert('Please select an image file');
 return;
 }
 uploadProfilePicture(file);
@@ -2966,6 +3086,7 @@ firstname: fn,
 surname: sn,
 email: em,
 password: pw,
+pin: null,
 balance: 10000,
 profilePic: null,
 transactions: [{
@@ -3027,6 +3148,7 @@ firstname: em.split('@')[0],
 surname: '',
 email: em,
 password: pw,
+pin: null,
 balance: 0,
 profilePic: null,
 transactions: []
@@ -3123,7 +3245,7 @@ document.body.appendChild(popup);
 // ADD MONEY
 // ============================================================
 function showAddMoney() {
-alert('💳 Add Money feature coming soon!\n\nYou can earn more by completing tasks.');
+alert('Add Money feature coming soon!\n\nYou can earn more by completing tasks.');
 }
 
 // ============================================================
@@ -3140,6 +3262,10 @@ let picHtml = currentUser.profilePic ?
 `<img src="${currentUser.profilePic}" alt="Profile" id="profileImg" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\\'font-size:40px; font-weight:700; color:#fff;\\'>${getInitials(currentUser.firstname + ' ' + currentUser.surname)}</span>';">` :
 `<span style="font-size:40px; font-weight:700; color:#fff;">${getInitials(currentUser.firstname + ' ' + currentUser.surname)}</span>`;
 
+const hasPin = hasUserPin();
+const pinStatus = hasPin ? 'PIN Set' : 'No PIN Set';
+const pinButtonText = hasPin ? 'Change PIN' : 'Create PIN';
+
 document.getElementById('dynamicContent').innerHTML = `
 <div id="profileView">
 <div class="page-header">
@@ -3150,7 +3276,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <div class="profile-pic-container">
 <div class="profile-pic" onclick="triggerProfilePicUpload()" id="profilePicContainer">
 ${picHtml}
-<div class="upload-overlay">📷 Change Photo</div>
+<div class="upload-overlay">Change Photo</div>
 </div>
 <span class="pic-label" onclick="triggerProfilePicUpload()">Tap to change profile picture</span>
 </div>
@@ -3158,6 +3284,10 @@ ${picHtml}
 <div class="info-box"><strong>Full Name:</strong> ${currentUser.firstname} ${currentUser.surname}</div>
 <div class="info-box"><strong>Email:</strong> ${currentUser.email}</div>
 <div class="info-box"><strong>Password:</strong> ********</div>
+<div class="info-box" style="display:flex; justify-content:space-between; align-items:center;">
+<span><strong>Payment PIN:</strong> ${pinStatus}</span>
+<button class="btn btn-sm btn-green" onclick="openPinSetup()">${pinButtonText}</button>
+</div>
 <button class="btn w-full" onclick="logout()">Log Out</button>
 </div>
 `;
@@ -3184,6 +3314,150 @@ document.getElementById('profileView').style.padding = '20px 0';
 }
 
 // ============================================================
+// PIN SETUP
+// ============================================================
+function openPinSetup() {
+pinSetupEntry = '';
+pinSetupStep = 'new';
+showPinSetupPage();
+}
+
+function showPinSetupPage() {
+const hasPin = hasUserPin();
+const title = hasPin ? 'Change Payment PIN' : 'Create Payment PIN';
+const subText = hasPin ? 'Enter your new 4-digit payment PIN' : 'Enter your 4-digit payment PIN';
+
+document.getElementById('dynamicContent').innerHTML = `
+<div class="pin-setup-container">
+<div class="page-header">
+<button class="back-btn" onclick="showProfile()">←</button>
+<span class="title">${title}</span>
+<button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
+</div>
+<div class="pin-title">${title}</div>
+<div class="pin-sub">${subText}</div>
+<div class="pin-display" id="pinSetupDisplay">
+<div class="dot" id="pinSetupDot1"></div>
+<div class="dot" id="pinSetupDot2"></div>
+<div class="dot" id="pinSetupDot3"></div>
+<div class="dot" id="pinSetupDot4"></div>
+</div>
+<div class="pin-keypad">
+<div class="key" onclick="pressPinSetupKey('1')">1</div>
+<div class="key" onclick="pressPinSetupKey('2')">2</div>
+<div class="key" onclick="pressPinSetupKey('3')">3</div>
+<div class="key" onclick="pressPinSetupKey('4')">4</div>
+<div class="key" onclick="pressPinSetupKey('5')">5</div>
+<div class="key" onclick="pressPinSetupKey('6')">6</div>
+<div class="key" onclick="pressPinSetupKey('7')">7</div>
+<div class="key" onclick="pressPinSetupKey('8')">8</div>
+<div class="key" onclick="pressPinSetupKey('9')">9</div>
+<div class="key empty"></div>
+<div class="key" onclick="pressPinSetupKey('0')">0</div>
+<div class="key back" onclick="pressPinSetupKey('back')">⌫</div>
+</div>
+<div class="pin-status" id="pinSetupStatus"></div>
+</div>
+`;
+
+showPage('dashboardPage');
+document.getElementById('dashboardPage').classList.add('hidden');
+document.getElementById('dynamicContent').style.display = 'block';
+}
+
+function pressPinSetupKey(key) {
+const statusEl = document.getElementById('pinSetupStatus');
+if (statusEl) statusEl.textContent = '';
+
+if (key === 'back') {
+if (pinSetupEntry.length > 0) {
+pinSetupEntry = pinSetupEntry.slice(0, -1);
+updatePinSetupDots();
+}
+return;
+}
+
+if (pinSetupEntry.length < 4) {
+pinSetupEntry += key;
+updatePinSetupDots();
+
+if (pinSetupEntry.length === 4) {
+if (pinSetupStep === 'new') {
+// First step - ask to confirm
+pinSetupStep = 'confirm';
+const savedPin = pinSetupEntry;
+pinSetupEntry = '';
+updatePinSetupDots();
+const statusEl2 = document.getElementById('pinSetupStatus');
+if (statusEl2) {
+statusEl2.textContent = 'Confirm your PIN';
+statusEl2.className = 'pin-status';
+}
+// Update title to confirm
+const titleEl = document.querySelector('.pin-title');
+if (titleEl) titleEl.textContent = 'Confirm Payment PIN';
+const subEl = document.querySelector('.pin-sub');
+if (subEl) subEl.textContent = 'Re-enter your 4-digit payment PIN to confirm';
+} else {
+// Confirm step - check if matches
+const newPin = pinSetupEntry;
+const savedPin = document.querySelector('.pin-title') ? 
+// Get the saved pin from first entry
+localStorage.getItem('_temp_pin') || '' : '';
+
+// Actually we need to store the first PIN
+const storedPin = localStorage.getItem('_temp_pin');
+if (storedPin && storedPin === newPin) {
+// PIN matched!
+saveUserPin(newPin);
+localStorage.removeItem('_temp_pin');
+document.getElementById('pinSetupStatus').textContent = 'PIN set successfully!';
+document.getElementById('pinSetupStatus').className = 'pin-status success';
+setTimeout(() => {
+showProfile();
+}, 1500);
+} else {
+document.getElementById('pinSetupStatus').textContent = 'PINs do not match. Try again.';
+document.getElementById('pinSetupStatus').className = 'pin-status error';
+pinSetupEntry = '';
+pinSetupStep = 'new';
+updatePinSetupDots();
+// Reset title
+const titleEl = document.querySelector('.pin-title');
+if (titleEl) titleEl.textContent = 'Create Payment PIN';
+const subEl = document.querySelector('.pin-sub');
+if (subEl) subEl.textContent = 'Enter your 4-digit payment PIN';
+localStorage.removeItem('_temp_pin');
+setTimeout(() => {
+const statusEl3 = document.getElementById('pinSetupStatus');
+if (statusEl3) {
+statusEl3.textContent = '';
+statusEl3.className = 'pin-status';
+}
+}, 2000);
+}
+}
+} else {
+// Store the first PIN temporarily
+localStorage.setItem('_temp_pin', pinSetupEntry);
+}
+}
+}
+
+function updatePinSetupDots() {
+for (let i = 1; i <= 4; i++) {
+const dot = document.getElementById('pinSetupDot' + i);
+if (dot) {
+if (i <= pinSetupEntry.length) {
+dot.classList.add('filled');
+} else {
+dot.classList.remove('filled');
+}
+}
+}
+}
+
+// ============================================================
 // WITHDRAWAL
 // ============================================================
 function showWithdrawPage() {
@@ -3204,7 +3478,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <select id="bankName" class="input-field">${opts}</select>
 <input type="number" id="withdrawAmount" class="input-field" placeholder="Amount">
 <div class="info-box">Available: ₦${currentUser.balance.toLocaleString()}</div>
-<div class="min-withdrawal">⚠️ Minimum withdrawal: ₦100</div>
+<div class="min-withdrawal">Minimum withdrawal: ₦100</div>
 <button class="btn w-full" onclick="processWithdraw()">Submit</button>
 </div>
 `;
@@ -3594,7 +3868,7 @@ let d = tx.fullDetails || {};
 let text =
 `Gpay Transaction\nAmount: ₦${(d.amount || tx.amount).toLocaleString()}\nType: ${tx.type}\nDate: ${tx.date}\nID: ${tx.id}`;
 navigator.clipboard.writeText(text);
-alert('✅ Receipt copied to clipboard!');
+alert('Receipt copied to clipboard!');
 }
 }
 
@@ -4134,6 +4408,13 @@ alert('Please login first');
 return;
 }
 
+// Check if user has a PIN set
+if (!hasUserPin()) {
+alert('Please set a payment PIN first in your profile settings.');
+showProfile();
+return;
+}
+
 selectedBank = null;
 tempRecipientName = null;
 loadBankData();
@@ -4613,7 +4894,7 @@ showPinEntryPopup();
 }
 
 // ============================================================
-// PIN ENTRY POPUP
+// PIN ENTRY POPUP (UPDATED - Forgot PIN centered & clickable)
 // ============================================================
 function showPinEntryPopup() {
 pinEntry = '';
@@ -4624,9 +4905,7 @@ popup.innerHTML = `
 <div class="popup-box">
 <div class="pin-title">Enter Payment PIN</div>
 <div class="pin-sub">Enter your 4-digit payment PIN to confirm</div>
-<div style="text-align:right; margin-bottom:16px;">
-<span class="pin-forgot" onclick="alert('Contact support to reset your PIN')">Forgot Payment PIN?</span>
-</div>
+<div class="pin-forgot" onclick="document.getElementById('pinPopup').remove(); showProfile();">Forgot Payment PIN?</div>
 <div class="pin-display" id="pinDisplay">
 <div class="dot" id="pinDot1"></div>
 <div class="dot" id="pinDot2"></div>
@@ -4669,8 +4948,9 @@ if (pinEntry.length === 4) {
 // PIN complete - check it
 setTimeout(() => {
 document.getElementById('pinPopup').remove();
-// Hardcoded PIN: 1234
-if (pinEntry === '1234') {
+// Check against user's saved PIN
+const savedPin = getUserPin();
+if (savedPin && savedPin === pinEntry) {
 showLoadingForTransfer();
 } else {
 alert('Invalid PIN. Please try again.');
