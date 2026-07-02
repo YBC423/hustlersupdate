@@ -2065,6 +2065,333 @@ cursor: pointer;
 .confirm-btn.active:active {
 opacity: 0.7;
 }
+
+/* ============================================================
+   REMINDER POPUP
+   ============================================================ */
+.reminder-popup .popup-box {
+max-width: 400px;
+text-align: left;
+}
+.reminder-popup .warning-icon {
+font-size: 48px;
+text-align: center;
+margin-bottom: 8px;
+}
+.reminder-popup .reminder-title {
+font-size: 16px;
+font-weight: 600;
+color: #fbbf24;
+text-align: center;
+margin-bottom: 4px;
+}
+.reminder-popup .reminder-sub {
+font-size: 13px;
+color: #9ca3af;
+text-align: center;
+margin-bottom: 16px;
+}
+.reminder-popup .tx-details {
+background: #0a0a0a;
+border-radius: 12px;
+padding: 12px 14px;
+margin-bottom: 16px;
+}
+.reminder-popup .tx-details .row {
+display: flex;
+justify-content: space-between;
+padding: 6px 0;
+font-size: 14px;
+border-bottom: 1px solid #1a1a2e;
+}
+.reminder-popup .tx-details .row:last-child {
+border-bottom: none;
+}
+.reminder-popup .tx-details .row .lbl {
+color: #9ca3af;
+}
+.reminder-popup .tx-details .row .val {
+color: #fff;
+font-weight: 500;
+}
+.reminder-popup .popup-actions {
+display: flex;
+gap: 12px;
+margin-top: 4px;
+}
+.reminder-popup .popup-actions .btn {
+flex: 1;
+}
+
+/* ============================================================
+   PAY CONFIRMATION POPUP
+   ============================================================ */
+.pay-confirm-popup .popup-box {
+max-width: 400px;
+text-align: left;
+}
+.pay-confirm-popup .pay-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 12px;
+}
+.pay-confirm-popup .pay-header .title {
+font-size: 18px;
+font-weight: 600;
+color: #fff;
+}
+.pay-confirm-popup .pay-header .amount-big {
+font-size: 28px;
+font-weight: 700;
+color: #10b981;
+}
+.pay-confirm-popup .pay-recipient {
+background: #0a0a0a;
+border-radius: 12px;
+padding: 12px 14px;
+margin-bottom: 12px;
+}
+.pay-confirm-popup .pay-recipient .name {
+font-size: 15px;
+font-weight: 600;
+color: #fff;
+}
+.pay-confirm-popup .pay-recipient .detail {
+font-size: 13px;
+color: #9ca3af;
+}
+.pay-confirm-popup .pay-details {
+background: #0a0a0a;
+border-radius: 12px;
+padding: 12px 14px;
+margin-bottom: 12px;
+}
+.pay-confirm-popup .pay-details .row {
+display: flex;
+justify-content: space-between;
+padding: 6px 0;
+font-size: 14px;
+border-bottom: 1px solid #1a1a2e;
+}
+.pay-confirm-popup .pay-details .row:last-child {
+border-bottom: none;
+}
+.pay-confirm-popup .pay-details .row .lbl {
+color: #9ca3af;
+}
+.pay-confirm-popup .pay-details .row .val {
+color: #fff;
+font-weight: 500;
+}
+.pay-confirm-popup .pay-balance {
+background: #0a0a0a;
+border-radius: 12px;
+padding: 12px 14px;
+margin-bottom: 16px;
+}
+.pay-confirm-popup .pay-balance .row {
+display: flex;
+justify-content: space-between;
+padding: 4px 0;
+font-size: 14px;
+}
+.pay-confirm-popup .pay-balance .row .lbl {
+color: #9ca3af;
+}
+.pay-confirm-popup .pay-balance .row .val {
+color: #fff;
+font-weight: 500;
+}
+.pay-confirm-popup .pay-balance .row .val.green {
+color: #10b981;
+}
+.pay-confirm-popup .btn-pay {
+width: 100%;
+padding: 16px;
+background: #10b981;
+border: none;
+border-radius: 12px;
+color: #fff;
+font-size: 18px;
+font-weight: 600;
+cursor: pointer;
+transition: opacity 0.2s;
+}
+.pay-confirm-popup .btn-pay:active {
+opacity: 0.7;
+}
+
+/* ============================================================
+   PIN ENTRY POPUP
+   ============================================================ */
+.pin-popup .popup-box {
+max-width: 360px;
+text-align: center;
+}
+.pin-popup .pin-title {
+font-size: 18px;
+font-weight: 600;
+color: #fff;
+margin-bottom: 4px;
+}
+.pin-popup .pin-sub {
+font-size: 13px;
+color: #9ca3af;
+margin-bottom: 16px;
+}
+.pin-popup .pin-forgot {
+font-size: 13px;
+color: #10b981;
+cursor: pointer;
+margin-bottom: 16px;
+display: block;
+}
+.pin-popup .pin-display {
+display: flex;
+justify-content: center;
+gap: 16px;
+margin-bottom: 20px;
+}
+.pin-popup .pin-display .dot {
+width: 16px;
+height: 16px;
+border-radius: 50%;
+border: 2px solid #2a2a3e;
+background: transparent;
+transition: all 0.2s;
+}
+.pin-popup .pin-display .dot.filled {
+background: #10b981;
+border-color: #10b981;
+}
+.pin-popup .pin-keypad {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 12px;
+max-width: 280px;
+margin: 0 auto;
+}
+.pin-popup .pin-keypad .key {
+padding: 16px;
+background: #1a1a2e;
+border: 1px solid #2a2a3e;
+border-radius: 12px;
+color: #fff;
+font-size: 22px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.15s;
+text-align: center;
+}
+.pin-popup .pin-keypad .key:active {
+background: #10b981;
+border-color: #10b981;
+transform: scale(0.94);
+}
+.pin-popup .pin-keypad .key.empty {
+background: transparent;
+border: none;
+cursor: default;
+}
+.pin-popup .pin-keypad .key.empty:active {
+background: transparent;
+transform: none;
+}
+.pin-popup .pin-keypad .key.back {
+font-size: 18px;
+color: #ef4444;
+}
+
+/* ============================================================
+   SUCCESS PAGE
+   ============================================================ */
+.success-page {
+padding: 20px 0;
+}
+.success-page .success-icon {
+font-size: 64px;
+text-align: center;
+margin-bottom: 8px;
+}
+.success-page .success-title {
+font-size: 22px;
+font-weight: 700;
+color: #10b981;
+text-align: center;
+}
+.success-page .success-amount {
+font-size: 42px;
+font-weight: 700;
+color: #fff;
+text-align: center;
+margin: 4px 0 8px 0;
+}
+.success-page .success-sub {
+font-size: 14px;
+color: #9ca3af;
+text-align: center;
+margin-bottom: 20px;
+}
+.success-page .success-actions {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+margin-bottom: 24px;
+}
+.success-page .success-actions .btn {
+padding: 12px;
+font-size: 14px;
+}
+.success-page .success-actions .btn-outline {
+background: transparent;
+border: 1px solid #2a2a2a;
+color: #fff;
+}
+.success-page .bonus-section {
+background: #111827;
+border-radius: 16px;
+padding: 16px;
+border: 1px solid #1f2937;
+}
+.success-page .bonus-section .bonus-title {
+font-size: 14px;
+font-weight: 600;
+color: #fbbf24;
+margin-bottom: 12px;
+}
+.success-page .bonus-section .bonus-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 10px 0;
+border-bottom: 1px solid #1f2937;
+}
+.success-page .bonus-section .bonus-item:last-child {
+border-bottom: none;
+}
+.success-page .bonus-section .bonus-item .left .main {
+font-size: 14px;
+font-weight: 500;
+color: #fff;
+}
+.success-page .bonus-section .bonus-item .left .sub {
+font-size: 12px;
+color: #9ca3af;
+}
+.success-page .bonus-section .bonus-item .go-btn {
+background: #10b981;
+color: #fff;
+border: none;
+padding: 4px 16px;
+border-radius: 12px;
+font-size: 12px;
+font-weight: 600;
+cursor: pointer;
+}
+.success-page .bonus-section .bonus-item .go-btn:active {
+opacity: 0.7;
+}
 </style>
 </head>
 <body>
@@ -2328,8 +2655,8 @@ Me
 <h3>Contact Support</h3>
 <p>We're here to help you 24/7</p>
 <div class="modal-actions">
-<button class="btn" onclick="window.open('https://wa.me/2348168909003','_blank')">💬 WhatsApp</button>
-<button class="btn btn-outline" onclick="location.href='mailto:graypay423492@gmail.com'">📧 Email</button>
+<button class="btn" onclick="window.open('https://wa.me/2348168909003','_blank')">WhatsApp</button>
+<button class="btn btn-outline" onclick="location.href='mailto:graypay423492@gmail.com'">Email</button>
 </div>
 <button class="btn btn-outline w-full mt-10" onclick="closeHelp()">Close</button>
 </div>
@@ -2375,6 +2702,7 @@ let bankTransferTab = 'recents';
 let bankRecents = [];
 let bankFavourites = [];
 let tempRecipientName = null;
+let pinEntry = '';
 
 // ============================================================
 // STORAGE HELPERS
@@ -2556,7 +2884,7 @@ updateProgress(percent);
 },
 (error) => {
 hideLoadingOverlay();
-alert('❌ Upload failed: ' + error.message);
+alert('Upload failed: ' + error.message);
 },
 async () => {
 const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
@@ -2564,7 +2892,7 @@ currentUser.profilePic = downloadURL;
 saveUsers();
 hideLoadingOverlay();
 updateDashboard();
-alert('✅ Profile picture updated successfully!');
+alert('Profile picture updated successfully!');
 if (window._profileViewOpen) {
 renderProfileContent();
 }
@@ -2572,7 +2900,7 @@ renderProfileContent();
 );
 } catch (error) {
 hideLoadingOverlay();
-alert('❌ Failed to upload: ' + error.message);
+alert('Failed to upload: ' + error.message);
 }
 }
 
@@ -2598,11 +2926,11 @@ function handleProfilePicSelect(event) {
 const file = event.target.files[0];
 if (file) {
 if (file.size > 5 * 1024 * 1024) {
-alert('❌ Image must be less than 5MB');
+alert('Image must be less than 5MB');
 return;
 }
 if (!file.type.startsWith('image/')) {
-alert('❌ Please select an image file');
+alert('Please select an image file');
 return;
 }
 uploadProfilePicture(file);
@@ -2795,7 +3123,7 @@ document.body.appendChild(popup);
 // ADD MONEY
 // ============================================================
 function showAddMoney() {
-alert('💳 Add Money feature coming soon!\n\nYou can earn more by completing tasks.');
+alert('Add Money feature coming soon!\n\nYou can earn more by completing tasks.');
 }
 
 // ============================================================
@@ -2822,7 +3150,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <div class="profile-pic-container">
 <div class="profile-pic" onclick="triggerProfilePicUpload()" id="profilePicContainer">
 ${picHtml}
-<div class="upload-overlay">📷 Change Photo</div>
+<div class="upload-overlay">Change Photo</div>
 </div>
 <span class="pic-label" onclick="triggerProfilePicUpload()">Tap to change profile picture</span>
 </div>
@@ -2876,7 +3204,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <select id="bankName" class="input-field">${opts}</select>
 <input type="number" id="withdrawAmount" class="input-field" placeholder="Amount">
 <div class="info-box">Available: ₦${currentUser.balance.toLocaleString()}</div>
-<div class="min-withdrawal">⚠️ Minimum withdrawal: ₦100</div>
+<div class="min-withdrawal">Minimum withdrawal: ₦100</div>
 <button class="btn w-full" onclick="processWithdraw()">Submit</button>
 </div>
 `;
@@ -3233,7 +3561,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <div style="text-align:center; margin:16px 0;">
 <div style="font-size:42px; font-weight:700; color:${color};">${symbol}₦${amt.toLocaleString()}.00</div>
 <div style="color:${isFailed ? '#f97316' : '#10b981'}; margin-top:4px;">${statusText}</div>
-${isFailed ? '<div style="color:#f97316; font-size:14px; margin-top:4px;">❌ Transaction failed</div>' : ''}
+${isFailed ? '<div style="color:#f97316; font-size:14px; margin-top:4px;">Transaction failed</div>' : ''}
 </div>
 <div class="transaction-detail-row"><span class="label">Date</span><span class="value">${tx.date}</span></div>
 <div class="transaction-detail-row"><span class="label">Amount</span><span class="value">₦${amt.toLocaleString()}.00</span></div>
@@ -3247,8 +3575,8 @@ ${isFailed ? '<div style="color:#f97316; font-size:14px; margin-top:4px;">❌ Tr
 <div class="transaction-detail-row"><span class="label">Transaction ID</span><span class="value">${d.transactionId || tx.id}</span></div>
 <div class="transaction-detail-row"><span class="label">Note</span><span class="value">${d.note || 'N/A'}</span></div>
 <div class="receipt-actions">
-<button class="btn" onclick="shareReceipt('${tx.id}')">📤 Share receipt</button>
-<button class="btn btn-outline" onclick="repeatTransaction('${tx.type}')">🔄 Repeat</button>
+<button class="btn" onclick="shareReceipt('${tx.id}')">Share receipt</button>
+<button class="btn btn-outline" onclick="repeatTransaction('${tx.type}')">Repeat</button>
 </div>
 <div class="text-center mt-20"><span style="color:#10b981; cursor:pointer;" onclick="showHelp()">Trouble? Contact support</span></div>
 </div>
@@ -3266,7 +3594,7 @@ let d = tx.fullDetails || {};
 let text =
 `Gpay Transaction\nAmount: ₦${(d.amount || tx.amount).toLocaleString()}\nType: ${tx.type}\nDate: ${tx.date}\nID: ${tx.id}`;
 navigator.clipboard.writeText(text);
-alert('✅ Receipt copied to clipboard!');
+alert('Receipt copied to clipboard!');
 }
 }
 
@@ -4117,7 +4445,7 @@ document.getElementById('dynamicContent').innerHTML = `
 </div>
 </div>
 
-<button class="confirm-btn" id="confirmBtn" onclick="processConfirmTransfer()">Confirm</button>
+<button class="confirm-btn" id="confirmBtn" onclick="showReminderPopup()">Confirm</button>
 </div>
 `;
 
@@ -4173,11 +4501,12 @@ validateConfirmButton();
 }
 
 // ============================================================
-// PROCESS CONFIRM TRANSFER
+// REMINDER POPUP
 // ============================================================
-function processConfirmTransfer() {
+function showReminderPopup() {
+const data = window._confirmData;
 const amountInput = document.getElementById('confirmAmountInput');
-const amount = parseInt(amountInput.value);
+const amount = parseInt(amountInput ? amountInput.value : 0);
 
 if (!amount || amount < 100) {
 alert('Please enter a valid amount (minimum ₦100)');
@@ -4194,20 +4523,200 @@ alert('Insufficient balance. You have ₦' + currentUser.balance.toLocaleString(
 return;
 }
 
-const data = window._confirmData;
 if (!data) {
 alert('Recipient data not found');
 return;
 }
 
+const remark = document.getElementById('remarkTextInput').value.trim() || 'None';
+
+let popup = document.createElement('div');
+popup.className = 'popup-overlay reminder-popup';
+popup.id = 'reminderPopup';
+popup.innerHTML = `
+<div class="popup-box">
+<div style="font-size:48px; text-align:center; margin-bottom:8px;">⚠</div>
+<div class="reminder-title">Double check the transfer details before you proceed</div>
+<div class="reminder-sub">Please note that successful transfers cannot be reversed.</div>
+<div class="tx-details">
+<div class="row"><span class="lbl">Name</span><span class="val">${data.name}</span></div>
+<div class="row"><span class="lbl">Account No.</span><span class="val">${data.accountNumber}</span></div>
+<div class="row"><span class="lbl">Bank</span><span class="val">${data.bankName}</span></div>
+<div class="row"><span class="lbl">Amount</span><span class="val">₦${amount.toLocaleString()}</span></div>
+<div class="row"><span class="lbl">Remark</span><span class="val">${remark}</span></div>
+</div>
+<div class="popup-actions">
+<button class="btn btn-outline" onclick="document.getElementById('reminderPopup').remove()">Recheck</button>
+<button class="btn" onclick="document.getElementById('reminderPopup').remove(); showPayConfirmationPopup();">Continue</button>
+</div>
+</div>
+`;
+document.body.appendChild(popup);
+}
+
+// ============================================================
+// PAY CONFIRMATION POPUP
+// ============================================================
+function showPayConfirmationPopup() {
+const data = window._confirmData;
+const amountInput = document.getElementById('confirmAmountInput');
+const amount = parseInt(amountInput ? amountInput.value : 0);
 const remark = document.getElementById('remarkTextInput').value.trim() || '';
 
-if (!confirm(`Confirm transfer to:\n\n${data.name}\n${data.accountNumber}\n${data.bankName}\nAmount: ₦${amount.toLocaleString()}\nRemark: ${remark || 'None'}\n\nDo you want to proceed?`)) {
+// Show loading for 2 seconds first
+showLoadingOverlay('Processing...');
+setTimeout(() => {
+hideLoadingOverlay();
+
+let popup = document.createElement('div');
+popup.className = 'popup-overlay pay-confirm-popup';
+popup.id = 'payConfirmPopup';
+popup.innerHTML = `
+<div class="popup-box">
+<div class="pay-header">
+<span class="title">Transfer To Bank Account</span>
+<span class="amount-big">₦${amount.toLocaleString()}</span>
+</div>
+<div class="pay-recipient">
+<div class="name">${data.name}</div>
+<div class="detail">${data.accountNumber} ${data.bankName}</div>
+</div>
+<div class="pay-details">
+<div class="row"><span class="lbl">Bank</span><span class="val">${data.bankName}</span></div>
+<div class="row"><span class="lbl">Account Number</span><span class="val">${data.accountNumber}</span></div>
+<div class="row"><span class="lbl">Name</span><span class="val">${data.name}</span></div>
+<div class="row"><span class="lbl">Amount</span><span class="val">₦${amount.toLocaleString()}</span></div>
+<div class="row"><span class="lbl">Fee</span><span class="val">₦10.00</span></div>
+<div class="row"><span class="lbl">Payment Method</span><span class="val">Wallet</span></div>
+</div>
+<div class="pay-balance">
+<div class="row"><span class="lbl">Available Balance (₦${currentUser.balance.toLocaleString()})</span><span class="val green">₦${currentUser.balance.toLocaleString()}</span></div>
+<div class="row"><span class="lbl">Wallet (₦0.00)</span><span class="val">₦0.00</span></div>
+<div class="row"><span class="lbl">OWealth (₦${currentUser.balance.toLocaleString()})</span><span class="val green">₦${currentUser.balance.toLocaleString()}</span></div>
+</div>
+<button class="btn-pay" onclick="document.getElementById('payConfirmPopup').remove(); showLoadingForPin();">Pay</button>
+</div>
+`;
+document.body.appendChild(popup);
+}, 2000);
+}
+
+// ============================================================
+// LOADING FOR PIN
+// ============================================================
+function showLoadingForPin() {
+showLoadingOverlay('Processing...');
+setTimeout(() => {
+hideLoadingOverlay();
+showPinEntryPopup();
+}, 2000);
+}
+
+// ============================================================
+// PIN ENTRY POPUP
+// ============================================================
+let pinEntry = '';
+
+function showPinEntryPopup() {
+pinEntry = '';
+let popup = document.createElement('div');
+popup.className = 'popup-overlay pin-popup';
+popup.id = 'pinPopup';
+popup.innerHTML = `
+<div class="popup-box">
+<div class="pin-title">Enter Payment PIN</div>
+<div class="pin-sub">Enter your 4-digit payment PIN to confirm</div>
+<div style="text-align:right; margin-bottom:16px;">
+<span class="pin-forgot" onclick="alert('Contact support to reset your PIN')">Forgot Payment PIN?</span>
+</div>
+<div class="pin-display" id="pinDisplay">
+<div class="dot" id="pinDot1"></div>
+<div class="dot" id="pinDot2"></div>
+<div class="dot" id="pinDot3"></div>
+<div class="dot" id="pinDot4"></div>
+</div>
+<div class="pin-keypad">
+<div class="key" onclick="pressPinKey('1')">1</div>
+<div class="key" onclick="pressPinKey('2')">2</div>
+<div class="key" onclick="pressPinKey('3')">3</div>
+<div class="key" onclick="pressPinKey('4')">4</div>
+<div class="key" onclick="pressPinKey('5')">5</div>
+<div class="key" onclick="pressPinKey('6')">6</div>
+<div class="key" onclick="pressPinKey('7')">7</div>
+<div class="key" onclick="pressPinKey('8')">8</div>
+<div class="key" onclick="pressPinKey('9')">9</div>
+<div class="key empty"></div>
+<div class="key" onclick="pressPinKey('0')">0</div>
+<div class="key back" onclick="pressPinKey('back')">⌫</div>
+</div>
+</div>
+`;
+document.body.appendChild(popup);
+}
+
+function pressPinKey(key) {
+if (key === 'back') {
+if (pinEntry.length > 0) {
+pinEntry = pinEntry.slice(0, -1);
+updatePinDots();
+}
 return;
 }
 
-showLoadingOverlay('Processing bank transfer...');
+if (pinEntry.length < 4) {
+pinEntry += key;
+updatePinDots();
+
+if (pinEntry.length === 4) {
+// PIN complete - check it
 setTimeout(() => {
+document.getElementById('pinPopup').remove();
+// Hardcoded PIN: 1234
+if (pinEntry === '1234') {
+showLoadingForTransfer();
+} else {
+alert('Invalid PIN. Please try again.');
+showPinEntryPopup();
+}
+}, 300);
+}
+}
+}
+
+function updatePinDots() {
+for (let i = 1; i <= 4; i++) {
+const dot = document.getElementById('pinDot' + i);
+if (dot) {
+if (i <= pinEntry.length) {
+dot.classList.add('filled');
+} else {
+dot.classList.remove('filled');
+}
+}
+}
+}
+
+// ============================================================
+// LOADING FOR TRANSFER (4 SECONDS)
+// ============================================================
+function showLoadingForTransfer() {
+showLoadingOverlay('Processing transfer...');
+setTimeout(() => {
+hideLoadingOverlay();
+processTransfer();
+}, 4000);
+}
+
+// ============================================================
+// PROCESS TRANSFER (FINAL)
+// ============================================================
+function processTransfer() {
+const data = window._confirmData;
+const amountInput = document.getElementById('confirmAmountInput');
+const amount = parseInt(amountInput ? amountInput.value : 0);
+const remark = document.getElementById('remarkTextInput').value.trim() || '';
+
+// Deduct balance
 currentUser.balance -= amount;
 
 let tid = 'BNK' + Date.now() + Math.floor(Math.random() * 1000);
@@ -4249,31 +4758,71 @@ saveBankData();
 
 tempRecipientName = null;
 
-hideLoadingOverlay();
-showBankSuccessPopup(amount, data.name, data.accountNumber, data.bankName, tid);
-}, 3000);
+// Show success page
+showSuccessPage(amount, data.name, data.accountNumber, data.bankName, tid);
 }
 
-function showBankSuccessPopup(amount, name, number, bank, tid) {
-let popup = document.createElement('div');
-popup.className = 'popup-overlay';
-popup.innerHTML = `
-<div class="popup-box">
-<div class="emoji">✅</div>
-<div class="popup-title green">Transfer Successful!</div>
-<div class="popup-sub">You have successfully sent</div>
-<div class="popup-amount negative">-₦${amount.toLocaleString()}</div>
-<div class="popup-detail">
-<div class="name">${name}</div>
-<div class="meta">${bank} • ${number}</div>
+// ============================================================
+// SUCCESS PAGE
+// ============================================================
+function showSuccessPage(amount, name, accountNumber, bankName, tid) {
+document.getElementById('dynamicContent').innerHTML = `
+<div class="success-page">
+<div class="page-header">
+<button class="back-btn" onclick="closeDynamic()">←</button>
+<span class="title">Transfer Successful</span>
+<button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
 </div>
-<div class="popup-actions">
-<button class="btn" onclick="this.closest('.popup-overlay').remove(); closeDynamic();">Done</button>
-<button class="btn btn-outline" onclick="this.closest('.popup-overlay').remove(); showTransactionDetails('${tid}');">View receipt</button>
+
+<div style="font-size:64px; text-align:center; margin-bottom:8px;">✅</div>
+<div class="success-title">Transfer successful</div>
+<div class="success-amount">₦${amount.toLocaleString()}</div>
+<div class="success-sub">The recipient account is expected to be credited within 5 minutes.</div>
+
+<div class="success-actions">
+<button class="btn btn-outline" onclick="shareReceipt('${tid}')">Share Receipt</button>
+<button class="btn btn-outline" onclick="showAddMoney()">Add Money</button>
+<button class="btn btn-outline" onclick="alert('Added to favourites!')">Add to favourites</button>
+<button class="btn btn-outline" onclick="showTransactionDetails('${tid}')">View Details</button>
+</div>
+
+<div class="bonus-section">
+<div class="bonus-title">Special Bonus For You</div>
+<div class="bonus-item">
+<div class="left">
+<div class="main">Don't Miss Out</div>
+<div class="sub">Balance with Daily Interest</div>
+</div>
+<button class="go-btn" onclick="alert('Coming soon!')">GO</button>
+</div>
+<div class="bonus-item">
+<div class="left">
+<div class="main">Bet big, win bigger!</div>
+<div class="sub">Get Discounts That Wow!</div>
+</div>
+<button class="go-btn" onclick="alert('Coming soon!')">GO</button>
+</div>
+<div class="bonus-item">
+<div class="left">
+<div class="main">Enjoy online payment</div>
+<div class="sub">Using OPay Verve Card now</div>
+</div>
+<button class="go-btn" onclick="alert('Coming soon!')">GO</button>
+</div>
+<div class="bonus-item">
+<div class="left">
+<div class="main">Save easily</div>
+<div class="sub">Earn more interest every day!</div>
+</div>
+<button class="go-btn" onclick="alert('Coming soon!')">GO</button>
+</div>
 </div>
 </div>
 `;
-document.body.appendChild(popup);
+
+showPage('dashboardPage');
+document.getElementById('dashboardPage').classList.add('hidden');
+document.getElementById('dynamicContent').style.display = 'block';
 }
 
 // ============================================================
