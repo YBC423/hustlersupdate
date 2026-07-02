@@ -2417,7 +2417,7 @@ opacity: 0.7;
 <div class="welcome-title">Welcome!</div>
 <div class="welcome-text">Create your account and get welcome bonus.</div>
 <div class="get-started-wrapper">
-<button class="btn" onclick="handleGetStarted()">Get Started</button>
+<button class="btn" id="getStartedBtn">Get Started</button>
 </div>
 </div>
 </div>
@@ -2757,18 +2757,30 @@ saveSavedNames(names);
 // UI HELPERS
 // ============================================================
 function showPage(id) {
+// Hide all pages first
 document.getElementById('welcomePage').classList.add('hidden');
 document.getElementById('signupPage').classList.add('hidden');
 document.getElementById('loginPage').classList.add('hidden');
 document.getElementById('dashboardPage').classList.add('hidden');
+// Show the target page
 let el = document.getElementById(id);
 if (el) el.classList.remove('hidden');
+// Update dashboard if showing it
 if (id === 'dashboardPage' && currentUser) updateDashboard();
 }
 
-function showWelcomePage() { showPage('welcomePage'); }
-function showSignupPage() { showPage('signupPage'); }
-function showLoginPage() { showPage('loginPage'); }
+function showWelcomePage() { 
+showPage('welcomePage'); 
+}
+
+function showSignupPage() { 
+showPage('signupPage'); 
+}
+
+function showLoginPage() { 
+showPage('loginPage'); 
+}
+
 function showDashboardPage() {
 showPage('dashboardPage');
 updateDashboard();
@@ -2792,12 +2804,19 @@ window.open('https://wa.me/2348168909003', '_blank');
 }
 
 function showSplashLoading(message, callback, duration = 3000) {
+// Remove any existing splash first
+let existing = document.querySelector('.splash-loading');
+if (existing) existing.remove();
+    
 let splash = document.createElement('div');
 splash.className = 'splash-loading';
-splash.innerHTML =
+splash.innerHTML = 
 `<div class="spinner"></div><div class="logo-text">Gpay</div><div class="loading-text">${message}</div>`;
 document.body.appendChild(splash);
-setTimeout(() => { splash.remove(); if (callback) callback(); }, duration);
+setTimeout(() => { 
+splash.remove(); 
+if (callback) callback(); 
+}, duration);
 }
 
 function showLoadingOverlay(msg = 'Processing...', showProgress = false) {
@@ -3044,27 +3063,31 @@ document.getElementById('loginError').innerText = 'Invalid email or password';
 }
 
 // ============================================================
-// AUTH: AUTO LOGIN
+// AUTH: AUTO LOGIN - FIXED
 // ============================================================
 async function autoLogin() {
 loadUsers();
 loadBankData();
 let saved = localStorage.getItem('graypay_current');
-if (saved) {
+if (saved && users.length > 0) {
 for (let u of users) {
 if (u.email === saved) {
 currentUser = u;
+// Try Firebase auth but don't let it break the flow
 try {
 const firebaseUser = auth.currentUser;
 if (firebaseUser && firebaseUser.email === saved) {
 await firebaseUser.reload();
 }
-} catch (e) {}
+} catch (e) {
+console.log('Firebase error, using local data only');
+}
 showDashboardPage();
 return;
 }
 }
 }
+// No user found or no saved session - show welcome
 showWelcomePage();
 }
 
@@ -4972,10 +4995,12 @@ preview.classList.add('show');
 }
 
 // ============================================================
-// HANDLE GET STARTED
+// HANDLE GET STARTED - FIXED
 // ============================================================
 function handleGetStarted() {
-showSplashLoading('Loading...', () => showSignupPage(), 2500);
+showSplashLoading('Loading...', function() {
+showSignupPage();
+}, 2500);
 }
 
 // ============================================================
@@ -4984,6 +5009,17 @@ showSplashLoading('Loading...', () => showSignupPage(), 2500);
 document.addEventListener('DOMContentLoaded', function() {
 loadUsers();
 loadBankData();
+    
+// Fix: Make sure the Get Started button is properly bound
+const getStartedBtn = document.getElementById('getStartedBtn');
+if (getStartedBtn) {
+// Remove any existing listeners and add fresh one
+getStartedBtn.onclick = function(e) {
+e.preventDefault();
+handleGetStarted();
+};
+}
+    
 autoLogin();
 });
 </script>
