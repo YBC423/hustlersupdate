@@ -3,2495 +3,969 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#1b1b1b" />
 <title>Gpay</title>
 
 <!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js">
-</script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js">
-</script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js">
-</script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
 
 <style>
 /* ===== RESET & BASE ===== */
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-background: #0a0a0a;
-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-color: #fff;
--webkit-font-smoothing: antialiased;
+  background: #1b1b1b;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #eee;
+  -webkit-font-smoothing: antialiased;
 }
 .app {
-max-width: 450px;
-margin: 0 auto;
-background: #0a0a0a;
-min-height: 100vh;
-padding: 12px 16px 80px 16px;
-position: relative;
+  max-width: 450px;
+  margin: 0 auto;
+  background: #1b1b1b;
+  min-height: 100vh;
+  padding: 12px 16px 80px 16px;
+  position: relative;
 }
 
 /* ===== UTILITY ===== */
-.hidden {
-display: none !important;
-}
-.text-center {
-text-align: center;
-}
-.mt-10 {
-margin-top: 10px;
-}
-.mt-20 {
-margin-top: 20px;
-}
-.mb-10 {
-margin-bottom: 10px;
-}
-.mb-20 {
-margin-bottom: 20px;
-}
-.flex-between {
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-.flex-center {
-display: flex;
-align-items: center;
-justify-content: center;
-}
-.gap-8 {
-gap: 8px;
-}
-.gap-12 {
-gap: 12px;
-}
-.w-full {
-width: 100%;
-}
+.hidden { display: none !important; }
+.text-center { text-align: center; }
+.mt-10 { margin-top: 10px; }
+.mt-20 { margin-top: 20px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-20 { margin-bottom: 20px; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.gap-8 { gap: 8px; }
+.gap-12 { gap: 12px; }
+.w-full { width: 100%; }
 
 /* ===== BUTTONS ===== */
 .btn {
-padding: 14px 20px;
-background: #10b981;
-border: none;
-border-radius: 12px;
-color: #fff;
-font-size: 16px;
-font-weight: 600;
-cursor: pointer;
-text-align: center;
-transition: opacity 0.2s;
-display: inline-block;
+  padding: 14px 20px; background: #16c99e; border: none; border-radius: 12px;
+  color: #fff; font-size: 16px; font-weight: 600; cursor: pointer;
+  text-align: center; transition: opacity 0.2s; display: inline-block;
 }
-.btn:active {
-opacity: 0.7;
-}
-.btn-gray {
-background: #2a2a2a;
-color: #9ca3af;
-cursor: not-allowed;
-}
-.btn-outline {
-background: transparent;
-border: 1px solid #2a2a2a;
-color: #fff;
-}
-.btn-sm {
-padding: 8px 16px;
-font-size: 13px;
-border-radius: 8px;
-}
-.btn-green {
-background: #10b981;
-color: #fff;
-}
-.btn-green-outline {
-background: transparent;
-border: 1px solid #10b981;
-color: #10b981;
-}
-.btn-danger-outline {
-background: transparent;
-border: 1px solid #ef4444;
-color: #ef4444;
-}
+.btn:active { opacity: 0.7; }
+.btn-gray { background: #2b2b2b; color: #a7a7a7; cursor: not-allowed; }
+.btn-outline { background: transparent; border: 1px solid #2b2b2b; color: #fff; }
+.btn-sm { padding: 8px 16px; font-size: 13px; border-radius: 8px; }
+.btn-green { background: #16c99e; color: #fff; }
+.btn-green-outline { background: transparent; border: 1px solid #16c99e; color: #16c99e; }
+.btn-danger-outline { background: transparent; border: 1px solid #ef4444; color: #ef4444; }
 
 /* ===== HEADER ===== */
 .dashboard-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 4px 0 12px 0;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 4px 0 12px 0;
 }
-.dashboard-header .left {
-display: flex;
-align-items: center;
-gap: 10px;
-}
+.dashboard-header .left { display: flex; align-items: center; gap: 10px; }
 .dashboard-header .left .avatar {
-width: 38px;
-height: 38px;
-border-radius: 50%;
-background: linear-gradient(135deg, #10b981, #059669);
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 16px;
-font-weight: 600;
-color: #fff;
-cursor: pointer;
-border: 2px solid #1a1a1a;
-position: relative;
-overflow: hidden;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg, #16c99e, #0fa37e);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 600; color: #fff; cursor: pointer;
+  border: 2px solid #2b2b2b; position: relative; overflow: hidden;
 }
-.dashboard-header .left .avatar img {
-width: 100%;
-height: 100%;
-object-fit: cover;
-border-radius: 50%;
-}
-.dashboard-header .left .avatar .avatar-text {
-font-size: 16px;
-font-weight: 600;
-color: #fff;
-}
+.dashboard-header .left .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.dashboard-header .left .avatar .avatar-text { font-size: 16px; font-weight: 600; color: #fff; }
 .dashboard-header .left .avatar .badge-dot {
-position: absolute;
-top: -2px;
-right: -2px;
-width: 10px;
-height: 10px;
-background: #ef4444;
-border-radius: 50%;
-border: 2px solid #0a0a0a;
-display: none;
+  position: absolute; top: -2px; right: -2px; width: 10px; height: 10px;
+  background: #ef4444; border-radius: 50%; border: 2px solid #1b1b1b; display: none;
 }
-.dashboard-header .left .greeting {
-font-size: 18px;
-font-weight: 600;
-color: #fff;
-}
-.dashboard-header .left .greeting span {
-color: #fff;
-}
-.dashboard-header .right {
-display: flex;
-align-items: center;
-gap: 14px;
-}
+.dashboard-header .left .greeting { font-size: 18px; font-weight: 600; color: #fff; }
+.dashboard-header .left .greeting span { color: #fff; }
+.dashboard-header .right { display: flex; align-items: center; gap: 14px; }
 .dashboard-header .right .help-btn {
-background: none;
-border: none;
-color: #fff;
-font-size: 14px;
-font-weight: 500;
-cursor: pointer;
-padding: 0;
+  background: none; border: none; color: #bcbcbc; font-size: 13px;
+  font-weight: 500; cursor: pointer; padding: 0; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
 }
+.dashboard-header .right .help-btn svg {
+  width: 22px; height: 22px; stroke: #bcbcbc; fill: none;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+.dashboard-header .right .help-btn small {
+  font-size: 9px; font-weight: 700; color: #ee4381;
+  background: #ffd6e8; border-radius: 10px; padding: 1px 5px;
+  position: absolute; top: -4px; right: -6px;
+}
+.dashboard-header .right .help-wrap { position: relative; }
 .dashboard-header .right .scan-btn {
-background: none;
-border: none;
-color: #fff;
-cursor: pointer;
-padding: 0;
-display: flex;
-align-items: center;
+  background: none; border: none; color: #bcbcbc; cursor: pointer;
+  padding: 0; display: flex; align-items: center;
+}
+.dashboard-header .right .scan-btn svg {
+  width: 22px; height: 22px; stroke: #bcbcbc; fill: none;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
 }
 .dashboard-header .right .bell {
-cursor: pointer;
-background: none;
-border: none;
-color: #fff;
-position: relative;
-padding: 0;
-line-height: 1;
+  cursor: pointer; background: none; border: none; color: #bcbcbc;
+  position: relative; padding: 0; line-height: 1;
+}
+.dashboard-header .right .bell svg {
+  width: 22px; height: 22px; stroke: #bcbcbc; fill: none;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
 }
 .dashboard-header .right .bell .badge {
-position: absolute;
-top: -4px;
-right: -6px;
-background: #ef4444;
-color: #fff;
-font-size: 10px;
-font-weight: bold;
-padding: 2px 6px;
-border-radius: 50%;
-min-width: 18px;
-text-align: center;
+  position: absolute; top: -6px; right: -8px; background: #f52d69;
+  color: #fff; font-size: 9px; font-weight: bold;
+  padding: 2px 5px; border-radius: 20px; min-width: 18px; text-align: center;
 }
 
 /* ===== BALANCE CARD ===== */
 .balance-card {
-background: #10b981;
-border-radius: 20px;
-padding: 18px 20px 16px 20px;
-margin-bottom: 10px;
+  background: #17c99e;
+  border-radius: 20px;
+  padding: 18px 20px 16px 20px;
+  margin-bottom: 10px;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,.08);
 }
 .balance-card .label-row {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 2px;
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 2px;
 }
 .balance-card .label-row .label {
-font-size: 14px;
-opacity: 0.85;
-font-weight: 500;
-color: #000;
-cursor: pointer;
+  font-size: 14px; opacity: 0.85; font-weight: 500; color: #082e28;
+  cursor: pointer; display: flex; align-items: center; gap: 5px;
 }
+.balance-card .label-row .label .shield {
+  width: 20px; height: 20px; fill: #071e1b; flex: none;
+}
+.balance-card .label-row .label .shield .check {
+  fill: none; stroke: #17c99e; stroke-width: 3;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.balance-card .label-row .label .eye-btn {
+  background: none; border: none; padding: 0; width: 18px; height: 18px;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.balance-card .label-row .label .eye-btn svg { width: 100%; fill: #062a24; }
+.balance-card .label-row .label .eye-btn circle { fill: #17c99e; }
 .balance-card .label-row .history-link {
-font-size: 13px;
-color: #000;
-opacity: 0.85;
-text-decoration: none;
-cursor: pointer;
-display: flex;
-align-items: center;
-gap: 4px;
-font-weight: 500;
+  font-size: 13px; color: #082e28; opacity: 0.85; text-decoration: none;
+  cursor: pointer; display: flex; align-items: center; gap: 4px; font-weight: 500;
 }
 .balance-card .amount-row {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin: 2px 0 14px 0;
+  display: flex; justify-content: space-between; align-items: center;
+  margin: 2px 0 14px 0;
 }
 .balance-card .amount-row .amount {
-font-size: 38px;
-font-weight: 700;
-letter-spacing: -0.5px;
-color: #000;
+  font-size: 38px; font-weight: 700; letter-spacing: -0.5px; color: #082e28;
 }
 .balance-card .amount-row .add-money-btn {
-background: #000;
-border: none;
-color: #10b981;
-padding: 8px 16px;
-border-radius: 20px;
-font-size: 14px;
-font-weight: 600;
-cursor: pointer;
-transition: opacity 0.2s;
-white-space: nowrap;
+  background: #202020; border: none; color: #48d5b3;
+  padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: opacity 0.2s; white-space: nowrap;
 }
-.balance-card .amount-row .add-money-btn:active {
-opacity: 0.7;
+.balance-card .amount-row .add-money-btn:active { opacity: 0.7; }
+
+/* ===== TRANSACTION LIST (under balance) ===== */
+.recent-transactions {
+  background: #2b2b2b;
+  border-radius: 20px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  width: 100%;
+}
+.recent-transactions .tx-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #363636;
+}
+.recent-transactions .tx-item:last-child { border-bottom: none; }
+.recent-transactions .tx-item .tx-icon {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: #f1ddff; color: #8654ee;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: bold; flex: none;
+}
+.recent-transactions .tx-item .tx-info { flex: 1; min-width: 0; }
+.recent-transactions .tx-item .tx-info .tx-title {
+  font-size: 14px; color: #eee; font-weight: 500; white-space: nowrap;
+}
+.recent-transactions .tx-item .tx-info time {
+  display: block; color: #a7a7a7; font-size: 11px; margin-top: 3px; white-space: nowrap;
+}
+.recent-transactions .tx-item .tx-amount {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 3px; white-space: nowrap;
+}
+.recent-transactions .tx-item .tx-amount strong { font-size: 15px; color: #45d5b2; }
+.recent-transactions .tx-item .tx-amount span {
+  font-size: 10px; color: #45d5b2; background: #123d34;
+  border-radius: 6px; padding: 2px 7px;
 }
 
-/* ===== ACTION BUTTONS CARD ===== */
+/* ===== ACTION BUTTONS CARD (QUICK ACTIONS) ===== */
 .action-card {
-background: #111827;
-border-radius: 16px;
-padding: 14px 16px;
-margin-bottom: 14px;
-border: 1px solid #2a2a2a;
+  background: #2b2b2b;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  border: 1px solid #363636;
 }
-.action-buttons {
-display: flex;
-gap: 10px;
-}
+.action-buttons { display: flex; gap: 10px; }
 .action-buttons .action-btn {
-flex: 1;
-padding: 12px 8px;
-border-radius: 12px;
-font-size: 13px;
-font-weight: 600;
-background: #000;
-border: none;
-color: #10b981;
-cursor: pointer;
-transition: background 0.2s;
-text-align: center;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-gap: 6px;
-min-width: 0;
+  flex: 1; padding: 12px 8px; border-radius: 12px;
+  font-size: 13px; font-weight: 600; background: #1b1b1b;
+  border: none; color: #a7a7a7; cursor: pointer;
+  transition: background 0.2s; text-align: center;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 6px; min-width: 0;
 }
-.action-buttons .action-btn:active {
-background: #1a1a1a;
+.action-buttons .action-btn:active { background: #262626; }
+.action-buttons .action-btn .q-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: #1b1b1b; display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0;
 }
-.action-buttons .action-btn svg {
-width: 20px;
-height: 20px;
-stroke: #10b981;
-stroke-width: 2;
-fill: none;
-stroke-linecap: round;
-stroke-linejoin: round;
-flex-shrink: 0;
+.action-buttons .action-btn .q-icon svg {
+  width: 20px; height: 20px; fill: #16c99e;
+  stroke: #16c99e; stroke-width: 3;
+  stroke-linecap: round; stroke-linejoin: round;
 }
-.action-buttons .action-btn .opay-icon {
-width: 20px;
-height: 20px;
-flex-shrink: 0;
-}
+.action-buttons .action-btn .q-icon svg circle,
+.action-buttons .action-btn .q-icon svg path:not(:first-child) { fill: none; }
 
 /* ===== BVN WARNING BANNER ===== */
 .bvn-banner {
-background: #1a1a2e;
-border-radius: 14px;
-padding: 12px 16px;
-margin-bottom: 14px;
-display: flex;
-justify-content: space-between;
-align-items: center;
+  background: #2b2b2b;
+  border-radius: 14px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 }
-.bvn-banner .msg {
-font-size: 13px;
-color: #d1d5db;
-line-height: 1.4;
+.bvn-banner .id-badge {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: #55442c; display: flex; align-items: center;
+  justify-content: center; font-size: 20px; position: relative; flex: none;
 }
+.bvn-banner .id-badge i {
+  position: absolute; top: -2px; left: 4px; background: #f34b78;
+  color: #fff; border-radius: 50%; font-size: 9px; font-style: normal;
+  padding: 1px 4px;
+}
+.bvn-banner .msg { flex: 1; min-width: 0; }
 .bvn-banner .msg strong {
-color: #fff;
+  font-size: 13px; color: #eee; line-height: 1.3; display: block;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .bvn-banner .msg .sub {
-font-size: 12px;
-color: #9ca3af;
-display: block;
-margin-top: 2px;
+  font-size: 11px; color: #a7a7a7; display: block; margin-top: 2px;
 }
 .bvn-banner .go-btn {
-background: #10b981;
-color: #fff;
-border: none;
-padding: 6px 18px;
-border-radius: 20px;
-font-weight: 600;
-font-size: 13px;
-cursor: pointer;
-white-space: nowrap;
-margin-left: 12px;
-transition: opacity 0.2s;
+  background: #16c99e; color: #fff; border: none;
+  padding: 6px 16px; border-radius: 20px; font-weight: 600;
+  font-size: 12px; cursor: pointer; white-space: nowrap;
+  transition: opacity 0.2s; flex: none;
 }
-.bvn-banner .go-btn:active {
-opacity: 0.7;
-}
+.bvn-banner .go-btn:active { opacity: 0.7; }
 
 /* ===== SERVICES GRID ===== */
 .services-grid {
-display: grid;
-grid-template-columns: repeat(4, 1fr);
-gap: 10px;
-background: #111827;
-padding: 16px 10px;
-border-radius: 16px;
-margin-bottom: 14px;
-border: 1px solid #1f2937;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+  background: #2b2b2b; padding: 16px 10px; border-radius: 16px;
+  margin-bottom: 14px; border: 1px solid #363636;
 }
 .services-grid .service-item {
-text-align: center;
-cursor: pointer;
-transition: transform 0.15s;
+  text-align: center; cursor: pointer; transition: transform 0.15s;
 }
-.services-grid .service-item:active {
-transform: scale(0.94);
-}
+.services-grid .service-item:active { transform: scale(0.94); }
 .services-grid .service-item .icon {
-width: 46px;
-height: 46px;
-border-radius: 50%;
-background: #1f2937;
-display: flex;
-align-items: center;
-justify-content: center;
-margin: 0 auto 6px auto;
+  width: 46px; height: 46px; border-radius: 50%; background: #1b1b1b;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 6px auto;
 }
 .services-grid .service-item .icon svg {
-width: 22px;
-height: 22px;
-stroke: #d1d5db;
-stroke-width: 1.8;
-fill: none;
-stroke-linecap: round;
-stroke-linejoin: round;
+  width: 22px; height: 22px; stroke: #d1d5db; stroke-width: 1.8;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
 }
-.services-grid .service-item .label {
-font-size: 11px;
-color: #9ca3af;
-font-weight: 500;
-}
+.services-grid .service-item .label { font-size: 11px; color: #a7a7a7; font-weight: 500; }
 
 /* ===== TASK SECTION ===== */
 .task-section {
-background: #111827;
-border-radius: 16px;
-padding: 16px;
-margin-bottom: 14px;
-border: 1px solid #1f2937;
+  background: #2b2b2b; border-radius: 16px; padding: 16px;
+  margin-bottom: 14px; border: 1px solid #363636;
 }
 .task-section .task-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 10px;
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
 }
-.task-section .task-header .title {
-font-size: 15px;
-font-weight: 600;
-color: #fff;
-}
-.task-section .task-header .title span {
-color: #10b981;
-}
-.task-section .task-header .view-all {
-color: #10b981;
-font-size: 12px;
-cursor: pointer;
-font-weight: 500;
-}
+.task-section .task-header .title { font-size: 15px; font-weight: 600; color: #eee; }
+.task-section .task-header .title span { color: #16c99e; }
+.task-section .task-header .view-all { color: #16c99e; font-size: 12px; cursor: pointer; font-weight: 500; }
 .task-section .task-row {
-display: flex;
-justify-content: space-between;
-align-items: center;
-background: #1a1a2e;
-border-radius: 12px;
-padding: 12px 14px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: #1b1b1b; border-radius: 12px; padding: 12px 14px;
 }
-.task-section .task-row .left .task-title {
-font-size: 14px;
-font-weight: 500;
-color: #fff;
-}
-.task-section .task-row .left .task-sub {
-font-size: 12px;
-color: #9ca3af;
-margin-top: 2px;
-}
+.task-section .task-row .left .task-title { font-size: 14px; font-weight: 500; color: #eee; }
+.task-section .task-row .left .task-sub { font-size: 12px; color: #a7a7a7; margin-top: 2px; }
 .task-section .task-row .claim-btn {
-background: #10b981;
-color: #fff;
-border: none;
-padding: 6px 20px;
-border-radius: 20px;
-font-weight: 600;
-font-size: 13px;
-cursor: pointer;
-transition: opacity 0.2s;
-white-space: nowrap;
-margin-left: 10px;
+  background: #16c99e; color: #fff; border: none; padding: 6px 20px;
+  border-radius: 20px; font-weight: 600; font-size: 13px; cursor: pointer;
+  transition: opacity 0.2s; white-space: nowrap; margin-left: 10px;
 }
-.task-section .task-row .claim-btn:active {
-opacity: 0.7;
-}
+.task-section .task-row .claim-btn:active { opacity: 0.7; }
 
 /* ===== BOTTOM NAV ===== */
 .bottom-nav {
-position: fixed;
-bottom: 0;
-left: 0;
-right: 0;
-max-width: 450px;
-margin: 0 auto;
-background: #111827;
-display: flex;
-justify-content: space-around;
-padding: 8px 0 14px 0;
-border-top: 1px solid #1f2937;
-z-index: 100;
+  position: fixed; bottom: 0; left: 0; right: 0; max-width: 450px;
+  margin: 0 auto; background: #292929; display: flex;
+  justify-content: space-around; padding: 8px 0 14px 0;
+  border-top: 1px solid #363636; z-index: 100;
 }
 .bottom-nav .nav-item {
-display: flex;
-flex-direction: column;
-align-items: center;
-color: #6b7280;
-font-size: 10px;
-cursor: pointer;
-transition: color 0.2s;
-background: none;
-border: none;
-padding: 4px 8px;
-gap: 2px;
-font-weight: 500;
+  display: flex; flex-direction: column; align-items: center;
+  color: #858585; font-size: 10px; cursor: pointer;
+  transition: color 0.2s; background: none; border: none;
+  padding: 4px 8px; gap: 2px; font-weight: 500;
 }
 .bottom-nav .nav-item svg {
-width: 24px;
-height: 24px;
-stroke: #6b7280;
-stroke-width: 1.8;
-fill: none;
-stroke-linecap: round;
-stroke-linejoin: round;
-margin-bottom: 2px;
+  width: 24px; height: 24px; stroke: #858585; stroke-width: 1.8;
+  fill: none; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 2px;
 }
-.bottom-nav .nav-item.active {
-color: #10b981;
-}
-.bottom-nav .nav-item.active svg {
-stroke: #10b981;
-}
-.bottom-nav .nav-item:active {
-transform: scale(0.92);
-}
+.bottom-nav .nav-item.active { color: #42d2ad; }
+.bottom-nav .nav-item.active svg { stroke: #42d2ad; }
+.bottom-nav .nav-item:active { transform: scale(0.92); }
 
 /* ===== MODALS & OVERLAYS ===== */
 .modal-overlay {
-display: none;
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background: rgba(0, 0, 0, 0.85);
-align-items: center;
-justify-content: center;
-z-index: 2000;
-padding: 20px;
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.85); align-items: center; justify-content: center;
+  z-index: 2000; padding: 20px;
 }
-.modal-overlay.show {
-display: flex;
-}
+.modal-overlay.show { display: flex; }
 .modal-box {
-background: #1a1a2e;
-border-radius: 24px;
-padding: 24px 20px;
-width: 100%;
-max-width: 360px;
-border: 1px solid #2a2a3e;
+  background: #2b2b2b; border-radius: 24px; padding: 24px 20px;
+  width: 100%; max-width: 360px; border: 1px solid #3a3a3a;
 }
-.modal-box h3 {
-font-size: 20px;
-color: #fff;
-margin-bottom: 12px;
-}
-.modal-box p {
-color: #9ca3af;
-font-size: 14px;
-margin-bottom: 16px;
-}
-.modal-box .modal-actions {
-display: flex;
-gap: 12px;
-flex-wrap: wrap;
-}
-.modal-box .modal-actions .btn {
-flex: 1;
-min-width: 100px;
-}
+.modal-box h3 { font-size: 20px; color: #eee; margin-bottom: 12px; }
+.modal-box p { color: #a7a7a7; font-size: 14px; margin-bottom: 16px; }
+.modal-box .modal-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.modal-box .modal-actions .btn { flex: 1; min-width: 100px; }
 
 /* ===== SPLASH ===== */
 .splash-loading {
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background: #0a0a0a;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-z-index: 9999;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: #1b1b1b; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; z-index: 9999;
 }
 .splash-loading .spinner {
-width: 50px;
-height: 50px;
-border: 3px solid #2a2a2a;
-border-top: 3px solid #10b981;
-border-radius: 50%;
-animation: spin 1s linear infinite;
+  width: 50px; height: 50px; border: 3px solid #2b2b2b;
+  border-top: 3px solid #16c99e; border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
-@keyframes spin {
-0% {
-transform: rotate(0deg);
-}
-100% {
-transform: rotate(360deg);
-}
-}
-.splash-loading .logo-text {
-font-size: 24px;
-font-weight: bold;
-color: #10b981;
-margin-top: 20px;
-}
-.splash-loading .loading-text {
-color: #9ca3af;
-margin-top: 10px;
-font-size: 14px;
-}
-.splash-loading .progress-text {
-color: #10b981;
-margin-top: 8px;
-font-size: 16px;
-font-weight: 600;
-}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.splash-loading .logo-text { font-size: 24px; font-weight: bold; color: #16c99e; margin-top: 20px; }
+.splash-loading .loading-text { color: #a7a7a7; margin-top: 10px; font-size: 14px; }
+.splash-loading .progress-text { color: #16c99e; margin-top: 8px; font-size: 16px; font-weight: 600; }
 
 /* ===== INPUTS ===== */
 .input-field {
-width: 100%;
-padding: 14px 16px;
-background: #1a1a2e;
-border: 1px solid #2a2a3e;
-border-radius: 12px;
-color: #fff;
-font-size: 16px;
-margin-bottom: 14px;
-outline: none;
-transition: border 0.2s;
+  width: 100%; padding: 14px 16px; background: #2b2b2b;
+  border: 1px solid #3a3a3a; border-radius: 12px; color: #fff;
+  font-size: 16px; margin-bottom: 14px; outline: none; transition: border 0.2s;
 }
-.input-field:focus {
-border-color: #10b981;
-}
-.input-field::placeholder {
-color: #6b7280;
-}
-select.input-field {
-appearance: none;
-background: #1a1a2e;
-}
+.input-field:focus { border-color: #16c99e; }
+.input-field::placeholder { color: #858585; }
+select.input-field { appearance: none; background: #2b2b2b; }
 
 .info-box {
-background: #1a1a2e;
-padding: 14px 16px;
-border-radius: 12px;
-margin-bottom: 14px;
-border: 1px solid #2a2a3e;
-color: #fff;
+  background: #2b2b2b; padding: 14px 16px; border-radius: 12px;
+  margin-bottom: 14px; border: 1px solid #3a3a3a; color: #fff;
 }
 .warning-box {
-background: #2a1a1a;
-border-left: 4px solid #ef4444;
-padding: 14px 16px;
-border-radius: 12px;
-margin-bottom: 16px;
+  background: #2a1a1a; border-left: 4px solid #ef4444;
+  padding: 14px 16px; border-radius: 12px; margin-bottom: 16px;
 }
 .min-withdrawal {
-background: #1a1a2e;
-padding: 10px 14px;
-border-radius: 10px;
-text-align: center;
-font-size: 14px;
-color: #fbbf24;
-margin: 10px 0 16px 0;
+  background: #2b2b2b; padding: 10px 14px; border-radius: 10px;
+  text-align: center; font-size: 14px; color: #fbbf24; margin: 10px 0 16px 0;
 }
 .copy-item {
-background: #1a1a2e;
-padding: 12px 16px;
-border-radius: 10px;
-margin-bottom: 10px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-cursor: pointer;
-border: 1px solid #2a2a3e;
+  background: #2b2b2b; padding: 12px 16px; border-radius: 10px;
+  margin-bottom: 10px; display: flex; justify-content: space-between;
+  align-items: center; cursor: pointer; border: 1px solid #3a3a3a;
 }
-.copy-item .copy-text {
-font-size: 14px;
-font-weight: 500;
-color: #fff;
-}
-.copy-item .copy-icon {
-color: #10b981;
-font-size: 13px;
-}
-.error {
-color: #ef4444;
-font-size: 13px;
-margin-bottom: 10px;
-}
-.success {
-color: #10b981;
-font-size: 13px;
-margin-bottom: 10px;
-}
+.copy-item .copy-text { font-size: 14px; font-weight: 500; color: #fff; }
+.copy-item .copy-icon { color: #16c99e; font-size: 13px; }
+.error { color: #ef4444; font-size: 13px; margin-bottom: 10px; }
+.success { color: #16c99e; font-size: 13px; margin-bottom: 10px; }
 
 /* ===== PROFILE PICTURE ===== */
-.profile-pic-container {
-display: flex;
-flex-direction: column;
-align-items: center;
-margin-bottom: 20px;
-}
+.profile-pic-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
 .profile-pic-container .profile-pic {
-width: 100px;
-height: 100px;
-border-radius: 50%;
-background: linear-gradient(135deg, #10b981, #059669);
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 40px;
-font-weight: 700;
-color: #fff;
-cursor: pointer;
-position: relative;
-overflow: hidden;
-border: 3px solid #10b981;
+  width: 100px; height: 100px; border-radius: 50%;
+  background: linear-gradient(135deg, #16c99e, #0fa37e);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px; font-weight: 700; color: #fff; cursor: pointer;
+  position: relative; overflow: hidden; border: 3px solid #16c99e;
 }
-.profile-pic-container .profile-pic img {
-width: 100%;
-height: 100%;
-object-fit: cover;
-}
+.profile-pic-container .profile-pic img { width: 100%; height: 100%; object-fit: cover; }
 .profile-pic-container .profile-pic .upload-overlay {
-position: absolute;
-bottom: 0;
-left: 0;
-right: 0;
-background: rgba(0,0,0,0.7);
-color: #fff;
-font-size: 11px;
-padding: 4px 0;
-text-align: center;
-opacity: 0;
-transition: opacity 0.3s;
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(0,0,0,0.7); color: #fff; font-size: 11px;
+  padding: 4px 0; text-align: center; opacity: 0; transition: opacity 0.3s;
 }
-.profile-pic-container .profile-pic:hover .upload-overlay {
-opacity: 1;
-}
-.profile-pic-container .pic-label {
-color: #9ca3af;
-font-size: 13px;
-margin-top: 8px;
-cursor: pointer;
-}
-.profile-pic-container .pic-label:hover {
-color: #10b981;
-}
-#profilePicInput {
-display: none;
-}
+.profile-pic-container .profile-pic:hover .upload-overlay { opacity: 1; }
+.profile-pic-container .pic-label { color: #a7a7a7; font-size: 13px; margin-top: 8px; cursor: pointer; }
+.profile-pic-container .pic-label:hover { color: #16c99e; }
+#profilePicInput { display: none; }
 
 /* ===== PIN SETUP ===== */
-.pin-setup-container {
-padding: 20px 0;
-}
-.pin-setup-container .pin-title {
-font-size: 22px;
-font-weight: 700;
-color: #fff;
-text-align: center;
-margin-bottom: 8px;
-}
-.pin-setup-container .pin-sub {
-font-size: 14px;
-color: #9ca3af;
-text-align: center;
-margin-bottom: 24px;
-}
-.pin-setup-container .pin-display {
-display: flex;
-justify-content: center;
-gap: 16px;
-margin-bottom: 24px;
-}
+.pin-setup-container { padding: 20px 0; }
+.pin-setup-container .pin-title { font-size: 22px; font-weight: 700; color: #fff; text-align: center; margin-bottom: 8px; }
+.pin-setup-container .pin-sub { font-size: 14px; color: #a7a7a7; text-align: center; margin-bottom: 24px; }
+.pin-setup-container .pin-display { display: flex; justify-content: center; gap: 16px; margin-bottom: 24px; }
 .pin-setup-container .pin-display .dot {
-width: 20px;
-height: 20px;
-border-radius: 50%;
-border: 2px solid #2a2a3e;
-background: transparent;
-transition: all 0.2s;
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid #3a3a3a; background: transparent; transition: all 0.2s;
 }
-.pin-setup-container .pin-display .dot.filled {
-background: #10b981;
-border-color: #10b981;
-}
+.pin-setup-container .pin-display .dot.filled { background: #16c99e; border-color: #16c99e; }
 .pin-setup-container .pin-keypad {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 12px;
-max-width: 280px;
-margin: 0 auto;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  max-width: 280px; margin: 0 auto;
 }
 .pin-setup-container .pin-keypad .key {
-padding: 16px;
-background: #1a1a2e;
-border: 1px solid #2a2a3e;
-border-radius: 12px;
-color: #fff;
-font-size: 22px;
-font-weight: 600;
-cursor: pointer;
-transition: all 0.15s;
-text-align: center;
+  padding: 16px; background: #2b2b2b; border: 1px solid #3a3a3a;
+  border-radius: 12px; color: #fff; font-size: 22px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; text-align: center;
 }
-.pin-setup-container .pin-keypad .key:active {
-background: #10b981;
-border-color: #10b981;
-transform: scale(0.94);
-}
-.pin-setup-container .pin-keypad .key.empty {
-background: transparent;
-border: none;
-cursor: default;
-}
-.pin-setup-container .pin-keypad .key.empty:active {
-background: transparent;
-transform: none;
-}
-.pin-setup-container .pin-keypad .key.back {
-font-size: 18px;
-color: #ef4444;
-}
-.pin-setup-container .pin-status {
-text-align: center;
-font-size: 14px;
-color: #9ca3af;
-margin-top: 16px;
-min-height: 24px;
-}
-.pin-setup-container .pin-status.error {
-color: #ef4444;
-}
-.pin-setup-container .pin-status.success {
-color: #10b981;
-}
+.pin-setup-container .pin-keypad .key:active { background: #16c99e; border-color: #16c99e; transform: scale(0.94); }
+.pin-setup-container .pin-keypad .key.empty { background: transparent; border: none; cursor: default; }
+.pin-setup-container .pin-keypad .key.empty:active { background: transparent; transform: none; }
+.pin-setup-container .pin-keypad .key.back { font-size: 18px; color: #ef4444; }
+.pin-setup-container .pin-status { text-align: center; font-size: 14px; color: #a7a7a7; margin-top: 16px; min-height: 24px; }
+.pin-setup-container .pin-status.error { color: #ef4444; }
+.pin-setup-container .pin-status.success { color: #16c99e; }
 
 /* ===== HISTORY ===== */
-.history-date-group {
-margin-bottom: 16px;
-}
-.history-date {
-color: #10b981;
-font-size: 14px;
-font-weight: 600;
-margin-bottom: 8px;
-padding-bottom: 4px;
-border-bottom: 1px solid #1f2937;
-}
+.history-date-group { margin-bottom: 16px; }
+.history-date { color: #16c99e; font-size: 14px; font-weight: 600; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid #363636; }
 .history-item {
-background: #111827;
-border-radius: 12px;
-padding: 12px 14px;
-margin-bottom: 6px;
-cursor: pointer;
-transition: background 0.2s;
-border: 1px solid #1f2937;
+  background: #2b2b2b; border-radius: 12px; padding: 12px 14px;
+  margin-bottom: 6px; cursor: pointer; transition: background 0.2s;
+  border: 1px solid #363636;
 }
-.history-item:active {
-background: #1a1a2e;
-}
-.history-item.failed-transaction {
-border-left: 3px solid #ef4444;
-background: #1a1414;
-}
-.history-row {
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-.history-desc {
-font-size: 14px;
-color: #fff;
-}
-.history-desc small {
-font-size: 11px;
-color: #9ca3af;
-display: block;
-margin-top: 2px;
-}
-.history-amount {
-font-size: 16px;
-font-weight: 600;
-}
-.history-amount.negative {
-color: #f87171;
-}
-.history-amount.positive {
-color: #34d399;
-}
-.history-amount.neutral {
-color: #fbbf24;
-}
-.history-amount.failed {
-color: #f97316;
-}
-.failed-badge {
-background: #7f1f1f;
-color: #fca5a5;
-font-size: 10px;
-padding: 2px 8px;
-border-radius: 20px;
-display: inline-block;
-margin-left: 6px;
-vertical-align: middle;
-}
+.history-item:active { background: #333; }
+.history-item.failed-transaction { border-left: 3px solid #ef4444; background: #2a1a1a; }
+.history-row { display: flex; justify-content: space-between; align-items: center; }
+.history-desc { font-size: 14px; color: #fff; }
+.history-desc small { font-size: 11px; color: #a7a7a7; display: block; margin-top: 2px; }
+.history-amount { font-size: 16px; font-weight: 600; }
+.history-amount.negative { color: #f87171; }
+.history-amount.positive { color: #34d399; }
+.history-amount.neutral { color: #fbbf24; }
+.history-amount.failed { color: #f97316; }
+.failed-badge { background: #7f1f1f; color: #fca5a5; font-size: 10px; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-left: 6px; vertical-align: middle; }
 
 /* ===== TRANSACTION DETAIL ===== */
-.transaction-detail-row {
-display: flex;
-justify-content: space-between;
-padding: 10px 0;
-border-bottom: 1px solid #1f2937;
-}
-.transaction-detail-row .label {
-color: #9ca3af;
-font-size: 14px;
-}
-.transaction-detail-row .value {
-color: #fff;
-font-size: 14px;
-font-weight: 500;
-text-align: right;
-}
-.receipt-actions {
-display: flex;
-gap: 12px;
-margin-top: 20px;
-}
-.receipt-actions .btn {
-flex: 1;
-}
+.transaction-detail-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #363636; }
+.transaction-detail-row .label { color: #a7a7a7; font-size: 14px; }
+.transaction-detail-row .value { color: #fff; font-size: 14px; font-weight: 500; text-align: right; }
+.receipt-actions { display: flex; gap: 12px; margin-top: 20px; }
+.receipt-actions .btn { flex: 1; }
 
 /* ===== PAGE HEADER ===== */
-.page-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 4px 0 16px 0;
-}
-.page-header .back-btn {
-background: none;
-border: none;
-color: #fff;
-font-size: 28px;
-cursor: pointer;
-padding: 0;
-line-height: 1;
-}
-.page-header .help-btn {
-background: none;
-border: none;
-color: #10b981;
-font-size: 18px;
-cursor: pointer;
-}
-.page-header .title {
-font-size: 18px;
-font-weight: 600;
-color: #fff;
-}
+.page-header { display: flex; justify-content: space-between; align-items: center; padding: 4px 0 16px 0; }
+.page-header .back-btn { background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; padding: 0; line-height: 1; }
+.page-header .help-btn { background: none; border: none; color: #16c99e; font-size: 18px; cursor: pointer; }
+.page-header .title { font-size: 18px; font-weight: 600; color: #fff; }
 
 /* ===== WELCOME / LOGIN / SIGNUP ===== */
 .logo-center {
-font-size: 28px;
-font-weight: bold;
-text-align: center;
-background: linear-gradient(135deg, #10b981 0%, #059669 100%);
--webkit-background-clip: text;
-background-clip: text;
-color: transparent;
-margin-bottom: 16px;
+  font-size: 28px; font-weight: bold; text-align: center;
+  background: linear-gradient(135deg, #16c99e 0%, #0fa37e 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 16px;
 }
-.welcome-container {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-min-height: 50vh;
-text-align: center;
-}
-.welcome-container .welcome-text {
-color: #9ca3af;
-margin-bottom: 12px;
-font-size: 15px;
-line-height: 1.6;
-}
-.welcome-container .welcome-title {
-font-size: 22px;
-font-weight: 700;
-color: #fff;
-margin-bottom: 8px;
-}
-.get-started-wrapper {
-display: flex;
-justify-content: center;
-width: 100%;
-margin-top: 8px;
-}
-.get-started-wrapper .btn {
-min-width: 160px;
-}
+.welcome-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 50vh; text-align: center; }
+.welcome-container .welcome-text { color: #a7a7a7; margin-bottom: 12px; font-size: 15px; line-height: 1.6; }
+.welcome-container .welcome-title { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.get-started-wrapper { display: flex; justify-content: center; width: 100%; margin-top: 8px; }
+.get-started-wrapper .btn { min-width: 160px; }
 
 /* ===== LOGIN PAGE ===== */
-.login-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 4px 0 20px 0;
-}
-.login-header .time {
-font-size: 14px;
-font-weight: 600;
-color: #fff;
-}
-.login-header .right-actions {
-display: flex;
-gap: 16px;
-font-size: 14px;
-font-weight: 500;
-}
-.login-header .right-actions .help {
-color: #10b981;
-cursor: pointer;
-}
-.login-header .right-actions .pay {
-color: #fff;
-cursor: pointer;
-}
-.login-title {
-font-size: 24px;
-font-weight: 700;
-color: #fff;
-margin-bottom: 20px;
-}
-.login-lost-link {
-color: #10b981;
-font-size: 13px;
-cursor: pointer;
-display: block;
-margin: -8px 0 16px 0;
-}
-.login-footer {
-text-align: center;
-margin-top: 20px;
-font-size: 13px;
-color: #9ca3af;
-}
-.login-footer .signup-link {
-color: #10b981;
-cursor: pointer;
-font-weight: 600;
-}
-.login-footer .cbn-text {
-color: #6b7280;
-font-size: 11px;
-margin-top: 12px;
-}
+.login-header { display: flex; justify-content: space-between; align-items: center; padding: 4px 0 20px 0; }
+.login-header .time { font-size: 14px; font-weight: 600; color: #fff; }
+.login-header .right-actions { display: flex; gap: 16px; font-size: 14px; font-weight: 500; }
+.login-header .right-actions .help { color: #16c99e; cursor: pointer; }
+.login-header .right-actions .pay { color: #fff; cursor: pointer; }
+.login-title { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 20px; }
+.login-lost-link { color: #16c99e; font-size: 13px; cursor: pointer; display: block; margin: -8px 0 16px 0; }
+.login-footer { text-align: center; margin-top: 20px; font-size: 13px; color: #a7a7a7; }
+.login-footer .signup-link { color: #16c99e; cursor: pointer; font-weight: 600; }
+.login-footer .cbn-text { color: #6b7280; font-size: 11px; margin-top: 12px; }
 
 /* ===== POPUP ===== */
 .popup-overlay {
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background: rgba(0, 0, 0, 0.92);
-display: flex;
-align-items: center;
-justify-content: center;
-z-index: 10000;
-padding: 20px;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.92); display: flex; align-items: center;
+  justify-content: center; z-index: 10000; padding: 20px;
 }
 .popup-overlay .popup-box {
-background: #1a1a2e;
-border-radius: 28px;
-padding: 28px 20px;
-width: 100%;
-max-width: 380px;
-text-align: center;
-border: 1px solid #2a2a3e;
+  background: #2b2b2b; border-radius: 28px; padding: 28px 20px;
+  width: 100%; max-width: 380px; text-align: center; border: 1px solid #3a3a3a;
 }
-.popup-overlay .popup-box .emoji {
-font-size: 56px;
-margin-bottom: 12px;
-}
-.popup-overlay .popup-box .popup-title {
-font-size: 22px;
-font-weight: 700;
-margin-bottom: 6px;
-color: #fff;
-}
-.popup-overlay .popup-box .popup-title.green {
-color: #10b981;
-}
-.popup-overlay .popup-box .popup-sub {
-color: #9ca3af;
-font-size: 14px;
-margin-bottom: 16px;
-}
-.popup-overlay .popup-box .popup-amount {
-font-size: 38px;
-font-weight: 700;
-margin-bottom: 16px;
-}
-.popup-overlay .popup-box .popup-amount.negative {
-color: #f87171;
-}
-.popup-overlay .popup-box .popup-amount.positive {
-color: #34d399;
-}
-.popup-overlay .popup-box .popup-detail {
-background: #0a0a0a;
-border-radius: 16px;
-padding: 14px;
-margin-bottom: 20px;
-}
-.popup-overlay .popup-box .popup-detail .name {
-font-weight: 500;
-font-size: 15px;
-color: #fff;
-}
-.popup-overlay .popup-box .popup-detail .meta {
-font-size: 13px;
-color: #9ca3af;
-}
-.popup-overlay .popup-box .popup-actions {
-display: flex;
-gap: 12px;
-}
-.popup-overlay .popup-box .popup-actions .btn {
-flex: 1;
-}
+.popup-overlay .popup-box .emoji { font-size: 56px; margin-bottom: 12px; }
+.popup-overlay .popup-box .popup-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; color: #fff; }
+.popup-overlay .popup-box .popup-title.green { color: #16c99e; }
+.popup-overlay .popup-box .popup-sub { color: #a7a7a7; font-size: 14px; margin-bottom: 16px; }
+.popup-overlay .popup-box .popup-amount { font-size: 38px; font-weight: 700; margin-bottom: 16px; }
+.popup-overlay .popup-box .popup-amount.negative { color: #f87171; }
+.popup-overlay .popup-box .popup-amount.positive { color: #34d399; }
+.popup-overlay .popup-box .popup-detail { background: #1b1b1b; border-radius: 16px; padding: 14px; margin-bottom: 20px; }
+.popup-overlay .popup-box .popup-detail .name { font-weight: 500; font-size: 15px; color: #fff; }
+.popup-overlay .popup-box .popup-detail .meta { font-size: 13px; color: #a7a7a7; }
+.popup-overlay .popup-box .popup-actions { display: flex; gap: 12px; }
+.popup-overlay .popup-box .popup-actions .btn { flex: 1; }
 
 /* ===== GROW SAVINGS SECTION ===== */
 .grow-savings {
-background: #111827;
-border-radius: 16px;
-padding: 16px;
-margin-bottom: 14px;
-border: 1px solid #1f2937;
-display: flex;
-justify-content: space-between;
-align-items: center;
+  background: #2b2b2b; border-radius: 16px; padding: 16px;
+  margin-bottom: 14px; border: 1px solid #363636;
+  display: flex; justify-content: space-between; align-items: center;
 }
-.grow-savings .left .title {
-font-size: 15px;
-font-weight: 600;
-color: #fff;
-}
-.grow-savings .left .sub {
-font-size: 12px;
-color: #9ca3af;
-margin-top: 2px;
-}
+.grow-savings .left .title { font-size: 15px; font-weight: 600; color: #fff; }
+.grow-savings .left .sub { font-size: 12px; color: #a7a7a7; margin-top: 2px; }
 .grow-savings .save-btn {
-background: #10b981;
-color: #fff;
-border: none;
-padding: 8px 24px;
-border-radius: 20px;
-font-weight: 600;
-font-size: 14px;
-cursor: pointer;
-transition: opacity 0.2s;
+  background: #16c99e; color: #fff; border: none; padding: 8px 24px;
+  border-radius: 20px; font-weight: 600; font-size: 14px; cursor: pointer; transition: opacity 0.2s;
 }
-.grow-savings .save-btn:active {
-opacity: 0.7;
-}
+.grow-savings .save-btn:active { opacity: 0.7; }
 
 /* ===== LOADING OVERLAY ===== */
 #loadingOverlay .spinner-small {
-width: 40px;
-height: 40px;
-border: 3px solid #2a2a3e;
-border-top: 3px solid #10b981;
-border-radius: 50%;
-animation: spin 1s linear infinite;
-margin: 0 auto 12px auto;
+  width: 40px; height: 40px; border: 3px solid #3a3a3a;
+  border-top: 3px solid #16c99e; border-radius: 50%;
+  animation: spin 1s linear infinite; margin: 0 auto 12px auto;
 }
 
 /* ============================================================
    OPAY TRANSFER PAGE STYLES
    ============================================================ */
 .discount-banner {
-background: linear-gradient(135deg, #10b981, #059669);
-border-radius: 16px;
-padding: 16px 20px;
-margin-bottom: 12px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-position: relative;
-overflow: hidden;
+  background: linear-gradient(135deg, #16c99e, #0fa37e);
+  border-radius: 16px; padding: 16px 20px; margin-bottom: 12px;
+  display: flex; justify-content: space-between; align-items: center;
+  position: relative; overflow: hidden;
 }
 .discount-banner::after {
-content: '🎉';
-position: absolute;
-right: -10px;
-top: -10px;
-font-size: 80px;
-opacity: 0.15;
+  content: '🎉'; position: absolute; right: -10px; top: -10px;
+  font-size: 80px; opacity: 0.15;
 }
-.discount-content {
-display: flex;
-justify-content: space-between;
-align-items: center;
-width: 100%;
-}
-.discount-title {
-font-size: 14px;
-font-weight: 600;
-color: #fff;
-}
-.discount-sub {
-font-size: 12px;
-color: rgba(255,255,255,0.8);
-margin-top: 2px;
-}
+.discount-content { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+.discount-title { font-size: 14px; font-weight: 600; color: #fff; }
+.discount-sub { font-size: 12px; color: rgba(255,255,255,0.8); margin-top: 2px; }
 .claim-discount-btn {
-background: #000;
-color: #10b981;
-border: none;
-padding: 6px 20px;
-border-radius: 20px;
-font-weight: 600;
-font-size: 13px;
-cursor: default;
-pointer-events: none;
+  background: #000; color: #16c99e; border: none; padding: 6px 20px;
+  border-radius: 20px; font-weight: 600; font-size: 13px; cursor: default; pointer-events: none;
 }
 .discount-badge {
-position: absolute;
-right: 16px;
-top: 50%;
-transform: translateY(-50%);
-font-size: 28px;
-font-weight: 700;
-color: rgba(255,255,255,0.2);
+  position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+  font-size: 28px; font-weight: 700; color: rgba(255,255,255,0.2);
 }
-
 .instant-info {
-background: #111827;
-border-radius: 12px;
-padding: 10px 16px;
-margin-bottom: 16px;
-font-size: 13px;
-color: #10b981;
-border: 1px solid #1f2937;
-text-align: center;
-font-weight: 500;
-letter-spacing: 0.3px;
+  background: #2b2b2b; border-radius: 12px; padding: 10px 16px;
+  margin-bottom: 16px; font-size: 13px; color: #16c99e;
+  border: 1px solid #363636; text-align: center; font-weight: 500; letter-spacing: 0.3px;
 }
-
 .recipient-section {
-background: #111827;
-border-radius: 16px;
-padding: 16px;
-margin-bottom: 16px;
-border: 1px solid #1f2937;
+  background: #2b2b2b; border-radius: 16px; padding: 16px;
+  margin-bottom: 16px; border: 1px solid #363636;
 }
-.recipient-label {
-font-size: 14px;
-font-weight: 500;
-color: #9ca3af;
-margin-bottom: 8px;
-}
-.recipient-input-wrapper {
-position: relative;
-}
+.recipient-label { font-size: 14px; font-weight: 500; color: #a7a7a7; margin-bottom: 8px; }
+.recipient-input-wrapper { position: relative; }
 .recipient-input {
-width: 100%;
-padding: 12px 16px;
-background: #0a0a0a;
-border: 1px solid #2a2a3e;
-border-radius: 12px;
-color: #fff;
-font-size: 16px;
-outline: none;
-transition: border 0.2s;
+  width: 100%; padding: 12px 16px; background: #1b1b1b;
+  border: 1px solid #3a3a3a; border-radius: 12px; color: #fff;
+  font-size: 16px; outline: none; transition: border 0.2s;
 }
-.recipient-input:focus {
-border-color: #10b981;
-}
-.recipient-input::placeholder {
-color: #6b7280;
-}
-.ask-link {
-font-size: 13px;
-color: #9ca3af;
-margin-top: 10px;
-cursor: pointer;
-}
-.ask-link span {
-color: #10b981;
-font-weight: 500;
-}
-
+.recipient-input:focus { border-color: #16c99e; }
+.recipient-input::placeholder { color: #858585; }
+.ask-link { font-size: 13px; color: #a7a7a7; margin-top: 10px; cursor: pointer; }
+.ask-link span { color: #16c99e; font-weight: 500; }
 .account-preview {
-background: #1a1a2e;
-border-radius: 12px;
-padding: 14px 16px;
-margin-bottom: 16px;
-border: 1px solid #10b981;
-animation: fadeIn 0.3s ease;
+  background: #2b2b2b; border-radius: 12px; padding: 14px 16px;
+  margin-bottom: 16px; border: 1px solid #16c99e; animation: fadeIn 0.3s ease;
 }
-.account-preview-content {
-display: flex;
-align-items: center;
-gap: 12px;
-}
+.account-preview-content { display: flex; align-items: center; gap: 12px; }
 .account-preview-avatar {
-width: 44px;
-height: 44px;
-border-radius: 50%;
-background: #10b981;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 18px;
-font-weight: 600;
-color: #fff;
-overflow: hidden;
-flex-shrink: 0;
+  width: 44px; height: 44px; border-radius: 50%; background: #16c99e;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 600; color: #fff; overflow: hidden; flex-shrink: 0;
 }
-.account-preview-avatar img {
-width: 100%;
-height: 100%;
-object-fit: cover;
-}
-.account-preview-info {
-flex: 1;
-}
-.account-preview-name {
-font-size: 16px;
-font-weight: 600;
-color: #fff;
-}
-.account-preview-number {
-font-size: 13px;
-color: #9ca3af;
-margin-top: 2px;
-}
-
+.account-preview-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.account-preview-info { flex: 1; }
+.account-preview-name { font-size: 16px; font-weight: 600; color: #fff; }
+.account-preview-number { font-size: 13px; color: #a7a7a7; margin-top: 2px; }
 .recents-section {
-background: #111827;
-border-radius: 16px;
-padding: 16px;
-border: 1px solid #1f2937;
+  background: #2b2b2b; border-radius: 16px; padding: 16px; border: 1px solid #363636;
 }
-.recents-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 6px;
-}
-.recents-title {
-font-size: 15px;
-font-weight: 600;
-color: #fff;
-}
-
+.recents-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.recents-title { font-size: 15px; font-weight: 600; color: #fff; }
 .recent-contact {
-display: flex;
-align-items: center;
-gap: 12px;
-padding: 10px 0;
-border-bottom: 1px solid #1f2937;
-cursor: pointer;
-transition: background 0.2s;
-border-radius: 8px;
-padding: 10px 8px;
+  display: flex; align-items: center; gap: 12px; padding: 10px 8px;
+  border-bottom: 1px solid #363636; cursor: pointer;
+  transition: background 0.2s; border-radius: 8px;
 }
-.recent-contact:active {
-background: #1a1a2e;
-}
-.recent-contact:last-child {
-border-bottom: none;
-}
+.recent-contact:active { background: #333; }
+.recent-contact:last-child { border-bottom: none; }
 .recent-avatar {
-width: 40px;
-height: 40px;
-border-radius: 50%;
-background: #2a2a3e;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 14px;
-font-weight: 600;
-color: #10b981;
-flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: 50%; background: #3a3a3a;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 600; color: #16c99e; flex-shrink: 0;
 }
-.recent-info {
-flex: 1;
-}
-.recent-name {
-font-size: 14px;
-font-weight: 500;
-color: #fff;
-}
-.recent-number {
-font-size: 12px;
-color: #9ca3af;
-}
-
-.view-all-link {
-text-align: center;
-color: #10b981;
-font-size: 14px;
-font-weight: 500;
-padding: 12px 0 4px 0;
-cursor: pointer;
-}
-
+.recent-info { flex: 1; }
+.recent-name { font-size: 14px; font-weight: 500; color: #fff; }
+.recent-number { font-size: 12px; color: #a7a7a7; }
+.view-all-link { text-align: center; color: #16c99e; font-size: 14px; font-weight: 500; padding: 12px 0 4px 0; cursor: pointer; }
 .opay-footer {
-display: flex;
-align-items: center;
-gap: 12px;
-background: #111827;
-border-radius: 16px;
-padding: 16px;
-margin-top: 16px;
-border: 1px solid #1f2937;
-cursor: pointer;
-transition: background 0.2s;
+  display: flex; align-items: center; gap: 12px; background: #2b2b2b;
+  border-radius: 16px; padding: 16px; margin-top: 16px;
+  border: 1px solid #363636; cursor: pointer; transition: background 0.2s;
 }
-.opay-footer:active {
-background: #1a1a2e;
-}
-.opay-footer-icon {
-font-size: 20px;
-color: #10b981;
-font-weight: 500;
-}
-.opay-footer-title {
-font-size: 14px;
-font-weight: 500;
-color: #fff;
-}
-.opay-footer-sub {
-font-size: 12px;
-color: #9ca3af;
-}
+.opay-footer:active { background: #333; }
+.opay-footer-icon { font-size: 20px; color: #16c99e; font-weight: 500; }
+.opay-footer-title { font-size: 14px; font-weight: 500; color: #fff; }
+.opay-footer-sub { font-size: 12px; color: #a7a7a7; }
 
-@keyframes fadeIn {
-from { opacity: 0; transform: translateY(-10px); }
-to { opacity: 1; transform: translateY(0); }
-}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ============================================================
    BANK TRANSFER PAGE STYLES
    ============================================================ */
-.bank-transfer-container {
-padding: 0 0 20px 0;
-}
-
-/* Discount banner - SAME as To OPay */
+.bank-transfer-container { padding: 0 0 20px 0; }
 .bank-discount-banner {
-background: linear-gradient(135deg, #10b981, #059669);
-border-radius: 16px;
-padding: 16px 20px;
-margin-bottom: 12px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-position: relative;
-overflow: hidden;
+  background: linear-gradient(135deg, #16c99e, #0fa37e);
+  border-radius: 16px; padding: 16px 20px; margin-bottom: 12px;
+  display: flex; justify-content: space-between; align-items: center;
+  position: relative; overflow: hidden;
 }
 .bank-discount-banner::after {
-content: '🎉';
-position: absolute;
-right: -10px;
-top: -10px;
-font-size: 80px;
-opacity: 0.15;
+  content: '🎉'; position: absolute; right: -10px; top: -10px;
+  font-size: 80px; opacity: 0.15;
 }
-.bank-discount-content {
-display: flex;
-justify-content: space-between;
-align-items: center;
-width: 100%;
-}
-.bank-discount-title {
-font-size: 14px;
-font-weight: 600;
-color: #fff;
-}
-.bank-discount-sub {
-font-size: 12px;
-color: rgba(255,255,255,0.8);
-margin-top: 2px;
-}
+.bank-discount-content { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+.bank-discount-title { font-size: 14px; font-weight: 600; color: #fff; }
+.bank-discount-sub { font-size: 12px; color: rgba(255,255,255,0.8); margin-top: 2px; }
 .bank-claim-btn {
-background: #000;
-color: #10b981;
-border: none;
-padding: 6px 20px;
-border-radius: 20px;
-font-weight: 600;
-font-size: 13px;
-cursor: default;
-pointer-events: none;
+  background: #000; color: #16c99e; border: none; padding: 6px 20px;
+  border-radius: 20px; font-weight: 600; font-size: 13px; cursor: default; pointer-events: none;
 }
 .bank-discount-badge {
-position: absolute;
-right: 16px;
-top: 50%;
-transform: translateY(-50%);
-font-size: 28px;
-font-weight: 700;
-color: rgba(255,255,255,0.2);
+  position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+  font-size: 28px; font-weight: 700; color: rgba(255,255,255,0.2);
 }
-
 .free-transfers-info {
-background: #111827;
-border-radius: 12px;
-padding: 10px 16px;
-margin-bottom: 16px;
-font-size: 13px;
-color: #10b981;
-border: 1px solid #1f2937;
-text-align: center;
-font-weight: 500;
-height: 44px;
-display: flex;
-align-items: center;
-justify-content: center;
+  background: #2b2b2b; border-radius: 12px; padding: 10px 16px;
+  margin-bottom: 16px; font-size: 13px; color: #16c99e;
+  border: 1px solid #363636; text-align: center; font-weight: 500;
+  height: 44px; display: flex; align-items: center; justify-content: center;
 }
-
-/* ===== RECIPIENT ACCOUNT BOX (BIGGER SIZE) ===== */
 .bank-recipient-box {
-background: #111827;
-border-radius: 16px;
-padding: 16px 18px;
-margin-bottom: 14px;
-border: 1px solid #1f2937;
-display: flex;
-flex-direction: column;
-justify-content: center;
-height: 85px;
+  background: #2b2b2b; border-radius: 16px; padding: 16px 18px;
+  margin-bottom: 14px; border: 1px solid #363636;
+  display: flex; flex-direction: column; justify-content: center; height: 85px;
 }
-.bank-recipient-label {
-font-size: 14px;
-font-weight: 500;
-color: #9ca3af;
-margin-bottom: 4px;
-}
+.bank-recipient-label { font-size: 14px; font-weight: 500; color: #a7a7a7; margin-bottom: 4px; }
 .bank-recipient-input {
-width: 100%;
-padding: 8px 0;
-background: transparent;
-border: none;
-color: #fff;
-font-size: 16px;
-outline: none;
+  width: 100%; padding: 8px 0; background: transparent;
+  border: none; color: #fff; font-size: 16px; outline: none;
 }
-.bank-recipient-input::placeholder {
-color: #6b7280;
-font-size: 16px;
-}
-.bank-recipient-input:focus {
-border-color: transparent;
-}
-
-/* ===== SELECT BANK BOX (BIGGER SIZE) ===== */
+.bank-recipient-input::placeholder { color: #858585; font-size: 16px; }
+.bank-recipient-input:focus { border-color: transparent; }
 .bank-select-box {
-background: #111827;
-border-radius: 16px;
-padding: 16px 18px;
-margin-bottom: 14px;
-border: 1px solid #1f2937;
-display: flex;
-justify-content: space-between;
-align-items: center;
-height: 85px;
-cursor: pointer;
+  background: #2b2b2b; border-radius: 16px; padding: 16px 18px;
+  margin-bottom: 14px; border: 1px solid #363636;
+  display: flex; justify-content: space-between; align-items: center;
+  height: 85px; cursor: pointer;
 }
-.bank-select-box:active {
-opacity: 0.7;
-}
-.bank-select-label {
-font-size: 14px;
-color: #9ca3af;
-}
-.bank-select-arrow {
-font-size: 18px;
-color: #9ca3af;
-font-weight: 500;
-}
-.bank-selected-name {
-font-size: 14px;
-color: #fff;
-font-weight: 500;
-}
-
-/* ===== NEXT BUTTON BOX (BIGGER SIZE) ===== */
+.bank-select-box:active { opacity: 0.7; }
+.bank-select-label { font-size: 14px; color: #a7a7a7; }
+.bank-select-arrow { font-size: 18px; color: #a7a7a7; font-weight: 500; }
+.bank-selected-name { font-size: 14px; color: #fff; font-weight: 500; }
 .bank-next-box {
-background: #111827;
-border-radius: 16px;
-padding: 16px 18px;
-margin-bottom: 14px;
-border: 1px solid #1f2937;
-display: flex;
-justify-content: center;
-align-items: center;
-height: 85px;
+  background: #2b2b2b; border-radius: 16px; padding: 16px 18px;
+  margin-bottom: 14px; border: 1px solid #363636;
+  display: flex; justify-content: center; align-items: center; height: 85px;
 }
 .bank-next-btn {
-width: 100%;
-padding: 14px;
-background: #2a2a2a;
-border: none;
-border-radius: 12px;
-color: #9ca3af;
-font-size: 16px;
-font-weight: 600;
-cursor: not-allowed;
-transition: all 0.3s;
-text-align: center;
+  width: 100%; padding: 14px; background: #2b2b2b; border: none;
+  border-radius: 12px; color: #a7a7a7; font-size: 16px; font-weight: 600;
+  cursor: not-allowed; transition: all 0.3s; text-align: center;
 }
-.bank-next-btn.active {
-background: #10b981;
-color: #fff;
-cursor: pointer;
-}
-.bank-next-btn.active:active {
-opacity: 0.7;
-}
-
-/* ===== ACCOUNT PREVIEW - Clickable ===== */
+.bank-next-btn.active { background: #16c99e; color: #fff; cursor: pointer; }
+.bank-next-btn.active:active { opacity: 0.7; }
 .bank-account-preview {
-background: #1a1a2e;
-border-radius: 12px;
-padding: 14px 16px;
-margin-bottom: 16px;
-border: 1px solid #10b981;
-animation: fadeIn 0.3s ease;
-display: none;
-cursor: pointer;
+  background: #2b2b2b; border-radius: 12px; padding: 14px 16px;
+  margin-bottom: 16px; border: 1px solid #16c99e;
+  animation: fadeIn 0.3s ease; display: none; cursor: pointer;
 }
-.bank-account-preview.show {
-display: block;
-}
-.bank-account-preview:active {
-opacity: 0.7;
-}
-.bank-account-preview-content {
-display: flex;
-align-items: center;
-gap: 12px;
-}
+.bank-account-preview.show { display: block; }
+.bank-account-preview:active { opacity: 0.7; }
+.bank-account-preview-content { display: flex; align-items: center; gap: 12px; }
 .bank-preview-avatar {
-width: 44px;
-height: 44px;
-border-radius: 50%;
-background: #ffffff;
-display: flex;
-align-items: center;
-justify-content: center;
-overflow: hidden;
-flex-shrink: 0;
+  width: 44px; height: 44px; border-radius: 50%; background: #ffffff;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; flex-shrink: 0;
 }
 .bank-preview-avatar svg {
-width: 22px;
-height: 22px;
-stroke: #10b981;
-stroke-width: 1.8;
-fill: none;
-stroke-linecap: round;
-stroke-linejoin: round;
+  width: 22px; height: 22px; stroke: #16c99e; stroke-width: 1.8;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
 }
-.bank-preview-info {
-flex: 1;
-}
-.bank-preview-name {
-font-size: 16px;
-font-weight: 600;
-color: #fff;
-}
-.bank-preview-number {
-font-size: 13px;
-color: #9ca3af;
-margin-top: 2px;
-}
-.bank-preview-bank {
-font-size: 12px;
-color: #10b981;
-margin-top: 2px;
-}
-
-/* ===== SUCCESS RATE MONITOR ===== */
+.bank-preview-info { flex: 1; }
+.bank-preview-name { font-size: 16px; font-weight: 600; color: #fff; }
+.bank-preview-number { font-size: 13px; color: #a7a7a7; margin-top: 2px; }
+.bank-preview-bank { font-size: 12px; color: #16c99e; margin-top: 2px; }
 .success-rate-section {
-background: #111827;
-border-radius: 12px;
-padding: 10px 16px;
-margin-bottom: 16px;
-border: 1px solid #1f2937;
-display: flex;
-justify-content: space-between;
-align-items: center;
-font-size: 13px;
-color: #9ca3af;
-height: 44px;
+  background: #2b2b2b; border-radius: 12px; padding: 10px 16px;
+  margin-bottom: 16px; border: 1px solid #363636;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px; color: #a7a7a7; height: 44px;
 }
 .success-rate-section .rate-arrow {
-font-size: 18px;
-color: #9ca3af;
-font-weight: 500;
-cursor: pointer;
-transition: opacity 0.2s;
+  font-size: 18px; color: #a7a7a7; font-weight: 500;
+  cursor: pointer; transition: opacity 0.2s;
 }
-.success-rate-section .rate-arrow:active {
-opacity: 0.6;
-}
-
-/* ===== RECENTS SECTION ===== */
+.success-rate-section .rate-arrow:active { opacity: 0.6; }
 .bank-recents-section {
-background: #111827;
-border-radius: 16px;
-padding: 18px;
-border: 1px solid #1f2937;
+  background: #2b2b2b; border-radius: 16px; padding: 18px; border: 1px solid #363636;
 }
 .bank-recents-tabs {
-display: flex;
-gap: 4px;
-margin-bottom: 14px;
-background: #1a1a2e;
-border-radius: 10px;
-padding: 4px;
+  display: flex; gap: 4px; margin-bottom: 14px;
+  background: #1b1b1b; border-radius: 10px; padding: 4px;
 }
 .bank-tab {
-flex: 1;
-padding: 10px 0;
-border: none;
-background: transparent;
-color: #6b7280;
-font-size: 14px;
-font-weight: 500;
-cursor: pointer;
-border-radius: 8px;
-transition: all 0.2s;
+  flex: 1; padding: 10px 0; border: none; background: transparent;
+  color: #858585; font-size: 14px; font-weight: 500; cursor: pointer;
+  border-radius: 8px; transition: all 0.2s;
 }
-.bank-tab.active {
-background: #10b981;
-color: #fff;
-}
-.bank-tab:active {
-opacity: 0.7;
-}
-
+.bank-tab.active { background: #16c99e; color: #fff; }
+.bank-tab:active { opacity: 0.7; }
 .bank-recent-item {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 12px 0;
-border-bottom: 1px solid #1f2937;
-cursor: pointer;
-transition: background 0.2s;
-border-radius: 8px;
-padding: 12px 8px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 8px; border-bottom: 1px solid #363636;
+  cursor: pointer; transition: background 0.2s; border-radius: 8px;
 }
-.bank-recent-item:active {
-background: #1a1a2e;
-}
-.bank-recent-item:last-child {
-border-bottom: none;
-}
-.bank-recent-info {
-flex: 1;
-}
-.bank-recent-name {
-font-size: 14px;
-font-weight: 500;
-color: #fff;
-}
-.bank-recent-number {
-font-size: 12px;
-color: #9ca3af;
-margin-top: 1px;
-}
-.bank-recent-bank {
-font-size: 11px;
-color: #10b981;
-margin-top: 1px;
-}
-.bank-recent-icon {
-flex-shrink: 0;
-margin-left: 10px;
-}
-.bank-recent-icon svg {
-width: 22px;
-height: 22px;
-stroke: #10b981;
-stroke-width: 1.8;
-fill: none;
-}
-
-.bank-view-all-link {
-text-align: center;
-color: #10b981;
-font-size: 14px;
-font-weight: 500;
-padding: 14px 0 4px 0;
-cursor: pointer;
-}
+.bank-recent-item:active { background: #333; }
+.bank-recent-item:last-child { border-bottom: none; }
+.bank-recent-info { flex: 1; }
+.bank-recent-name { font-size: 14px; font-weight: 500; color: #fff; }
+.bank-recent-number { font-size: 12px; color: #a7a7a7; margin-top: 1px; }
+.bank-recent-bank { font-size: 11px; color: #16c99e; margin-top: 1px; }
+.bank-recent-icon { flex-shrink: 0; margin-left: 10px; }
+.bank-recent-icon svg { width: 22px; height: 22px; stroke: #16c99e; stroke-width: 1.8; fill: none; }
+.bank-view-all-link { text-align: center; color: #16c99e; font-size: 14px; font-weight: 500; padding: 14px 0 4px 0; cursor: pointer; }
 
 /* ============================================================
    BANK SELECTION PAGE STYLES
    ============================================================ */
-.bank-selection-container {
-padding: 0 0 20px 0;
-}
+.bank-selection-container { padding: 0 0 20px 0; }
 .bank-search-input {
-width: 100%;
-padding: 12px 16px;
-background: #1a1a2e;
-border: 1px solid #2a2a3e;
-border-radius: 12px;
-color: #fff;
-font-size: 15px;
-outline: none;
-margin-bottom: 16px;
-transition: border 0.2s;
+  width: 100%; padding: 12px 16px; background: #2b2b2b;
+  border: 1px solid #3a3a3a; border-radius: 12px; color: #fff;
+  font-size: 15px; outline: none; margin-bottom: 16px; transition: border 0.2s;
 }
-.bank-search-input:focus {
-border-color: #10b981;
-}
-.bank-search-input::placeholder {
-color: #6b7280;
-}
-
-.freq-banks-title {
-font-size: 14px;
-font-weight: 600;
-color: #10b981;
-margin-bottom: 10px;
-}
-
-.freq-banks-grid {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 10px;
-margin-bottom: 16px;
-}
+.bank-search-input:focus { border-color: #16c99e; }
+.bank-search-input::placeholder { color: #858585; }
+.freq-banks-title { font-size: 14px; font-weight: 600; color: #16c99e; margin-bottom: 10px; }
+.freq-banks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
 .freq-bank-item {
-background: #1a1a2e;
-border-radius: 12px;
-padding: 14px 8px;
-text-align: center;
-cursor: pointer;
-transition: all 0.2s;
-border: 1px solid transparent;
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 4px;
-height: 75px;
-justify-content: center;
+  background: #2b2b2b; border-radius: 12px; padding: 14px 8px;
+  text-align: center; cursor: pointer; transition: all 0.2s;
+  border: 1px solid transparent; display: flex; flex-direction: column;
+  align-items: center; gap: 4px; height: 75px; justify-content: center;
 }
-.freq-bank-item:active {
-background: #2a2a3e;
-transform: scale(0.94);
-}
-.freq-bank-item.selected {
-border-color: #10b981;
-background: #1a2a1e;
-}
-.freq-bank-item .bank-icon svg {
-width: 22px;
-height: 22px;
-stroke: #10b981;
-stroke-width: 1.8;
-fill: none;
-}
-.freq-bank-item .bank-name {
-font-size: 11px;
-font-weight: 500;
-color: #d1d5db;
-text-align: center;
-line-height: 1.2;
-}
-
-.all-banks-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 8px;
-margin-top: 12px;
-}
+.freq-bank-item:active { background: #333; transform: scale(0.94); }
+.freq-bank-item.selected { border-color: #16c99e; background: #1a2a26; }
+.freq-bank-item .bank-icon svg { width: 22px; height: 22px; stroke: #16c99e; stroke-width: 1.8; fill: none; }
+.freq-bank-item .bank-name { font-size: 11px; font-weight: 500; color: #d1d5db; text-align: center; line-height: 1.2; }
+.all-banks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
 .all-bank-item {
-padding: 10px 12px;
-background: #1a1a2e;
-border-radius: 10px;
-cursor: pointer;
-transition: all 0.2s;
-text-align: center;
-font-size: 12px;
-font-weight: 500;
-color: #d1d5db;
-border: 1px solid transparent;
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 4px;
+  padding: 10px 12px; background: #2b2b2b; border-radius: 10px;
+  cursor: pointer; transition: all 0.2s; text-align: center;
+  font-size: 12px; font-weight: 500; color: #d1d5db;
+  border: 1px solid transparent; display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
 }
-.all-bank-item:active {
-background: #2a2a3e;
-transform: scale(0.96);
-}
-.all-bank-item.selected {
-border-color: #10b981;
-background: #1a2a1e;
-color: #fff;
-}
-.all-bank-item .bank-icon svg {
-width: 20px;
-height: 20px;
-stroke: #10b981;
-stroke-width: 1.8;
-fill: none;
-}
+.all-bank-item:active { background: #333; transform: scale(0.96); }
+.all-bank-item.selected { border-color: #16c99e; background: #1a2a26; color: #fff; }
+.all-bank-item .bank-icon svg { width: 20px; height: 20px; stroke: #16c99e; stroke-width: 1.8; fill: none; }
 
 /* ============================================================
    SAVE RECIPIENT PAGE STYLES
    ============================================================ */
-.save-recipient-container {
-padding: 0 0 20px 0;
-}
+.save-recipient-container { padding: 0 0 20px 0; }
 .save-recipient-box {
-background: #111827;
-border-radius: 16px;
-padding: 20px;
-border: 1px solid #1f2937;
-margin-bottom: 16px;
+  background: #2b2b2b; border-radius: 16px; padding: 20px;
+  border: 1px solid #363636; margin-bottom: 16px;
 }
-.save-recipient-box label {
-display: block;
-font-size: 14px;
-font-weight: 500;
-color: #9ca3af;
-margin-bottom: 8px;
-}
+.save-recipient-box label { display: block; font-size: 14px; font-weight: 500; color: #a7a7a7; margin-bottom: 8px; }
 .save-recipient-box input {
-width: 100%;
-padding: 14px 16px;
-background: #0a0a0a;
-border: 1px solid #2a2a3e;
-border-radius: 12px;
-color: #fff;
-font-size: 16px;
-outline: none;
-transition: border 0.2s;
+  width: 100%; padding: 14px 16px; background: #1b1b1b;
+  border: 1px solid #3a3a3a; border-radius: 12px; color: #fff;
+  font-size: 16px; outline: none; transition: border 0.2s;
 }
-.save-recipient-box input:focus {
-border-color: #10b981;
-}
-.save-recipient-box input::placeholder {
-color: #6b7280;
-}
-.save-recipient-actions {
-display: flex;
-gap: 12px;
-margin-top: 16px;
-}
-.save-recipient-actions .btn {
-flex: 1;
-}
+.save-recipient-box input:focus { border-color: #16c99e; }
+.save-recipient-box input::placeholder { color: #858585; }
+.save-recipient-actions { display: flex; gap: 12px; margin-top: 16px; }
+.save-recipient-actions .btn { flex: 1; }
 
 /* ============================================================
    CONFIRM TRANSFER PAGE STYLES
    ============================================================ */
-.confirm-transfer-container {
-padding: 0 0 20px 0;
-}
+.confirm-transfer-container { padding: 0 0 20px 0; }
 .confirm-recipient-card {
-background: #111827;
-border-radius: 16px;
-padding: 16px;
-border: 1px solid #1f2937;
-margin-bottom: 16px;
-display: flex;
-align-items: center;
-gap: 14px;
+  background: #2b2b2b; border-radius: 16px; padding: 16px;
+  border: 1px solid #363636; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 14px;
 }
 .confirm-recipient-avatar {
-width: 44px;
-height: 44px;
-border-radius: 50%;
-background: #ffffff;
-display: flex;
-align-items: center;
-justify-content: center;
-flex-shrink: 0;
+  width: 44px; height: 44px; border-radius: 50%; background: #ffffff;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 .confirm-recipient-avatar svg {
-width: 22px;
-height: 22px;
-stroke: #10b981;
-stroke-width: 1.8;
-fill: none;
-stroke-linecap: round;
-stroke-linejoin: round;
+  width: 22px; height: 22px; stroke: #16c99e; stroke-width: 1.8;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
 }
-.confirm-recipient-info {
-flex: 1;
-}
-.confirm-recipient-name {
-font-size: 16px;
-font-weight: 600;
-color: #fff;
-}
-.confirm-recipient-detail {
-font-size: 13px;
-color: #9ca3af;
-margin-top: 2px;
-}
-
-.amount-label {
-font-size: 14px;
-font-weight: 500;
-color: #9ca3af;
-margin-bottom: 4px;
-display: block;
-}
-
-/* ===== BIGGER AMOUNT INPUT & QUICK AMOUNT BUTTONS ===== */
-.amount-input-wrapper {
-margin-bottom: 12px;
-}
+.confirm-recipient-info { flex: 1; }
+.confirm-recipient-name { font-size: 16px; font-weight: 600; color: #fff; }
+.confirm-recipient-detail { font-size: 13px; color: #a7a7a7; margin-top: 2px; }
+.amount-label { font-size: 14px; font-weight: 500; color: #a7a7a7; margin-bottom: 4px; display: block; }
+.amount-input-wrapper { margin-bottom: 12px; }
 .amount-input-wrapper input {
-width: 100%;
-padding: 20px 18px;
-background: #0a0a0a;
-border: 1px solid #2a2a3e;
-border-radius: 14px;
-color: #fff;
-font-size: 18px;
-outline: none;
-transition: border 0.2s;
-height: 68px;
+  width: 100%; padding: 20px 18px; background: #1b1b1b;
+  border: 1px solid #3a3a3a; border-radius: 14px; color: #fff;
+  font-size: 18px; outline: none; transition: border 0.2s; height: 68px;
 }
-.amount-input-wrapper input:focus {
-border-color: #10b981;
-}
-.amount-input-wrapper input::placeholder {
-color: #6b7280;
-font-size: 16px;
-}
-
-.quick-amount-grid {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 10px;
-margin-bottom: 16px;
-}
+.amount-input-wrapper input:focus { border-color: #16c99e; }
+.amount-input-wrapper input::placeholder { color: #858585; font-size: 16px; }
+.quick-amount-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
 .quick-amount-btn {
-padding: 14px 8px;
-background: #1a1a2e;
-border: 1px solid #2a2a3e;
-border-radius: 12px;
-color: #fff;
-font-size: 16px;
-font-weight: 600;
-cursor: pointer;
-transition: all 0.2s;
-text-align: center;
-height: 56px;
+  padding: 14px 8px; background: #2b2b2b; border: 1px solid #3a3a3a;
+  border-radius: 12px; color: #fff; font-size: 16px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; text-align: center; height: 56px;
 }
-.quick-amount-btn:active {
-background: #10b981;
-border-color: #10b981;
-}
-.quick-amount-btn.selected {
-background: #10b981;
-border-color: #10b981;
-}
-
-/* ===== REMARK SECTION ===== */
-.remark-section {
-margin-bottom: 16px;
-}
-.remark-label {
-font-size: 14px;
-font-weight: 500;
-color: #9ca3af;
-display: block;
-margin-bottom: 2px;
-}
+.quick-amount-btn:active { background: #16c99e; border-color: #16c99e; }
+.quick-amount-btn.selected { background: #16c99e; border-color: #16c99e; }
+.remark-section { margin-bottom: 16px; }
+.remark-label { font-size: 14px; font-weight: 500; color: #a7a7a7; display: block; margin-bottom: 2px; }
 .remark-input-wrapper input {
-width: 100%;
-padding: 18px 16px;
-background: #0a0a0a;
-border: 1px solid #2a2a3e;
-border-radius: 12px;
-color: #fff;
-font-size: 16px;
-outline: none;
-transition: border 0.2s;
-height: 56px;
-margin-bottom: 10px;
+  width: 100%; padding: 18px 16px; background: #1b1b1b;
+  border: 1px solid #3a3a3a; border-radius: 12px; color: #fff;
+  font-size: 16px; outline: none; transition: border 0.2s; height: 56px; margin-bottom: 10px;
 }
-.remark-input-wrapper input:focus {
-border-color: #10b981;
-}
-.remark-input-wrapper input::placeholder {
-color: #6b7280;
-font-size: 15px;
-}
-.remark-options {
-display: flex;
-gap: 12px;
-}
+.remark-input-wrapper input:focus { border-color: #16c99e; }
+.remark-input-wrapper input::placeholder { color: #858585; font-size: 15px; }
+.remark-options { display: flex; gap: 12px; }
 .remark-option {
-padding: 10px 20px;
-background: #1a1a2e;
-border: 1px solid #2a2a3e;
-border-radius: 10px;
-color: #fff;
-font-size: 14px;
-font-weight: 500;
-cursor: pointer;
-transition: all 0.2s;
+  padding: 10px 20px; background: #2b2b2b; border: 1px solid #3a3a3a;
+  border-radius: 10px; color: #fff; font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s;
 }
-.remark-option:active {
-background: #10b981;
-border-color: #10b981;
-}
-.remark-option.selected {
-background: #10b981;
-border-color: #10b981;
-}
-
-/* ===== CONFIRM BUTTON ===== */
+.remark-option:active { background: #16c99e; border-color: #16c99e; }
+.remark-option.selected { background: #16c99e; border-color: #16c99e; }
 .confirm-btn {
-width: 100%;
-padding: 16px;
-background: #2a2a2a;
-border: none;
-border-radius: 12px;
-color: #9ca3af;
-font-size: 16px;
-font-weight: 600;
-cursor: not-allowed;
-transition: all 0.3s;
-height: 60px;
+  width: 100%; padding: 16px; background: #2b2b2b; border: none;
+  border-radius: 12px; color: #a7a7a7; font-size: 16px; font-weight: 600;
+  cursor: not-allowed; transition: all 0.3s; height: 60px;
 }
-.confirm-btn.active {
-background: #10b981;
-color: #fff;
-cursor: pointer;
-}
-.confirm-btn.active:active {
-opacity: 0.7;
-}
+.confirm-btn.active { background: #16c99e; color: #fff; cursor: pointer; }
+.confirm-btn.active:active { opacity: 0.7; }
 
 /* ============================================================
    REMINDER POPUP
    ============================================================ */
-.reminder-popup .popup-box {
-max-width: 400px;
-text-align: left;
-}
-.reminder-popup .warning-icon {
-font-size: 48px;
-text-align: center;
-margin-bottom: 8px;
-}
-.reminder-popup .reminder-title {
-font-size: 16px;
-font-weight: 600;
-color: #fbbf24;
-text-align: center;
-margin-bottom: 4px;
-}
-.reminder-popup .reminder-sub {
-font-size: 13px;
-color: #9ca3af;
-text-align: center;
-margin-bottom: 16px;
-}
-.reminder-popup .tx-details {
-background: #0a0a0a;
-border-radius: 12px;
-padding: 12px 14px;
-margin-bottom: 16px;
-}
-.reminder-popup .tx-details .row {
-display: flex;
-justify-content: space-between;
-padding: 6px 0;
-font-size: 14px;
-border-bottom: 1px solid #1a1a2e;
-}
-.reminder-popup .tx-details .row:last-child {
-border-bottom: none;
-}
-.reminder-popup .tx-details .row .lbl {
-color: #9ca3af;
-}
-.reminder-popup .tx-details .row .val {
-color: #fff;
-font-weight: 500;
-}
-.reminder-popup .popup-actions {
-display: flex;
-gap: 12px;
-margin-top: 4px;
-}
-.reminder-popup .popup-actions .btn {
-flex: 1;
-}
+.reminder-popup .popup-box { max-width: 400px; text-align: left; }
+.reminder-popup .warning-icon { font-size: 48px; text-align: center; margin-bottom: 8px; }
+.reminder-popup .reminder-title { font-size: 16px; font-weight: 600; color: #fbbf24; text-align: center; margin-bottom: 4px; }
+.reminder-popup .reminder-sub { font-size: 13px; color: #a7a7a7; text-align: center; margin-bottom: 16px; }
+.reminder-popup .tx-details { background: #1b1b1b; border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; }
+.reminder-popup .tx-details .row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; border-bottom: 1px solid #2b2b2b; }
+.reminder-popup .tx-details .row:last-child { border-bottom: none; }
+.reminder-popup .tx-details .row .lbl { color: #a7a7a7; }
+.reminder-popup .tx-details .row .val { color: #fff; font-weight: 500; }
+.reminder-popup .popup-actions { display: flex; gap: 12px; margin-top: 4px; }
+.reminder-popup .popup-actions .btn { flex: 1; }
 
 /* ============================================================
    PAY CONFIRMATION POPUP
    ============================================================ */
-.pay-confirm-popup .popup-box {
-max-width: 400px;
-text-align: left;
-}
-.pay-confirm-popup .pay-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 12px;
-}
-.pay-confirm-popup .pay-header .title {
-font-size: 18px;
-font-weight: 600;
-color: #fff;
-}
-.pay-confirm-popup .pay-header .amount-big {
-font-size: 28px;
-font-weight: 700;
-color: #10b981;
-}
-.pay-confirm-popup .pay-recipient {
-background: #0a0a0a;
-border-radius: 12px;
-padding: 12px 14px;
-margin-bottom: 12px;
-}
-.pay-confirm-popup .pay-recipient .name {
-font-size: 15px;
-font-weight: 600;
-color: #fff;
-}
-.pay-confirm-popup .pay-recipient .detail {
-font-size: 13px;
-color: #9ca3af;
-}
-.pay-confirm-popup .pay-details {
-background: #0a0a0a;
-border-radius: 12px;
-padding: 12px 14px;
-margin-bottom: 12px;
-}
-.pay-confirm-popup .pay-details .row {
-display: flex;
-justify-content: space-between;
-padding: 6px 0;
-font-size: 14px;
-border-bottom: 1px solid #1a1a2e;
-}
-.pay-confirm-popup .pay-details .row:last-child {
-border-bottom: none;
-}
-.pay-confirm-popup .pay-details .row .lbl {
-color: #9ca3af;
-}
-.pay-confirm-popup .pay-details .row .val {
-color: #fff;
-font-weight: 500;
-}
-.pay-confirm-popup .pay-balance {
-background: #0a0a0a;
-border-radius: 12px;
-padding: 12px 14px;
-margin-bottom: 16px;
-}
-.pay-confirm-popup .pay-balance .row {
-display: flex;
-justify-content: space-between;
-padding: 4px 0;
-font-size: 14px;
-}
-.pay-confirm-popup .pay-balance .row .lbl {
-color: #9ca3af;
-}
-.pay-confirm-popup .pay-balance .row .val {
-color: #fff;
-font-weight: 500;
-}
-.pay-confirm-popup .pay-balance .row .val.green {
-color: #10b981;
-}
+.pay-confirm-popup .popup-box { max-width: 400px; text-align: left; }
+.pay-confirm-popup .pay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.pay-confirm-popup .pay-header .title { font-size: 18px; font-weight: 600; color: #fff; }
+.pay-confirm-popup .pay-header .amount-big { font-size: 28px; font-weight: 700; color: #16c99e; }
+.pay-confirm-popup .pay-recipient { background: #1b1b1b; border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; }
+.pay-confirm-popup .pay-recipient .name { font-size: 15px; font-weight: 600; color: #fff; }
+.pay-confirm-popup .pay-recipient .detail { font-size: 13px; color: #a7a7a7; }
+.pay-confirm-popup .pay-details { background: #1b1b1b; border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; }
+.pay-confirm-popup .pay-details .row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; border-bottom: 1px solid #2b2b2b; }
+.pay-confirm-popup .pay-details .row:last-child { border-bottom: none; }
+.pay-confirm-popup .pay-details .row .lbl { color: #a7a7a7; }
+.pay-confirm-popup .pay-details .row .val { color: #fff; font-weight: 500; }
+.pay-confirm-popup .pay-balance { background: #1b1b1b; border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; }
+.pay-confirm-popup .pay-balance .row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 14px; }
+.pay-confirm-popup .pay-balance .row .lbl { color: #a7a7a7; }
+.pay-confirm-popup .pay-balance .row .val { color: #fff; font-weight: 500; }
+.pay-confirm-popup .pay-balance .row .val.green { color: #16c99e; }
 .pay-confirm-popup .btn-pay {
-width: 100%;
-padding: 16px;
-background: #10b981;
-border: none;
-border-radius: 12px;
-color: #fff;
-font-size: 18px;
-font-weight: 600;
-cursor: pointer;
-transition: opacity 0.2s;
+  width: 100%; padding: 16px; background: #16c99e; border: none;
+  border-radius: 12px; color: #fff; font-size: 18px; font-weight: 600;
+  cursor: pointer; transition: opacity 0.2s;
 }
-.pay-confirm-popup .btn-pay:active {
-opacity: 0.7;
-}
+.pay-confirm-popup .btn-pay:active { opacity: 0.7; }
 
 /* ============================================================
    PIN ENTRY POPUP
    ============================================================ */
-.pin-popup .popup-box {
-max-width: 360px;
-text-align: center;
-}
-.pin-popup .pin-title {
-font-size: 18px;
-font-weight: 600;
-color: #fff;
-margin-bottom: 4px;
-}
-.pin-popup .pin-sub {
-font-size: 13px;
-color: #9ca3af;
-margin-bottom: 16px;
-}
-.pin-popup .pin-forgot {
-font-size: 13px;
-color: #10b981;
-cursor: pointer;
-margin-bottom: 16px;
-display: block;
-text-align: center;
-}
-.pin-popup .pin-forgot:active {
-opacity: 0.7;
-}
-.pin-popup .pin-display {
-display: flex;
-justify-content: center;
-gap: 16px;
-margin-bottom: 20px;
-}
+.pin-popup .popup-box { max-width: 360px; text-align: center; }
+.pin-popup .pin-title { font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+.pin-popup .pin-sub { font-size: 13px; color: #a7a7a7; margin-bottom: 16px; }
+.pin-popup .pin-forgot { font-size: 13px; color: #16c99e; cursor: pointer; margin-bottom: 16px; display: block; text-align: center; }
+.pin-popup .pin-forgot:active { opacity: 0.7; }
+.pin-popup .pin-display { display: flex; justify-content: center; gap: 16px; margin-bottom: 20px; }
 .pin-popup .pin-display .dot {
-width: 16px;
-height: 16px;
-border-radius: 50%;
-border: 2px solid #2a2a3e;
-background: transparent;
-transition: all 0.2s;
+  width: 16px; height: 16px; border-radius: 50%; border: 2px solid #3a3a3a;
+  background: transparent; transition: all 0.2s;
 }
-.pin-popup .pin-display .dot.filled {
-background: #10b981;
-border-color: #10b981;
-}
-.pin-popup .pin-keypad {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 12px;
-max-width: 280px;
-margin: 0 auto;
-}
+.pin-popup .pin-display .dot.filled { background: #16c99e; border-color: #16c99e; }
+.pin-popup .pin-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 280px; margin: 0 auto; }
 .pin-popup .pin-keypad .key {
-padding: 16px;
-background: #1a1a2e;
-border: 1px solid #2a2a3e;
-border-radius: 12px;
-color: #fff;
-font-size: 22px;
-font-weight: 600;
-cursor: pointer;
-transition: all 0.15s;
-text-align: center;
+  padding: 16px; background: #2b2b2b; border: 1px solid #3a3a3a;
+  border-radius: 12px; color: #fff; font-size: 22px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s; text-align: center;
 }
-.pin-popup .pin-keypad .key:active {
-background: #10b981;
-border-color: #10b981;
-transform: scale(0.94);
-}
-.pin-popup .pin-keypad .key.empty {
-background: transparent;
-border: none;
-cursor: default;
-}
-.pin-popup .pin-keypad .key.empty:active {
-background: transparent;
-transform: none;
-}
-.pin-popup .pin-keypad .key.back {
-font-size: 18px;
-color: #ef4444;
-}
+.pin-popup .pin-keypad .key:active { background: #16c99e; border-color: #16c99e; transform: scale(0.94); }
+.pin-popup .pin-keypad .key.empty { background: transparent; border: none; cursor: default; }
+.pin-popup .pin-keypad .key.empty:active { background: transparent; transform: none; }
+.pin-popup .pin-keypad .key.back { font-size: 18px; color: #ef4444; }
 
 /* ============================================================
    SUCCESS PAGE
    ============================================================ */
-.success-page {
-padding: 20px 0;
-}
-.success-page .success-icon {
-font-size: 64px;
-text-align: center;
-margin-bottom: 8px;
-}
-.success-page .success-title {
-font-size: 22px;
-font-weight: 700;
-color: #10b981;
-text-align: center;
-}
-.success-page .success-amount {
-font-size: 42px;
-font-weight: 700;
-color: #fff;
-text-align: center;
-margin: 4px 0 8px 0;
-}
-.success-page .success-sub {
-font-size: 14px;
-color: #9ca3af;
-text-align: center;
-margin-bottom: 20px;
-}
-.success-page .success-actions {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 10px;
-margin-bottom: 24px;
-}
-.success-page .success-actions .btn {
-padding: 12px;
-font-size: 14px;
-}
-.success-page .success-actions .btn-outline {
-background: transparent;
-border: 1px solid #2a2a2a;
-color: #fff;
-}
-.success-page .bonus-section {
-background: #111827;
-border-radius: 16px;
-padding: 16px;
-border: 1px solid #1f2937;
-}
-.success-page .bonus-section .bonus-title {
-font-size: 14px;
-font-weight: 600;
-color: #fbbf24;
-margin-bottom: 12px;
-}
-.success-page .bonus-section .bonus-item {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 10px 0;
-border-bottom: 1px solid #1f2937;
-}
-.success-page .bonus-section .bonus-item:last-child {
-border-bottom: none;
-}
-.success-page .bonus-section .bonus-item .left .main {
-font-size: 14px;
-font-weight: 500;
-color: #fff;
-}
-.success-page .bonus-section .bonus-item .left .sub {
-font-size: 12px;
-color: #9ca3af;
-}
+.success-page { padding: 20px 0; }
+.success-page .success-icon { font-size: 64px; text-align: center; margin-bottom: 8px; }
+.success-page .success-title { font-size: 22px; font-weight: 700; color: #16c99e; text-align: center; }
+.success-page .success-amount { font-size: 42px; font-weight: 700; color: #fff; text-align: center; margin: 4px 0 8px 0; }
+.success-page .success-sub { font-size: 14px; color: #a7a7a7; text-align: center; margin-bottom: 20px; }
+.success-page .success-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+.success-page .success-actions .btn { padding: 12px; font-size: 14px; }
+.success-page .success-actions .btn-outline { background: transparent; border: 1px solid #3a3a3a; color: #fff; }
+.success-page .bonus-section { background: #2b2b2b; border-radius: 16px; padding: 16px; border: 1px solid #363636; }
+.success-page .bonus-section .bonus-title { font-size: 14px; font-weight: 600; color: #fbbf24; margin-bottom: 12px; }
+.success-page .bonus-section .bonus-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #363636; }
+.success-page .bonus-section .bonus-item:last-child { border-bottom: none; }
+.success-page .bonus-section .bonus-item .left .main { font-size: 14px; font-weight: 500; color: #fff; }
+.success-page .bonus-section .bonus-item .left .sub { font-size: 12px; color: #a7a7a7; }
 .success-page .bonus-section .bonus-item .go-btn {
-background: #10b981;
-color: #fff;
-border: none;
-padding: 4px 16px;
-border-radius: 12px;
-font-size: 12px;
-font-weight: 600;
-cursor: pointer;
+  background: #16c99e; color: #fff; border: none; padding: 4px 16px;
+  border-radius: 12px; font-size: 12px; font-weight: 600; cursor: pointer;
 }
-.success-page .bonus-section .bonus-item .go-btn:active {
-opacity: 0.7;
-}
+.success-page .bonus-section .bonus-item .go-btn:active { opacity: 0.7; }
 </style>
 </head>
 <body>
@@ -2506,7 +980,7 @@ opacity: 0.7;
 </div>
 <div class="right">
 <button class="bell" onclick="showHelp()" style="opacity:0.6;">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#bcbcbc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
 <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
 </svg>
@@ -2537,7 +1011,7 @@ opacity: 0.7;
 <input type="password" id="signupConfirm" class="input-field" placeholder="Confirm Password">
 <div id="signupError" class="error"></div>
 <button class="btn w-full" onclick="signup()">Create account</button>
-<div class="text-center mt-20" style="color:#9ca3af; font-size:14px;">Already have an account? <span style="color:#10b981; cursor:pointer; font-weight:600;" onclick="showLoginPage()">Sign in</span></div>
+<div class="text-center mt-20" style="color:#a7a7a7; font-size:14px;">Already have an account? <span style="color:#16c99e; cursor:pointer; font-weight:600;" onclick="showLoginPage()">Sign in</span></div>
 </div>
 
 <!-- ===== LOGIN PAGE ===== -->
@@ -2573,22 +1047,18 @@ Don't have an account? <span class="signup-link" onclick="showSignupPage()">Clic
 <div class="greeting">Hi, <span id="userName">User</span></div>
 </div>
 <div class="right">
-<button class="help-btn" onclick="showHelp()">Help</button>
+<div class="help-wrap">
+<button class="help-btn" onclick="showHelp()">
+<svg viewBox="0 0 48 48"><path d="M8 25v-5a16 16 0 0 1 32 0v5M8 24h5v11H9a5 5 0 0 1-5-5v-1a5 5 0 0 1 4-5Zm32 0h-5v11h4a5 5 0 0 0 5-5v-1a5 5 0 0 0-4-5ZM35 36c-2 4-6 6-12 6"/></svg>
+<small>HELP</small>
+</button>
+</div>
 <button class="scan-btn" onclick="alert('Scan feature coming soon')">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-<path d="M3 7V5a2 2 0 0 1 2-2h2"/>
-<path d="M17 3h2a2 2 0 0 1 2 2v2"/>
-<path d="M21 17v2a2 2 0 0 1-2 2h-2"/>
-<path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
-<rect x="7" y="7" width="10" height="10" rx="1"/>
-</svg>
+<svg viewBox="0 0 48 48"><path d="M7 17V9a2 2 0 0 1 2-2h8M31 7h8a2 2 0 0 1 2 2v8M41 31v8a2 2 0 0 1-2 2h-8M17 41H9a2 2 0 0 1-2-2v-8"/></svg>
 </button>
 <button class="bell" onclick="showTransactionHistory()">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-<path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-</svg>
-<span class="badge" id="notificationBadge" style="display:none;">1</span>
+<svg viewBox="0 0 48 48"><path d="M12 33h24l-3-5V19a9 9 0 0 0-18 0v9l-3 5Zm8 5a4 4 0 0 0 8 0"/></svg>
+<span class="badge" id="notificationBadge" style="display:none;">99+</span>
 </button>
 </div>
 </div>
@@ -2596,8 +1066,14 @@ Don't have an account? <span class="signup-link" onclick="showSignupPage()">Clic
 <!-- Balance Card -->
 <div class="balance-card">
 <div class="label-row">
-<span class="label" id="balanceToggle" onclick="toggleBalanceVisibility()">Available Balance</span>
-<span class="history-link" onclick="showTransactionHistory()">Transaction History →</span>
+<span class="label">
+<svg class="shield" viewBox="0 0 32 32"><path d="M16 2 28 6v9c0 8-5 13-12 16C9 28 4 23 4 15V6l12-4Z"/><path class="check" d="m10 15 4 4 8-9"/></svg>
+<span>Available Balance</span>
+<button class="eye-btn" id="balanceToggle" onclick="toggleBalanceVisibility()" aria-label="Toggle balance visibility">
+<svg viewBox="0 0 32 32"><path d="M2 16S7 7 16 7s14 9 14 9-5 9-14 9S2 16 2 16Z"/><circle cx="16" cy="16" r="4"/></svg>
+</button>
+</span>
+<span class="history-link" onclick="showTransactionHistory()">Transaction History <span style="font-size:16px;vertical-align:-1px;">&gt;</span></span>
 </div>
 <div class="amount-row">
 <div class="amount" id="userBalance">₦0</div>
@@ -2605,30 +1081,49 @@ Don't have an account? <span class="signup-link" onclick="showSignupPage()">Clic
 </div>
 </div>
 
+<!-- Recent Transactions (2 items under balance) -->
+<div class="recent-transactions">
+<div class="tx-item">
+<div class="tx-icon">％</div>
+<div class="tx-info">
+<div class="tx-title">Spend &amp; Save Interest</div>
+<time>Nov 9th, 1:31:55 am</time>
+</div>
+<div class="tx-amount">
+<strong>+₦0.09</strong><span>Successful</span>
+</div>
+</div>
+<div class="tx-item">
+<div class="tx-icon">％</div>
+<div class="tx-info">
+<div class="tx-title">Spend &amp; Save Interest</div>
+<time>Nov 8th, 2:03:12 am</time>
+</div>
+<div class="tx-amount">
+<strong>+₦0.09</strong><span>Successful</span>
+</div>
+</div>
+</div>
+
 <!-- Action Buttons Card -->
 <div class="action-card">
 <div class="action-buttons">
 <button class="action-btn" onclick="showOpayTransfer()">
-<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-<circle cx="12" cy="12" r="10"/>
-<path d="M8 12h8"/>
-<path d="M12 8v8"/>
-</svg>
+<span class="q-icon">
+<svg viewBox="0 0 48 48"><path d="M8 10h32v28H8z"/><circle cx="24" cy="19" r="5"/><path d="M15 33c2-6 16-6 18 0"/></svg>
+</span>
 To OPay
 </button>
 <button class="action-btn" onclick="showBankTransfer()">
-<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-<rect x="2" y="7" width="20" height="14" rx="2"/>
-<path d="M12 3v4"/>
-<path d="M8 7l4-4 4 4"/>
-</svg>
+<span class="q-icon">
+<svg viewBox="0 0 48 48"><path d="M5 17 24 7l19 10v4H5zM9 24h6v13H9zm12 0h6v13h-6zm12 0h6v13h-6zM5 41h38"/></svg>
+</span>
 To Bank
 </button>
 <button class="action-btn" onclick="showWithdrawPage()">
-<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-<path d="M12 19V5"/>
-<path d="M5 12l7-7 7 7"/>
-</svg>
+<span class="q-icon">
+<svg viewBox="0 0 48 48"><path d="M27 8h13v13M40 8 23 25M20 13H9a3 3 0 0 0-3 3v23h23a3 3 0 0 0 3-3V25"/></svg>
+</span>
 Withdraw
 </button>
 </div>
@@ -2636,8 +1131,9 @@ Withdraw
 
 <!-- BVN Warning Banner -->
 <div class="bvn-banner" id="bvnBanner">
+<div class="id-badge">🪪<i>!</i></div>
 <div class="msg">
-<strong>Your BVN and NIN info do not...</strong>
+<strong>Your BVN and NIN info do n...</strong>
 <span class="sub">Click to view more details</span>
 </div>
 <button class="go-btn" onclick="showHelp()">Go</button>
@@ -2708,7 +1204,7 @@ Withdraw
 <div class="task-section">
 <div class="task-header">
 <div class="title">Complete Tasks, <span>Earn Cash!</span></div>
-<span class="view-all" onclick="alert('View all tasks')">View all →</span>
+<span class="view-all" onclick="alert('View all tasks')">View all &rarr;</span>
 </div>
 <div class="task-row">
 <div class="left">
@@ -2766,11 +1262,11 @@ Me
 <div id="loadingOverlay" class="modal-overlay" style="background:rgba(0,0,0,0.92);">
 <div class="modal-box" style="text-align:center; max-width:300px;">
 <div class="spinner-small"></div>
-<div id="loadingMsg" style="font-size:16px; color:#9ca3af;">Processing...</div>
-<div id="progressBar" style="width:100%; height:6px; background:#2a2a3e; border-radius:10px; margin-top:12px; display:none;">
-<div id="progressFill" style="width:0%; height:100%; background:#10b981; border-radius:10px; transition:width 0.3s;"></div>
+<div id="loadingMsg" style="font-size:16px; color:#a7a7a7;">Processing...</div>
+<div id="progressBar" style="width:100%; height:6px; background:#3a3a3a; border-radius:10px; margin-top:12px; display:none;">
+<div id="progressFill" style="width:0%; height:100%; background:#16c99e; border-radius:10px; transition:width 0.3s;"></div>
 </div>
-<div id="progressText" style="color:#10b981; font-size:14px; margin-top:8px; display:none;"></div>
+<div id="progressText" style="color:#16c99e; font-size:14px; margin-top:8px; display:none;"></div>
 </div>
 </div>
 
@@ -2805,7 +1301,7 @@ let tempRecipientName = null;
 let pinEntry = '';
 let pinSetupEntry = '';
 let pinSetupFirst = '';
-let pinSetupStep = 'new'; // 'new' or 'confirm'
+let pinSetupStep = 'new';
 
 // ============================================================
 // STORAGE HELPERS
@@ -2815,18 +1311,13 @@ let s = localStorage.getItem('graypay_users');
 if (s) users = JSON.parse(s);
 else users = [];
 }
-
-function saveUsers() {
-localStorage.setItem('graypay_users', JSON.stringify(users));
-}
-
+function saveUsers() { localStorage.setItem('graypay_users', JSON.stringify(users)); }
 function loadBankData() {
 let recents = localStorage.getItem('graypay_bank_recents');
 if (recents) bankRecents = JSON.parse(recents);
 let favs = localStorage.getItem('graypay_bank_favourites');
 if (favs) bankFavourites = JSON.parse(favs);
 }
-
 function saveBankData() {
 localStorage.setItem('graypay_bank_recents', JSON.stringify(bankRecents));
 localStorage.setItem('graypay_bank_favourites', JSON.stringify(bankFavourites));
@@ -2839,41 +1330,23 @@ function loadSavedNames() {
 let data = localStorage.getItem('graypay_saved_recipients');
 return data ? JSON.parse(data) : {};
 }
-
-function saveSavedNames(names) {
-localStorage.setItem('graypay_saved_recipients', JSON.stringify(names));
-}
-
+function saveSavedNames(names) { localStorage.setItem('graypay_saved_recipients', JSON.stringify(names)); }
 function getSavedName(accountNumber, bankName) {
 let names = loadSavedNames();
-let key = accountNumber + '|' + bankName;
-return names[key] || null;
+return names[accountNumber + '|' + bankName] || null;
 }
-
 function saveRecipientName(accountNumber, bankName, name) {
 let names = loadSavedNames();
-let key = accountNumber + '|' + bankName;
-names[key] = name;
+names[accountNumber + '|' + bankName] = name;
 saveSavedNames(names);
 }
 
 // ============================================================
 // PIN FUNCTIONS
 // ============================================================
-function getUserPin() {
-if (!currentUser) return null;
-return currentUser.pin || null;
-}
-
-function saveUserPin(pin) {
-if (!currentUser) return;
-currentUser.pin = pin;
-saveUsers();
-}
-
-function hasUserPin() {
-return getUserPin() !== null;
-}
+function getUserPin() { return currentUser ? (currentUser.pin || null) : null; }
+function saveUserPin(pin) { if (!currentUser) return; currentUser.pin = pin; saveUsers(); }
+function hasUserPin() { return getUserPin() !== null; }
 
 // ============================================================
 // UI HELPERS
@@ -2887,41 +1360,25 @@ let el = document.getElementById(id);
 if (el) el.classList.remove('hidden');
 if (id === 'dashboardPage' && currentUser) updateDashboard();
 }
-
 function showWelcomePage() { showPage('welcomePage'); }
 function showSignupPage() { showPage('signupPage'); }
 function showLoginPage() { showPage('loginPage'); }
-function showDashboardPage() {
-showPage('dashboardPage');
-updateDashboard();
-}
-
+function showDashboardPage() { showPage('dashboardPage'); updateDashboard(); }
 function closeDynamic() {
 document.getElementById('dynamicContent').innerHTML = '';
 showDashboardPage();
 }
-
-function showHelp() {
-document.getElementById('helpModal').classList.add('show');
-}
-
-function closeHelp() {
-document.getElementById('helpModal').classList.remove('show');
-}
-
-function openWhatsApp() {
-window.open('https://wa.me/2348168909003', '_blank');
-}
+function showHelp() { document.getElementById('helpModal').classList.add('show'); }
+function closeHelp() { document.getElementById('helpModal').classList.remove('show'); }
+function openWhatsApp() { window.open('https://wa.me/2348168909003', '_blank'); }
 
 function showSplashLoading(message, callback, duration = 3000) {
 let splash = document.createElement('div');
 splash.className = 'splash-loading';
-splash.innerHTML =
-`<div class="spinner"></div><div class="logo-text">Gpay</div><div class="loading-text">${message}</div>`;
+splash.innerHTML = `<div class="spinner"></div><div class="logo-text">Gpay</div><div class="loading-text">${message}</div>`;
 document.body.appendChild(splash);
 setTimeout(() => { splash.remove(); if (callback) callback(); }, duration);
 }
-
 function showLoadingOverlay(msg = 'Processing...', showProgress = false) {
 document.getElementById('loadingMsg').innerText = msg;
 let progressBar = document.getElementById('progressBar');
@@ -2938,21 +1395,18 @@ document.getElementById('progressFill').style.width = '0%';
 }
 document.getElementById('loadingOverlay').classList.add('show');
 }
-
 function updateProgress(percent) {
 document.getElementById('progressBar').style.display = 'block';
 document.getElementById('progressText').style.display = 'block';
 document.getElementById('progressFill').style.width = percent + '%';
 document.getElementById('progressText').innerText = Math.round(percent) + '% uploaded';
 }
-
 function hideLoadingOverlay() {
 document.getElementById('loadingOverlay').classList.remove('show');
 document.getElementById('progressBar').style.display = 'none';
 document.getElementById('progressText').style.display = 'none';
 document.getElementById('progressFill').style.width = '0%';
 }
-
 function getInitials(name) {
 if (!name) return '👤';
 let parts = name.trim().split(' ');
@@ -2971,7 +1425,6 @@ updateDashboard();
 // ============================================================
 // PROFILE PICTURE FUNCTIONS
 // ============================================================
-
 function updateAvatarDisplay() {
 if (!currentUser) return;
 let avatarEl = document.getElementById('userAvatar');
@@ -2998,7 +1451,6 @@ updateProgress(0);
 try {
 const storageRef = storage.ref(`profile_pictures/${currentUser.firebaseUID}`);
 const uploadTask = storageRef.put(file);
-
 uploadTask.on('state_changed',
 (snapshot) => {
 const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -3015,9 +1467,7 @@ saveUsers();
 hideLoadingOverlay();
 updateDashboard();
 alert('Profile picture updated successfully!');
-if (window._profileViewOpen) {
-renderProfileContent();
-}
+if (window._profileViewOpen) renderProfileContent();
 }
 );
 } catch (error) {
@@ -3037,9 +1487,7 @@ newInput.id = 'profilePicInput';
 newInput.accept = 'image/*';
 newInput.style.display = 'none';
 document.body.appendChild(newInput);
-newInput.addEventListener('change', function(e) {
-handleProfilePicSelect(e);
-});
+newInput.addEventListener('change', function(e) { handleProfilePicSelect(e); });
 newInput.click();
 }
 }
@@ -3047,14 +1495,8 @@ newInput.click();
 function handleProfilePicSelect(event) {
 const file = event.target.files[0];
 if (file) {
-if (file.size > 5 * 1024 * 1024) {
-alert('Image must be less than 5MB');
-return;
-}
-if (!file.type.startsWith('image/')) {
-alert('Please select an image file');
-return;
-}
+if (file.size > 5 * 1024 * 1024) { alert('Image must be less than 5MB'); return; }
+if (!file.type.startsWith('image/')) { alert('Please select an image file'); return; }
 uploadProfilePicture(file);
 }
 event.target.value = '';
@@ -3069,41 +1511,23 @@ let sn = document.getElementById('signupSurname').value.trim();
 let em = document.getElementById('signupEmail').value.trim();
 let pw = document.getElementById('signupPassword').value;
 let cf = document.getElementById('signupConfirm').value;
-
 if (!fn || !sn || !em || !pw) { document.getElementById('signupError').innerText = 'All fields required'; return; }
 if (pw.length < 8) { document.getElementById('signupError').innerText = 'Password must be 8+ characters'; return; }
 if (pw !== cf) { document.getElementById('signupError').innerText = 'Passwords do not match'; return; }
-for (let u of users) { if (u.email === em) { document.getElementById('signupError').innerText =
-'Email exists'; return; } }
-
+for (let u of users) { if (u.email === em) { document.getElementById('signupError').innerText = 'Email exists'; return; } }
 showSplashLoading('Creating account...', async () => {
 try {
 const userCredential = await auth.createUserWithEmailAndPassword(em, pw);
 const firebaseUser = userCredential.user;
-
 let newUser = {
 id: Date.now(),
 firebaseUID: firebaseUser.uid,
-firstname: fn,
-surname: sn,
-email: em,
-password: pw,
-pin: null,
-balance: 10000,
-profilePic: null,
+firstname: fn, surname: sn, email: em, password: pw,
+pin: null, balance: 10000, profilePic: null,
 transactions: [{
-type: 'Bonus',
-amount: 10000,
-date: new Date().toLocaleString(),
-dateObj: new Date(),
-status: 'Success',
-fullDetails: {
-transactionType: 'Bonus',
-sender: 'Gpay',
-recipient: fn + ' ' + sn,
-amount: 10000,
-note: 'Welcome bonus'
-}
+type: 'Bonus', amount: 10000,
+date: new Date().toLocaleString(), dateObj: new Date(), status: 'Success',
+fullDetails: { transactionType: 'Bonus', sender: 'Gpay', recipient: fn + ' ' + sn, amount: 10000, note: 'Welcome bonus' }
 }]
 };
 users.push(newUser);
@@ -3129,12 +1553,7 @@ document.getElementById('signupError').innerText = msg;
 async function login() {
 let em = document.getElementById('loginEmail').value.trim();
 let pw = document.getElementById('loginPassword').value;
-
-if (!em || !pw) {
-document.getElementById('loginError').innerText = 'Please enter email and password';
-return;
-}
-
+if (!em || !pw) { document.getElementById('loginError').innerText = 'Please enter email and password'; return; }
 showSplashLoading('Logging in...', async () => {
 try {
 const userCredential = await auth.signInWithEmailAndPassword(em, pw);
@@ -3144,16 +1563,9 @@ let localUser = null;
 for (let u of users) { if (u.email === em) { localUser = u; break; } }
 if (!localUser) {
 localUser = {
-id: Date.now(),
-firebaseUID: firebaseUser.uid,
-firstname: em.split('@')[0],
-surname: '',
-email: em,
-password: pw,
-pin: null,
-balance: 0,
-profilePic: null,
-transactions: []
+id: Date.now(), firebaseUID: firebaseUser.uid,
+firstname: em.split('@')[0], surname: '', email: em, password: pw,
+pin: null, balance: 0, profilePic: null, transactions: []
 };
 users.push(localUser);
 saveUsers();
@@ -3180,9 +1592,7 @@ if (u.email === saved) {
 currentUser = u;
 try {
 const firebaseUser = auth.currentUser;
-if (firebaseUser && firebaseUser.email === saved) {
-await firebaseUser.reload();
-}
+if (firebaseUser && firebaseUser.email === saved) { await firebaseUser.reload(); }
 } catch (e) {}
 showDashboardPage();
 return;
@@ -3210,16 +1620,13 @@ showWelcomePage();
 // ============================================================
 function updateDashboard() {
 if (!currentUser) return;
-
 document.getElementById('userName').innerText = currentUser.firstname;
-
 let balanceEl = document.getElementById('userBalance');
 if (balanceVisible) {
 balanceEl.innerHTML = '₦' + currentUser.balance.toLocaleString();
 } else {
 balanceEl.innerHTML = '****';
 }
-
 updateAvatarDisplay();
 }
 
@@ -3293,7 +1700,6 @@ ${picHtml}
 <button class="btn w-full" onclick="logout()">Log Out</button>
 </div>
 `;
-
 let fileInput = document.createElement('input');
 fileInput.type = 'file';
 fileInput.id = 'profilePicInput';
@@ -3303,12 +1709,9 @@ document.body.appendChild(fileInput);
 fileInput.addEventListener('change', function(e) {
 handleProfilePicSelect(e);
 setTimeout(() => {
-if (document.getElementById('profilePicInput')) {
-document.getElementById('profilePicInput').remove();
-}
+if (document.getElementById('profilePicInput')) { document.getElementById('profilePicInput').remove(); }
 }, 100);
 });
-
 showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('profileView').style.display = 'block';
@@ -3316,20 +1719,16 @@ document.getElementById('profileView').style.padding = '20px 0';
 }
 
 // ============================================================
-// PIN SETUP (FIXED)
+// PIN SETUP
 // ============================================================
 function openPinSetup() {
-pinSetupEntry = '';
-pinSetupFirst = '';
-pinSetupStep = 'new';
+pinSetupEntry = ''; pinSetupFirst = ''; pinSetupStep = 'new';
 showPinSetupPage();
 }
-
 function showPinSetupPage() {
 const hasPin = hasUserPin();
 const title = hasPin ? 'Change Payment PIN' : 'Create Payment PIN';
 const subText = hasPin ? 'Enter your new 4-digit payment PIN' : 'Enter your 4-digit payment PIN';
-
 document.getElementById('dynamicContent').innerHTML = `
 <div class="pin-setup-container">
 <div class="page-header">
@@ -3340,124 +1739,73 @@ document.getElementById('dynamicContent').innerHTML = `
 <div class="pin-title" id="pinSetupTitle">${title}</div>
 <div class="pin-sub" id="pinSetupSub">${subText}</div>
 <div class="pin-display" id="pinSetupDisplay">
-<div class="dot" id="pinSetupDot1"></div>
-<div class="dot" id="pinSetupDot2"></div>
-<div class="dot" id="pinSetupDot3"></div>
-<div class="dot" id="pinSetupDot4"></div>
+<div class="dot" id="pinSetupDot1"></div><div class="dot" id="pinSetupDot2"></div>
+<div class="dot" id="pinSetupDot3"></div><div class="dot" id="pinSetupDot4"></div>
 </div>
 <div class="pin-keypad">
-<div class="key" onclick="pressPinSetupKey('1')">1</div>
-<div class="key" onclick="pressPinSetupKey('2')">2</div>
-<div class="key" onclick="pressPinSetupKey('3')">3</div>
-<div class="key" onclick="pressPinSetupKey('4')">4</div>
-<div class="key" onclick="pressPinSetupKey('5')">5</div>
-<div class="key" onclick="pressPinSetupKey('6')">6</div>
-<div class="key" onclick="pressPinSetupKey('7')">7</div>
-<div class="key" onclick="pressPinSetupKey('8')">8</div>
-<div class="key" onclick="pressPinSetupKey('9')">9</div>
-<div class="key empty"></div>
-<div class="key" onclick="pressPinSetupKey('0')">0</div>
-<div class="key back" onclick="pressPinSetupKey('back')">⌫</div>
+<div class="key" onclick="pressPinSetupKey('1')">1</div><div class="key" onclick="pressPinSetupKey('2')">2</div><div class="key" onclick="pressPinSetupKey('3')">3</div>
+<div class="key" onclick="pressPinSetupKey('4')">4</div><div class="key" onclick="pressPinSetupKey('5')">5</div><div class="key" onclick="pressPinSetupKey('6')">6</div>
+<div class="key" onclick="pressPinSetupKey('7')">7</div><div class="key" onclick="pressPinSetupKey('8')">8</div><div class="key" onclick="pressPinSetupKey('9')">9</div>
+<div class="key empty"></div><div class="key" onclick="pressPinSetupKey('0')">0</div><div class="key back" onclick="pressPinSetupKey('back')">⌫</div>
 </div>
 <div class="pin-status" id="pinSetupStatus"></div>
 </div>
 `;
-
 showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('dynamicContent').style.display = 'block';
 }
-
 function pressPinSetupKey(key) {
 const statusEl = document.getElementById('pinSetupStatus');
 if (statusEl) statusEl.textContent = '';
-
 if (key === 'back') {
-if (pinSetupEntry.length > 0) {
-pinSetupEntry = pinSetupEntry.slice(0, -1);
-updatePinSetupDots();
-}
+if (pinSetupEntry.length > 0) { pinSetupEntry = pinSetupEntry.slice(0, -1); updatePinSetupDots(); }
 return;
 }
-
 if (pinSetupEntry.length < 4) {
 pinSetupEntry += key;
 updatePinSetupDots();
-
 if (pinSetupEntry.length === 4) {
 if (pinSetupStep === 'new') {
-// Store the first PIN and move to confirm step
-pinSetupFirst = pinSetupEntry;
-pinSetupEntry = '';
-pinSetupStep = 'confirm';
+pinSetupFirst = pinSetupEntry; pinSetupEntry = ''; pinSetupStep = 'confirm';
 updatePinSetupDots();
-                
-// Update UI
 const titleEl = document.getElementById('pinSetupTitle');
 const subEl = document.getElementById('pinSetupSub');
 if (titleEl) titleEl.textContent = 'Confirm Payment PIN';
 if (subEl) subEl.textContent = 'Re-enter your 4-digit payment PIN to confirm';
-                
 const statusEl2 = document.getElementById('pinSetupStatus');
-if (statusEl2) {
-statusEl2.textContent = 'Confirm your PIN';
-statusEl2.className = 'pin-status';
-}
+if (statusEl2) { statusEl2.textContent = 'Confirm your PIN'; statusEl2.className = 'pin-status'; }
 } else {
-// Confirm step - check if matches
 if (pinSetupFirst === pinSetupEntry) {
-// PIN matched! Save it directly
 currentUser.pin = pinSetupEntry;
 saveUsers();
-                
 const statusEl3 = document.getElementById('pinSetupStatus');
-if (statusEl3) {
-statusEl3.textContent = 'PIN set successfully!';
-statusEl3.className = 'pin-status success';
-}
-setTimeout(() => {
-showProfile();
-}, 1500);
+if (statusEl3) { statusEl3.textContent = 'PIN set successfully!'; statusEl3.className = 'pin-status success'; }
+setTimeout(() => { showProfile(); }, 1500);
 } else {
-// PINs don't match
 const statusEl3 = document.getElementById('pinSetupStatus');
-if (statusEl3) {
-statusEl3.textContent = 'PINs do not match. Try again.';
-statusEl3.className = 'pin-status error';
-}
-// Reset
-pinSetupEntry = '';
-pinSetupFirst = '';
-pinSetupStep = 'new';
+if (statusEl3) { statusEl3.textContent = 'PINs do not match. Try again.'; statusEl3.className = 'pin-status error'; }
+pinSetupEntry = ''; pinSetupFirst = ''; pinSetupStep = 'new';
 updatePinSetupDots();
-                
 const titleEl = document.getElementById('pinSetupTitle');
 const subEl = document.getElementById('pinSetupSub');
 if (titleEl) titleEl.textContent = 'Create Payment PIN';
 if (subEl) subEl.textContent = 'Enter your 4-digit payment PIN';
-                
 setTimeout(() => {
 const statusEl4 = document.getElementById('pinSetupStatus');
-if (statusEl4) {
-statusEl4.textContent = '';
-statusEl4.className = 'pin-status';
-}
+if (statusEl4) { statusEl4.textContent = ''; statusEl4.className = 'pin-status'; }
 }, 2000);
 }
 }
 }
 }
 }
-
 function updatePinSetupDots() {
 for (let i = 1; i <= 4; i++) {
 const dot = document.getElementById('pinSetupDot' + i);
 if (dot) {
-if (i <= pinSetupEntry.length) {
-dot.classList.add('filled');
-} else {
-dot.classList.remove('filled');
-}
+if (i <= pinSetupEntry.length) dot.classList.add('filled');
+else dot.classList.remove('filled');
 }
 }
 }
@@ -3467,9 +1815,7 @@ dot.classList.remove('filled');
 // ============================================================
 function showWithdrawPage() {
 if (!currentUser) return;
-let banks = ['Access Bank', 'GTBank', 'First Bank', 'Zenith Bank', 'UBA', 'WEMA Bank', 'Polaris Bank',
-'Fidelity Bank', 'Sterling Bank', 'PalmPay', 'Opay', 'Moniepoint', 'Kuda Bank'
-];
+let banks = ['Access Bank', 'GTBank', 'First Bank', 'Zenith Bank', 'UBA', 'WEMA Bank', 'Polaris Bank', 'Fidelity Bank', 'Sterling Bank', 'PalmPay', 'Opay', 'Moniepoint', 'Kuda Bank'];
 let opts = banks.map(b => `<option>${b}</option>`).join('');
 document.getElementById('dynamicContent').innerHTML = `
 <div id="withdrawView">
@@ -3492,7 +1838,6 @@ document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('withdrawView').style.display = 'block';
 document.getElementById('withdrawView').style.padding = '20px 0';
 }
-
 function processWithdraw() {
 let amt = parseInt(document.getElementById('withdrawAmount').value);
 let accName = document.getElementById('accName').value;
@@ -3506,30 +1851,19 @@ setTimeout(() => {
 currentUser.balance -= amt;
 let tid = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
 let tx = {
-id: tid,
-type: 'Withdrawal',
-amount: amt,
-date: new Date().toLocaleString(),
-dateObj: new Date(),
-status: 'Success',
+id: tid, type: 'Withdrawal', amount: amt,
+date: new Date().toLocaleString(), dateObj: new Date(), status: 'Success',
 fullDetails: {
-transactionType: 'Deposit To Bank',
-amount: amt,
-fees: 10,
-taxes: 0.75,
+transactionType: 'Deposit To Bank', amount: amt, fees: 10, taxes: 0.75,
 sender: currentUser.firstname + ' ' + currentUser.surname,
-recipient: accName,
-recipientAccount: accNumber,
-recipientBank: bankName,
-transactionId: tid,
-note: 'Sent from my Gpay account'
+recipient: accName, recipientAccount: accNumber, recipientBank: bankName,
+transactionId: tid, note: 'Sent from my Gpay account'
 }
 };
 currentUser.transactions.unshift(tx);
 saveUsers();
 hideLoadingOverlay();
-showSuccessPopup('Withdrawal Successful!', 'You have successfully withdrawn', amt, accName, bankName,
-accNumber, tid, () => showTransactionDetails(tid));
+showSuccessPopup('Withdrawal Successful!', 'You have successfully withdrawn', amt, accName, bankName, accNumber, tid, () => showTransactionDetails(tid));
 }, 15000);
 }
 
@@ -3561,7 +1895,6 @@ document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('airtimeView').style.display = 'block';
 document.getElementById('airtimeView').style.padding = '20px 0';
 }
-
 function processAirtime() {
 let amt = parseInt(document.getElementById('airAmount').value);
 let phone = document.getElementById('airPhone').value;
@@ -3573,25 +1906,13 @@ setTimeout(() => {
 currentUser.balance -= amt;
 let tid = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
 let tx = {
-id: tid,
-type: 'Airtime',
-amount: amt,
-phone: phone,
-network: network,
-date: new Date().toLocaleString(),
-dateObj: new Date(),
-status: 'Success',
+id: tid, type: 'Airtime', amount: amt, phone: phone, network: network,
+date: new Date().toLocaleString(), dateObj: new Date(), status: 'Success',
 fullDetails: {
-transactionType: 'Airtime Purchase',
-amount: amt,
-fees: 0,
-taxes: 0,
+transactionType: 'Airtime Purchase', amount: amt, fees: 0, taxes: 0,
 sender: currentUser.firstname + ' ' + currentUser.surname,
-recipient: phone,
-recipientAccount: phone,
-recipientBank: network,
-transactionId: tid,
-note: 'Airtime purchase on ' + network
+recipient: phone, recipientAccount: phone, recipientBank: network,
+transactionId: tid, note: 'Airtime purchase on ' + network
 }
 };
 currentUser.transactions.unshift(tx);
@@ -3635,7 +1956,6 @@ document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('dataView').style.display = 'block';
 document.getElementById('dataView').style.padding = '20px 0';
 }
-
 function processData() {
 let phone = document.getElementById('dataPhone').value;
 let network = document.getElementById('dataNetwork').value;
@@ -3649,26 +1969,13 @@ setTimeout(() => {
 currentUser.balance -= amt;
 let tid = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
 let tx = {
-id: tid,
-type: 'Data',
-amount: amt,
-plan: name,
-network: network,
-phone: phone,
-date: new Date().toLocaleString(),
-dateObj: new Date(),
-status: 'Success',
+id: tid, type: 'Data', amount: amt, plan: name, network: network, phone: phone,
+date: new Date().toLocaleString(), dateObj: new Date(), status: 'Success',
 fullDetails: {
-transactionType: 'Data Purchase',
-amount: amt,
-fees: 0,
-taxes: 0,
+transactionType: 'Data Purchase', amount: amt, fees: 0, taxes: 0,
 sender: currentUser.firstname + ' ' + currentUser.surname,
-recipient: phone,
-recipientAccount: phone,
-recipientBank: network,
-transactionId: tid,
-note: 'Data purchase - ' + name + ' on ' + network
+recipient: phone, recipientAccount: phone, recipientBank: network,
+transactionId: tid, note: 'Data purchase - ' + name + ' on ' + network
 }
 };
 currentUser.transactions.unshift(tx);
@@ -3703,7 +2010,6 @@ popup.innerHTML = `
 document.body.appendChild(popup);
 window.__onViewReceipt = onView;
 }
-
 function showAirtimeSuccessPopup(amount, phone, network, tid, onView) {
 let popup = document.createElement('div');
 popup.className = 'popup-overlay';
@@ -3726,7 +2032,6 @@ popup.innerHTML = `
 document.body.appendChild(popup);
 window.__onViewReceipt = onView;
 }
-
 function showDataSuccessPopup(amount, phone, plan, network, tid, onView) {
 let popup = document.createElement('div');
 popup.className = 'popup-overlay';
@@ -3772,9 +2077,7 @@ let html = '';
 for (let [date, items] of Object.entries(groups)) {
 html += `<div class="history-date-group"><div class="history-date">${date}</div>`;
 items.forEach(t => {
-let time = t.dateObj ? new Date(t.dateObj).toLocaleTimeString([], { hour: '2-digit',
-minute: '2-digit' }) : new Date(t.date).toLocaleTimeString([], { hour: '2-digit',
-minute: '2-digit' });
+let time = t.dateObj ? new Date(t.dateObj).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : new Date(t.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 let desc = '';
 let isNeg = true;
 let isNeutral = false;
@@ -3782,8 +2085,7 @@ let isFailed = t.status === 'Failed';
 if (t.type === 'Withdrawal') desc = `You sent money to ${t.fullDetails?.recipient || 'Bank'}`;
 else if (t.type === 'Airtime') desc = `You bought airtime for ${t.phone} on ${t.network || ''}`;
 else if (t.type === 'Data') desc = `You bought ${t.plan} data for ${t.phone}`;
-else if (t.type === 'Bonus') { desc = 'You received a welcome bonus';
-isNeg = false; }
+else if (t.type === 'Bonus') { desc = 'You received a welcome bonus'; isNeg = false; }
 else if (t.type === 'Bank Transfer') { desc = `You sent money to ${t.fullDetails?.recipient || 'Bank'}`; }
 let cls = isFailed ? 'failed' : (isNeutral ? 'neutral' : (isNeg ? 'negative' : 'positive'));
 let prefix = isFailed ? '❌ ' : (isNeutral ? '📋 ' : (isNeg ? '-₦' : '+₦'));
@@ -3806,7 +2108,7 @@ document.getElementById('dynamicContent').innerHTML = `
 <span class="title">Transaction History</span>
 <button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
 </div>
-${html || '<div class="text-center" style="color:#9ca3af; padding:40px;">No transactions yet</div>'}
+${html || '<div class="text-center" style="color:#a7a7a7; padding:40px;">No transactions yet</div>'}
 </div>
 `;
 showPage('dashboardPage');
@@ -3829,7 +2131,6 @@ let isFailed = (tx.type === 'Failed');
 let color = isFailed ? '#f97316' : (isPos ? '#34d399' : '#f87171');
 let symbol = isFailed ? '❌ ' : (isPos ? '+' : '-');
 let statusText = tx.status || 'Success';
-
 document.getElementById('dynamicContent').innerHTML = `
 <div id="txDetailView">
 <div class="page-header">
@@ -3839,7 +2140,7 @@ document.getElementById('dynamicContent').innerHTML = `
 </div>
 <div style="text-align:center; margin:16px 0;">
 <div style="font-size:42px; font-weight:700; color:${color};">${symbol}₦${amt.toLocaleString()}.00</div>
-<div style="color:${isFailed ? '#f97316' : '#10b981'}; margin-top:4px;">${statusText}</div>
+<div style="color:${isFailed ? '#f97316' : '#16c99e'}; margin-top:4px;">${statusText}</div>
 ${isFailed ? '<div style="color:#f97316; font-size:14px; margin-top:4px;">❌ Transaction failed</div>' : ''}
 </div>
 <div class="transaction-detail-row"><span class="label">Date</span><span class="value">${tx.date}</span></div>
@@ -3857,7 +2158,7 @@ ${isFailed ? '<div style="color:#f97316; font-size:14px; margin-top:4px;">❌ Tr
 <button class="btn" onclick="shareReceipt('${tx.id}')">📤 Share receipt</button>
 <button class="btn btn-outline" onclick="repeatTransaction('${tx.type}')">🔄 Repeat</button>
 </div>
-<div class="text-center mt-20"><span style="color:#10b981; cursor:pointer;" onclick="showHelp()">Trouble? Contact support</span></div>
+<div class="text-center mt-20"><span style="color:#16c99e; cursor:pointer;" onclick="showHelp()">Trouble? Contact support</span></div>
 </div>
 `;
 showPage('dashboardPage');
@@ -3865,18 +2166,15 @@ document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('txDetailView').style.display = 'block';
 document.getElementById('txDetailView').style.padding = '20px 0';
 }
-
 function shareReceipt(tid) {
 let tx = currentUser.transactions.find(t => t.id == tid);
 if (tx) {
 let d = tx.fullDetails || {};
-let text =
-`Gpay Transaction\nAmount: ₦${(d.amount || tx.amount).toLocaleString()}\nType: ${tx.type}\nDate: ${tx.date}\nID: ${tx.id}`;
+let text = `Gpay Transaction\nAmount: ₦${(d.amount || tx.amount).toLocaleString()}\nType: ${tx.type}\nDate: ${tx.date}\nID: ${tx.id}`;
 navigator.clipboard.writeText(text);
 alert('Receipt copied to clipboard!');
 }
 }
-
 function repeatTransaction(type) {
 closeDynamic();
 if (type === 'Withdrawal') showWithdrawPage();
@@ -3890,11 +2188,7 @@ else showDashboardPage();
 // OPAY TRANSFER FUNCTIONS
 // ============================================================
 function showOpayTransfer() {
-if (!currentUser) {
-alert('Please login first');
-return;
-}
-    
+if (!currentUser) { alert('Please login first'); return; }
 const recentContacts = [
 { name: 'HASSAN USMAN', number: '9153396491', type: 'BizPayment', favorite: true },
 { name: 'DAHA AUWALU', number: '9078513030', type: '', favorite: false },
@@ -3902,14 +2196,12 @@ const recentContacts = [
 { name: 'TIJJANI ALIYU', number: '8132017850', type: '', favorite: true },
 { name: 'FATIMA ABDULLAHI', number: '8165432109', type: '', favorite: false },
 ];
-    
 let recentHtml = '';
 let favoritesHtml = '';
 const favorites = recentContacts.filter(c => c.favorite);
 const others = recentContacts.filter(c => !c.favorite);
-    
 if (favorites.length > 0) {
-favoritesHtml = `<div style="color:#9ca3af; font-size:12px; margin:12px 0 6px 0;">Favourites</div>`;
+favoritesHtml = `<div style="color:#a7a7a7; font-size:12px; margin:12px 0 6px 0;">Favourites</div>`;
 favorites.forEach(contact => {
 favoritesHtml += `
 <div class="recent-contact" onclick="selectOpayContact('${contact.number}', '${contact.name}')">
@@ -3922,7 +2214,6 @@ favoritesHtml += `
 `;
 });
 }
-    
 others.forEach(contact => {
 recentHtml += `
 <div class="recent-contact" onclick="selectOpayContact('${contact.number}', '${contact.name}')">
@@ -3934,15 +2225,13 @@ recentHtml += `
 </div>
 `;
 });
-    
 document.getElementById('dynamicContent').innerHTML = `
 <div id="opayTransferView">
 <div class="page-header">
 <button class="back-btn" onclick="closeDynamic()">←</button>
 <span class="title">Transfer To OPay Account</span>
-<button class="help-btn" onclick="showTransactionHistory()" style="color:#10b981; font-size:14px; font-weight:500;">History</button>
+<button class="help-btn" onclick="showTransactionHistory()" style="color:#16c99e; font-size:14px; font-weight:500;">History</button>
 </div>
-        
 <div class="discount-banner">
 <div class="discount-content">
 <div>
@@ -3953,9 +2242,7 @@ document.getElementById('dynamicContent').innerHTML = `
 </div>
 <div class="discount-badge">120</div>
 </div>
-        
 <div class="instant-info">Instant, Zero Issues, Free</div>
-        
 <div class="recipient-section">
 <div class="recipient-label">Recipient Account</div>
 <div class="recipient-input-wrapper">
@@ -3965,7 +2252,6 @@ document.getElementById('dynamicContent').innerHTML = `
 Don't know the recipient's OPay account number? <span>Ask them ></span>
 </div>
 </div>
-        
 <div id="opayAccountPreview" style="display:none;" class="account-preview">
 <div class="account-preview-content">
 <div class="account-preview-avatar" id="opayPreviewAvatar">👤</div>
@@ -3975,7 +2261,6 @@ Don't know the recipient's OPay account number? <span>Ask them ></span>
 </div>
 </div>
 </div>
-        
 <div class="recents-section">
 <div class="recents-header">
 <span class="recents-title">Recents</span>
@@ -3986,7 +2271,6 @@ ${recentHtml}
 View All <span style="margin-left:4px;">></span>
 </div>
 </div>
-        
 <div class="opay-footer" onclick="alert('Share Gpay with your contacts!')">
 <div class="opay-footer-icon">●</div>
 <div>
@@ -3994,32 +2278,26 @@ View All <span style="margin-left:4px;">></span>
 <div class="opay-footer-sub">Send money to your contacts for free</div>
 </div>
 </div>
-        
 <div id="continueSection" style="display:none; margin-top:16px;">
 <button class="btn w-full" onclick="proceedOpayTransfer()">Continue →</button>
 </div>
 </div>
 `;
-    
 showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('opayTransferView').style.display = 'block';
 document.getElementById('opayTransferView').style.padding = '20px 0';
 }
-
 function checkOpayNumber(number) {
 const preview = document.getElementById('opayAccountPreview');
 const continueSection = document.getElementById('continueSection');
 const nameEl = document.getElementById('opayPreviewName');
 const numberEl = document.getElementById('opayPreviewNumber');
 const avatarEl = document.getElementById('opayPreviewAvatar');
-    
 const cleanNumber = number.replace(/\D/g, '');
-    
 if (cleanNumber.length >= 10) {
 preview.style.display = 'block';
 continueSection.style.display = 'block';
-        
 const demoNames = {
 '8132017850': 'TIJJANI ALIYU',
 '9153396491': 'HASSAN USMAN',
@@ -4027,7 +2305,6 @@ const demoNames = {
 '7072498050': 'MUSTAPHA HASSAN',
 '8165432109': 'FATIMA ABDULLAHI',
 };
-        
 if (demoNames[cleanNumber]) {
 nameEl.textContent = demoNames[cleanNumber];
 avatarEl.textContent = getInitials(demoNames[cleanNumber]);
@@ -4041,65 +2318,34 @@ preview.style.display = 'none';
 continueSection.style.display = 'none';
 }
 }
-
 function selectOpayContact(number, name) {
 const input = document.getElementById('opayPhoneInput');
-if (input) {
-input.value = number;
-checkOpayNumber(number);
+if (input) { input.value = number; checkOpayNumber(number); }
 }
-}
-
 function proceedOpayTransfer() {
 const input = document.getElementById('opayPhoneInput');
 const number = input.value.replace(/\D/g, '');
 const nameEl = document.getElementById('opayPreviewName');
 const name = nameEl ? nameEl.textContent : 'Unknown';
-    
-if (number.length < 10) {
-alert('Please enter a valid OPay account number');
-return;
-}
-    
+if (number.length < 10) { alert('Please enter a valid OPay account number'); return; }
 const amount = prompt('Enter amount to send (₦):', '500');
 if (!amount) return;
 const amt = parseInt(amount);
-if (isNaN(amt) || amt < 100) {
-alert('Minimum amount is ₦100');
-return;
-}
-if (amt > currentUser.balance) {
-alert('Insufficient balance. You have ₦' + currentUser.balance.toLocaleString());
-return;
-}
-    
-if (!confirm(`Confirm transfer to:\n\n${name}\n${number}\nAmount: ₦${amt.toLocaleString()}\n\nDo you want to proceed?`)) {
-return;
-}
-    
+if (isNaN(amt) || amt < 100) { alert('Minimum amount is ₦100'); return; }
+if (amt > currentUser.balance) { alert('Insufficient balance. You have ₦' + currentUser.balance.toLocaleString()); return; }
+if (!confirm(`Confirm transfer to:\n\n${name}\n${number}\nAmount: ₦${amt.toLocaleString()}\n\nDo you want to proceed?`)) return;
 showLoadingOverlay('Processing transfer...');
 setTimeout(() => {
 currentUser.balance -= amt;
-        
 let tid = 'OPAY' + Date.now() + Math.floor(Math.random() * 1000);
 let tx = {
-id: tid,
-type: 'OPay Transfer',
-amount: amt,
-date: new Date().toLocaleString(),
-dateObj: new Date(),
-status: 'Success',
+id: tid, type: 'OPay Transfer', amount: amt,
+date: new Date().toLocaleString(), dateObj: new Date(), status: 'Success',
 fullDetails: {
-transactionType: 'OPay Transfer',
-amount: amt,
-fees: 0,
-taxes: 0,
+transactionType: 'OPay Transfer', amount: amt, fees: 0, taxes: 0,
 sender: currentUser.firstname + ' ' + currentUser.surname,
-recipient: name,
-recipientAccount: number,
-recipientBank: 'OPay',
-transactionId: tid,
-note: 'Transfer to OPay account'
+recipient: name, recipientAccount: number, recipientBank: 'OPay',
+transactionId: tid, note: 'Transfer to OPay account'
 }
 };
 currentUser.transactions.unshift(tx);
@@ -4108,7 +2354,6 @@ hideLoadingOverlay();
 showOpaySuccessPopup(amt, name, number, tid);
 }, 3000);
 }
-
 function showOpaySuccessPopup(amount, name, number, tid) {
 let popup = document.createElement('div');
 popup.className = 'popup-overlay';
@@ -4134,299 +2379,43 @@ document.body.appendChild(popup);
 // ============================================================
 // BANK TRANSFER FUNCTIONS
 // ============================================================
-
-// All Nigerian Banks - Complete List
 const allBanks = [
-// Commercial Banks
-{ name: 'Access Bank' },
-{ name: 'Guaranty Trust Bank (GTBank)' },
-{ name: 'First Bank of Nigeria' },
-{ name: 'Zenith Bank' },
-{ name: 'United Bank for Africa (UBA)' },
-{ name: 'Ecobank Nigeria' },
-{ name: 'Fidelity Bank' },
-{ name: 'First City Monument Bank (FCMB)' },
-{ name: 'Union Bank' },
-{ name: 'Stanbic IBTC Bank' },
-{ name: 'Sterling Bank' },
-{ name: 'WEMA Bank' },
-{ name: 'Polaris Bank' },
-{ name: 'Keystone Bank' },
-{ name: 'Heritage Bank' },
-{ name: 'Unity Bank' },
-{ name: 'Suntrust Bank' },
-{ name: 'Titan Trust Bank' },
-{ name: 'Globus Bank' },
-{ name: 'Premium Trust Bank' },
-{ name: 'Signature Bank' },
-{ name: 'Providus Bank' },
-{ name: 'Lotus Bank' },
-{ name: 'Parallex Bank' },
-{ name: 'Neobank' },
-{ name: 'Sparkle Bank' },
-{ name: 'Rubies Bank' },
-// Digital/Online Banks
-{ name: 'OPay' },
-{ name: 'PalmPay' },
-{ name: 'Moniepoint' },
-{ name: 'Kuda Bank' },
-{ name: 'VFD Bank' },
-{ name: 'Eyowo' },
-{ name: 'Carbon' },
-{ name: 'FairMoney' },
-{ name: 'Mint Bank' },
-{ name: 'Bankly' },
-// Microfinance Banks
-{ name: 'AB Microfinance Bank' },
-{ name: 'Accion Microfinance Bank' },
-{ name: 'LAPO Microfinance Bank' },
-{ name: 'Trust Microfinance Bank' },
-{ name: 'Fortis Microfinance Bank' },
-{ name: 'Esan Microfinance Bank' },
-{ name: 'AACB MFB' },
-{ name: 'ABSU MFB' },
-{ name: 'ABU MFB' },
-{ name: 'ABUCOOP MFB' },
-{ name: 'ADA MFB' },
-{ name: 'Adazi-Enu MFB' },
-{ name: 'Ado-Ekiti MFB' },
-{ name: 'Agbede MFB' },
-{ name: 'Aku MFB' },
-{ name: 'Al-Barakah MFB' },
-{ name: 'All Seasons MFB' },
-{ name: 'Amoyen MFB' },
-{ name: 'Aramoko MFB' },
-{ name: 'Arewa MFB' },
-{ name: 'Aso Savings & Loans' },
-{ name: 'Auchi MFB' },
-{ name: 'Awka MFB' },
-{ name: 'Baines Credit MFB' },
-{ name: 'Balogun MFB' },
-{ name: 'Banc Corp MFB' },
-{ name: 'Bosak MFB' },
-{ name: 'Bowen MFB' },
-{ name: 'Branch MFB' },
-{ name: 'Brent MFB' },
-{ name: 'Brilliant MFB' },
-{ name: 'Capital MFB' },
-{ name: 'Cedar MFB' },
-{ name: 'CEMCS MFB' },
-{ name: 'Chartered MFB' },
-{ name: 'City MFB' },
-{ name: 'Covenant MFB' },
-{ name: 'Crown MFB' },
-{ name: 'Daylight MFB' },
-{ name: 'Diamond MFB' },
-{ name: 'Eagle MFB' },
-{ name: 'Eartholeum MFB' },
-{ name: 'Edu MFB' },
-{ name: 'Eko MFB' },
-{ name: 'Empire MFB' },
-{ name: 'Express MFB' },
-{ name: 'Fadac MFB' },
-{ name: 'Fair MFB' },
-{ name: 'Family Homes MFB' },
-{ name: 'FBNQuest MFB' },
-{ name: 'Finca MFB' },
-{ name: 'First Generation MFB' },
-{ name: 'First Royal MFB' },
-{ name: 'First Trust MFB' },
-{ name: 'Focus MFB' },
-{ name: 'Fortress MFB' },
-{ name: 'Full Range MFB' },
-{ name: 'Gain MFB' },
-{ name: 'Gambo MFB' },
-{ name: 'Gateway MFB' },
-{ name: 'Girei MFB' },
-{ name: 'Glamour MFB' },
-{ name: 'Glory MFB' },
-{ name: 'Gold MFB' },
-{ name: 'Golden MFB' },
-{ name: 'Good MFB' },
-{ name: 'Greenwich MFB' },
-{ name: 'Habitat MFB' },
-{ name: 'Haggai MFB' },
-{ name: 'Hasal MFB' },
-{ name: 'Haven MFB' },
-{ name: 'HBF MFB' },
-{ name: 'Herald MFB' },
-{ name: 'Highstreet MFB' },
-{ name: 'Honeywell MFB' },
-{ name: 'HOPE MFB' },
-{ name: 'Ibile MFB' },
-{ name: 'Ikire MFB' },
-{ name: 'Ile-Ife MFB' },
-{ name: 'Ilisan MFB' },
-{ name: 'Imperial MFB' },
-{ name: 'Infinity MFB' },
-{ name: 'Innoson MFB' },
-{ name: 'Integrity MFB' },
-{ name: 'Intercontinental MFB' },
-{ name: 'Iree MFB' },
-{ name: 'Isale-Oyo MFB' },
-{ name: 'Iwo MFB' },
-{ name: 'Iyeru MFB' },
-{ name: 'Jaiz Bank' },
-{ name: 'Jubilee MFB' },
-{ name: 'Kadpoly MFB' },
-{ name: 'Kebbi MFB' },
-{ name: 'Kogi MFB' },
-{ name: 'Kontagora MFB' },
-{ name: 'Kuje MFB' },
-{ name: 'Kutigi MFB' },
-{ name: 'Lagos Building MFB' },
-{ name: 'Lapo MFB' },
-{ name: 'Laudable MFB' },
-{ name: 'Life MFB' },
-{ name: 'Lighthouse MFB' },
-{ name: 'Lion MFB' },
-{ name: 'Lobitos MFB' },
-{ name: 'Lotus MFB' },
-{ name: 'Mainstreet MFB' },
-{ name: 'Malachy MFB' },
-{ name: 'Mayfair MFB' },
-{ name: 'Megapraise MFB' },
-{ name: 'Midas MFB' },
-{ name: 'Mikado MFB' },
-{ name: 'Mint MFB' },
-{ name: 'Money Trust MFB' },
-{ name: 'Mutual MFB' },
-{ name: 'Naga MFB' },
-{ name: 'Nasarawa MFB' },
-{ name: 'Nations MFB' },
-{ name: 'New Dawn MFB' },
-{ name: 'New Prudential MFB' },
-{ name: 'Nigerian Navy MFB' },
-{ name: 'Nnewi MFB' },
-{ name: 'Noble MFB' },
-{ name: 'Obaseki MFB' },
-{ name: 'Obinna MFB' },
-{ name: 'Ocean MFB' },
-{ name: 'Okpoga MFB' },
-{ name: 'Olabisi MFB' },
-{ name: 'Omni MFB' },
-{ name: 'Ondo MFB' },
-{ name: 'Ore MFB' },
-{ name: 'Orisun MFB' },
-{ name: 'Oshogbo MFB' },
-{ name: 'Osun MFB' },
-{ name: 'Oto MFB' },
-{ name: 'Owerri MFB' },
-{ name: 'Paga MFB' },
-{ name: 'Palm MFB' },
-{ name: 'Paragon MFB' },
-{ name: 'Park MFB' },
-{ name: 'Pathfinder MFB' },
-{ name: 'Peace MFB' },
-{ name: 'Pennywise MFB' },
-{ name: 'Pentecost MFB' },
-{ name: 'People\'s MFB' },
-{ name: 'Pinnacle MFB' },
-{ name: 'Pioneer MFB' },
-{ name: 'Poly MFB' },
-{ name: 'Premium MFB' },
-{ name: 'Prime MFB' },
-{ name: 'Prudent MFB' },
-{ name: 'Rahama MFB' },
-{ name: 'Rapido MFB' },
-{ name: 'Regent MFB' },
-{ name: 'Reliance MFB' },
-{ name: 'Renaissance MFB' },
-{ name: 'Rigo MFB' },
-{ name: 'Rivers MFB' },
-{ name: 'Rock MFB' },
-{ name: 'Royal MFB' },
-{ name: 'Safeguard MFB' },
-{ name: 'Sagamu MFB' },
-{ name: 'Sapele MFB' },
-{ name: 'Savannah MFB' },
-{ name: 'Seed MFB' },
-{ name: 'Solid Allianz MFB' },
-{ name: 'Solid Rock MFB' },
-{ name: 'Soul MFB' },
-{ name: 'South South MFB' },
-{ name: 'Sovereign MFB' },
-{ name: 'Standard MFB' },
-{ name: 'Star MFB' },
-{ name: 'Sulspap MFB' },
-{ name: 'Summit MFB' },
-{ name: 'Sunshine MFB' },
-{ name: 'Super MFB' },
-{ name: 'Supreme MFB' },
-{ name: 'Taj MFB' },
-{ name: 'Tangerine MFB' },
-{ name: 'Terra MFB' },
-{ name: 'Thrive MFB' },
-{ name: 'Titan MFB' },
-{ name: 'Tony MFB' },
-{ name: 'Tower MFB' },
-{ name: 'Triple MFB' },
-{ name: 'Trustfund MFB' },
-{ name: 'Unicorn MFB' },
-{ name: 'Unique MFB' },
-{ name: 'United MFB' },
-{ name: 'Universe MFB' },
-{ name: 'Univ MFB' },
-{ name: 'Uphill MFB' },
-{ name: 'Uruguay MFB' },
-{ name: 'Vanguard MFB' },
-{ name: 'Ventures MFB' },
-{ name: 'Veritas MFB' },
-{ name: 'VFD MFB' },
-{ name: 'Victory MFB' },
-{ name: 'Virtue MFB' },
-{ name: 'Wema MFB' },
-{ name: 'Wesbanco MFB' },
-{ name: 'Whitefield MFB' },
-{ name: 'Winners MFB' },
-{ name: 'Wise MFB' },
-{ name: 'Women MFB' },
-{ name: 'Worx MFB' },
-{ name: 'X-Factor MFB' },
-{ name: 'Xpress MFB' },
-{ name: 'Yaba MFB' },
-{ name: 'Yobe MFB' },
-{ name: 'Zamfara MFB' },
-{ name: 'Zenith MFB' },
-{ name: 'Zuri MFB' },
+{ name: 'Access Bank' }, { name: 'Guaranty Trust Bank (GTBank)' }, { name: 'First Bank of Nigeria' },
+{ name: 'Zenith Bank' }, { name: 'United Bank for Africa (UBA)' }, { name: 'Ecobank Nigeria' },
+{ name: 'Fidelity Bank' }, { name: 'First City Monument Bank (FCMB)' }, { name: 'Union Bank' },
+{ name: 'Stanbic IBTC Bank' }, { name: 'Sterling Bank' }, { name: 'WEMA Bank' },
+{ name: 'Polaris Bank' }, { name: 'Keystone Bank' }, { name: 'Heritage Bank' },
+{ name: 'Unity Bank' }, { name: 'Suntrust Bank' }, { name: 'Titan Trust Bank' },
+{ name: 'Globus Bank' }, { name: 'Premium Trust Bank' }, { name: 'Signature Bank' },
+{ name: 'Providus Bank' }, { name: 'Lotus Bank' }, { name: 'Parallex Bank' },
+{ name: 'Neobank' }, { name: 'Sparkle Bank' }, { name: 'Rubies Bank' },
+{ name: 'OPay' }, { name: 'PalmPay' }, { name: 'Moniepoint' },
+{ name: 'Kuda Bank' }, { name: 'VFD Bank' }, { name: 'Eyowo' },
+{ name: 'Carbon' }, { name: 'FairMoney' }, { name: 'Mint Bank' },
+{ name: 'Bankly' }, { name: 'AB Microfinance Bank' }, { name: 'Accion Microfinance Bank' },
+{ name: 'LAPO Microfinance Bank' }, { name: 'Trust Microfinance Bank' }, { name: 'Fortis Microfinance Bank' },
 ];
-
-// Frequently used banks
 const frequentlyUsed = ['OPay', 'Access Bank', 'United Bank for Africa (UBA)', 'First Bank of Nigeria', 'Guaranty Trust Bank (GTBank)', 'Zenith Bank'];
-
-// Recent banks data
 const recentBanksData = [
 { name: 'AHMED ISAH', number: '8132116092', bank: 'PalmPay' },
 { name: 'Ahmed Isah', number: '8132116092', bank: 'Momo Payment Service Bank' },
 { name: 'CHUKWUEMEKA CHRISTIAN', number: '0032271588', bank: 'Access Bank' },
 ];
-
-// Favourites banks data
 const favouritesBanksData = [
 { name: 'AHMED ISAH', number: '8132116092', bank: 'PalmPay' },
 { name: 'CHUKWUEMEKA CHRISTIAN', number: '0032271588', bank: 'Access Bank' },
 ];
-
 function showBankTransfer() {
-if (!currentUser) {
-alert('Please login first');
-return;
-}
-
+if (!currentUser) { alert('Please login first'); return; }
 selectedBank = null;
 tempRecipientName = null;
 loadBankData();
 renderBankTransferPage();
 }
-
 function renderBankTransferPage() {
-// Build recents and favourites lists with icon on RIGHT
 let recentsHtml = '';
 let favouritesHtml = '';
-
-// Airtime icon SVG (same as recents)
-const airtimeIcon = `<svg viewBox="0 0 24 24" width="22" height="22" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>`;
-
+const airtimeIcon = `<svg viewBox="0 0 24 24" width="22" height="22" stroke="#16c99e" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>`;
 recentBanksData.forEach(item => {
 recentsHtml += `
 <div class="bank-recent-item" onclick="selectBankRecent('${item.bank}', '${item.number}', '${item.name}')">
@@ -4439,7 +2428,6 @@ recentsHtml += `
 </div>
 `;
 });
-
 favouritesBanksData.forEach(item => {
 favouritesHtml += `
 <div class="bank-recent-item" onclick="selectBankRecent('${item.bank}', '${item.number}', '${item.name}')">
@@ -4452,10 +2440,7 @@ favouritesHtml += `
 </div>
 `;
 });
-
 const selectedDisplay = selectedBank ? selectedBank.name : 'Select Bank';
-
-// Frequently Used Banks - 3 columns, 2 rows
 let freqHtml = '';
 frequentlyUsed.forEach(bankName => {
 const bank = allBanks.find(b => b.name === bankName);
@@ -4468,27 +2453,16 @@ freqHtml += `
 `;
 }
 });
-
-// Get the current account number from the input (if any)
 const currentAccountInput = document.getElementById('bankAccountInput');
 let currentAccountNumber = currentAccountInput ? currentAccountInput.value.replace(/\D/g, '') : '';
-
-// Bank icon SVG for avatar (same as recents)
-const bankIconSvg = `<svg viewBox="0 0 24 24" width="22" height="22" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/>
-  <path d="M2 6.5V12L12 16.5L22 12V6.5"/>
-  <path d="M2 12V17.5L12 22L22 17.5V12"/>
-</svg>`;
-
+const bankIconSvg = `<svg viewBox="0 0 24 24" width="22" height="22" stroke="#16c99e" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>`;
 document.getElementById('dynamicContent').innerHTML = `
 <div class="bank-transfer-container">
 <div class="page-header">
 <button class="back-btn" onclick="closeDynamic()">←</button>
 <span class="title">Transfer To Bank Account</span>
-<button class="help-btn" onclick="showTransactionHistory()" style="color:#10b981; font-size:14px; font-weight:500;">History</button>
+<button class="help-btn" onclick="showTransactionHistory()" style="color:#16c99e; font-size:14px; font-weight:500;">History</button>
 </div>
-
-<!-- Discount Banner - SAME as To OPay -->
 <div class="bank-discount-banner">
 <div class="bank-discount-content">
 <div>
@@ -4499,29 +2473,18 @@ document.getElementById('dynamicContent').innerHTML = `
 </div>
 <div class="bank-discount-badge">120</div>
 </div>
-
-<div class="free-transfers-info">
-Free transfers for the day: 3
-</div>
-
-<!-- BOX 1: Recipient Account -->
+<div class="free-transfers-info">Free transfers for the day: 3</div>
 <div class="bank-recipient-box">
 <div class="bank-recipient-label">Recipient Account</div>
 <input type="tel" id="bankAccountInput" class="bank-recipient-input" placeholder="Enter 10 digits Account Number" maxlength="10" oninput="checkBankAccount(this.value)">
 </div>
-
-<!-- BOX 2: Select Bank -->
 <div class="bank-select-box" onclick="showBankSelection()">
 <span class="bank-select-label" id="bankSelectLabel">${selectedDisplay}</span>
 <span class="bank-select-arrow">></span>
 </div>
-
-<!-- BOX 3: Next Button -->
 <div class="bank-next-box">
 <button class="bank-next-btn" id="bankNextBtn" onclick="openConfirmTransferPage()">Next</button>
 </div>
-
-<!-- ACCOUNT PREVIEW - Clickable -->
 <div id="bankAccountPreview" class="bank-account-preview" onclick="openConfirmTransferPage()">
 <div class="bank-account-preview-content">
 <div class="bank-preview-avatar" id="bankPreviewAvatar">${bankIconSvg}</div>
@@ -4532,12 +2495,10 @@ Free transfers for the day: 3
 </div>
 </div>
 </div>
-
 <div class="success-rate-section">
 <span>Bank Transfer Success Rate Monitor</span>
 <span class="rate-arrow" onclick="openSaveRecipientPage()">></span>
 </div>
-
 <div class="bank-recents-section">
 <div class="bank-recents-tabs">
 <button class="bank-tab ${bankTransferTab === 'recents' ? 'active' : ''}" onclick="switchBankTab('recents')">Recents</button>
@@ -4552,32 +2513,23 @@ View All <span style="margin-left:4px;">></span>
 </div>
 </div>
 `;
-
 showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('dynamicContent').style.display = 'block';
-
 updateNextButtonState();
-
-if (currentAccountNumber && selectedBank) {
-checkBankAccount(currentAccountNumber);
+if (currentAccountNumber && selectedBank) { checkBankAccount(currentAccountNumber); }
 }
-}
-
 function switchBankTab(tab) {
 bankTransferTab = tab;
 renderBankTransferPage();
 }
-
 function updateNextButtonState() {
 const input = document.getElementById('bankAccountInput');
 const nextBtn = document.getElementById('bankNextBtn');
 if (!input || !nextBtn) return;
-
 const accountNumber = input.value.replace(/\D/g, '');
 const hasValidAccount = accountNumber.length === 10;
 const hasSelectedBank = selectedBank !== null;
-
 if (hasValidAccount && hasSelectedBank) {
 nextBtn.classList.add('active');
 nextBtn.disabled = false;
@@ -4586,33 +2538,25 @@ nextBtn.classList.remove('active');
 nextBtn.disabled = true;
 }
 }
-
 function checkBankAccount(number) {
 const cleanNumber = number.replace(/\D/g, '');
 const preview = document.getElementById('bankAccountPreview');
 const nameEl = document.getElementById('bankPreviewName');
 const numberEl = document.getElementById('bankPreviewNumber');
 const bankEl = document.getElementById('bankPreviewBank');
-
 if (cleanNumber.length === 10 && selectedBank) {
 let savedName = getSavedName(cleanNumber, selectedBank.name);
-if (savedName) {
-nameEl.textContent = savedName;
-} else if (tempRecipientName) {
-nameEl.textContent = tempRecipientName;
-} else {
-nameEl.textContent = 'Invalid Account';
-}
+if (savedName) { nameEl.textContent = savedName; }
+else if (tempRecipientName) { nameEl.textContent = tempRecipientName; }
+else { nameEl.textContent = 'Invalid Account'; }
 preview.classList.add('show');
 numberEl.textContent = cleanNumber;
 bankEl.textContent = selectedBank.name;
 } else {
 preview.classList.remove('show');
 }
-
 updateNextButtonState();
 }
-
 function selectBankRecent(bankName, accountNumber, accountName) {
 const input = document.getElementById('bankAccountInput');
 const preview = document.getElementById('bankAccountPreview');
@@ -4620,36 +2564,18 @@ const nameEl = document.getElementById('bankPreviewName');
 const numberEl = document.getElementById('bankPreviewNumber');
 const bankEl = document.getElementById('bankPreviewBank');
 const label = document.getElementById('bankSelectLabel');
-
-if (input) {
-input.value = accountNumber;
-}
-
+if (input) { input.value = accountNumber; }
 const bank = allBanks.find(b => b.name === bankName);
-if (bank) {
-selectedBank = bank;
-if (label) label.textContent = bank.name;
-}
-
+if (bank) { selectedBank = bank; if (label) label.textContent = bank.name; }
 let savedName = getSavedName(accountNumber, bankName);
-if (savedName) {
-nameEl.textContent = savedName;
-} else if (tempRecipientName) {
-nameEl.textContent = tempRecipientName;
-} else {
-nameEl.textContent = 'Invalid Account';
-}
-
+if (savedName) { nameEl.textContent = savedName; }
+else if (tempRecipientName) { nameEl.textContent = tempRecipientName; }
+else { nameEl.textContent = 'Invalid Account'; }
 preview.classList.add('show');
 numberEl.textContent = accountNumber;
 bankEl.textContent = bankName;
-
 updateNextButtonState();
 }
-
-// ============================================================
-// OPEN CONFIRM TRANSFER PAGE (UPDATED - BIGGER INPUT & BUTTONS)
-// ============================================================
 function openConfirmTransferPage() {
 const input = document.getElementById('bankAccountInput');
 const accountNumber = input ? input.value.replace(/\D/g, '') : '';
@@ -4657,28 +2583,10 @@ const nameEl = document.getElementById('bankPreviewName');
 const name = nameEl ? nameEl.textContent : 'Invalid Account';
 const bankEl = document.getElementById('bankPreviewBank');
 const bankName = bankEl ? bankEl.textContent : '';
-
-if (accountNumber.length !== 10) {
-alert('Please enter a valid 10-digit account number');
-return;
-}
-
-if (!selectedBank) {
-alert('Please select a bank');
-return;
-}
-
-if (name === 'Invalid Account') {
-alert('Please save the recipient name first by clicking the arrow > on the success rate box');
-return;
-}
-
-const bankIconSvg = `<svg viewBox="0 0 24 24" width="22" height="22" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/>
-  <path d="M2 6.5V12L12 16.5L22 12V6.5"/>
-  <path d="M2 12V17.5L12 22L22 17.5V12"/>
-</svg>`;
-
+if (accountNumber.length !== 10) { alert('Please enter a valid 10-digit account number'); return; }
+if (!selectedBank) { alert('Please select a bank'); return; }
+if (name === 'Invalid Account') { alert('Please save the recipient name first by clicking the arrow > on the success rate box'); return; }
+const bankIconSvg = `<svg viewBox="0 0 24 24" width="22" height="22" stroke="#16c99e" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>`;
 document.getElementById('dynamicContent').innerHTML = `
 <div class="confirm-transfer-container">
 <div class="page-header">
@@ -4686,7 +2594,6 @@ document.getElementById('dynamicContent').innerHTML = `
 <span class="title">Transfer To Bank Account</span>
 <button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
 </div>
-
 <div class="confirm-recipient-card">
 <div class="confirm-recipient-avatar">${bankIconSvg}</div>
 <div class="confirm-recipient-info">
@@ -4694,15 +2601,10 @@ document.getElementById('dynamicContent').innerHTML = `
 <div class="confirm-recipient-detail">${accountNumber} ${selectedBank.name}</div>
 </div>
 </div>
-
 <label class="amount-label">Amount</label>
-
-<!-- AMOUNT INPUT - BIGGER SIZE -->
 <div class="amount-input-wrapper">
 <input type="number" id="confirmAmountInput" placeholder="₦100.00 - ₦5,000,000.00" min="100" max="5000000" oninput="updateAmountDisplay(this.value); validateConfirmButton();">
 </div>
-
-<!-- QUICK AMOUNT BUTTONS - BIGGER SIZE -->
 <div class="quick-amount-grid">
 <button class="quick-amount-btn" onclick="setAmount(this, 500)">₦500</button>
 <button class="quick-amount-btn" onclick="setAmount(this, 1000)">₦1,000</button>
@@ -4711,8 +2613,6 @@ document.getElementById('dynamicContent').innerHTML = `
 <button class="quick-amount-btn" onclick="setAmount(this, 9999)">₦9,999</button>
 <button class="quick-amount-btn" onclick="setAmount(this, 10000)">₦10,000</button>
 </div>
-
-<!-- REMARK SECTION -->
 <div class="remark-section">
 <label class="remark-label">Remark (Optional)</label>
 <div class="remark-input-wrapper">
@@ -4723,34 +2623,20 @@ document.getElementById('dynamicContent').innerHTML = `
 <button class="remark-option" onclick="setRemark(this, 'Personal')">Personal</button>
 </div>
 </div>
-
 <button class="confirm-btn" id="confirmBtn" onclick="showReminderPopup()">Confirm</button>
 </div>
 `;
-
 showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('dynamicContent').style.display = 'block';
-
-window._confirmData = {
-name: name,
-accountNumber: accountNumber,
-bankName: selectedBank.name
-};
-
+window._confirmData = { name: name, accountNumber: accountNumber, bankName: selectedBank.name };
 validateConfirmButton();
 }
-
-// ============================================================
-// CONFIRM BUTTON VALIDATION
-// ============================================================
 function validateConfirmButton() {
 const amountInput = document.getElementById('confirmAmountInput');
 const confirmBtn = document.getElementById('confirmBtn');
 const amount = parseInt(amountInput ? amountInput.value : 0);
-
 const isValid = amount >= 100 && amount <= currentUser.balance;
-
 if (isValid) {
 confirmBtn.classList.add('active');
 confirmBtn.disabled = false;
@@ -4759,14 +2645,12 @@ confirmBtn.classList.remove('active');
 confirmBtn.disabled = true;
 }
 }
-
 function setRemark(btn, text) {
 document.querySelectorAll('.remark-option').forEach(b => b.classList.remove('selected'));
 btn.classList.add('selected');
 document.getElementById('remarkTextInput').value = text;
 validateConfirmButton();
 }
-
 function setAmount(btn, amount) {
 document.querySelectorAll('.quick-amount-btn').forEach(b => b.classList.remove('selected'));
 btn.classList.add('selected');
@@ -4774,41 +2658,16 @@ document.getElementById('confirmAmountInput').value = amount;
 updateAmountDisplay(amount);
 validateConfirmButton();
 }
-
-function updateAmountDisplay(value) {
-validateConfirmButton();
-}
-
-// ============================================================
-// REMINDER POPUP
-// ============================================================
+function updateAmountDisplay(value) { validateConfirmButton(); }
 function showReminderPopup() {
 const data = window._confirmData;
 const amountInput = document.getElementById('confirmAmountInput');
 const amount = parseInt(amountInput ? amountInput.value : 0);
-
-if (!amount || amount < 100) {
-alert('Please enter a valid amount (minimum ₦100)');
-return;
-}
-
-if (amount > 5000000) {
-alert('Maximum amount is ₦5,000,000');
-return;
-}
-
-if (amount > currentUser.balance) {
-alert('Insufficient balance. You have ₦' + currentUser.balance.toLocaleString());
-return;
-}
-
-if (!data) {
-alert('Recipient data not found');
-return;
-}
-
+if (!amount || amount < 100) { alert('Please enter a valid amount (minimum ₦100)'); return; }
+if (amount > 5000000) { alert('Maximum amount is ₦5,000,000'); return; }
+if (amount > currentUser.balance) { alert('Insufficient balance. You have ₦' + currentUser.balance.toLocaleString()); return; }
+if (!data) { alert('Recipient data not found'); return; }
 const remark = document.getElementById('remarkTextInput').value.trim() || 'None';
-
 let popup = document.createElement('div');
 popup.className = 'popup-overlay reminder-popup';
 popup.id = 'reminderPopup';
@@ -4832,21 +2691,14 @@ popup.innerHTML = `
 `;
 document.body.appendChild(popup);
 }
-
-// ============================================================
-// PAY CONFIRMATION POPUP
-// ============================================================
 function showPayConfirmationPopup() {
 const data = window._confirmData;
 const amountInput = document.getElementById('confirmAmountInput');
 const amount = parseInt(amountInput ? amountInput.value : 0);
 const remark = document.getElementById('remarkTextInput').value.trim() || '';
-
-// Show loading for 2 seconds first
 showLoadingOverlay('Processing...');
 setTimeout(() => {
 hideLoadingOverlay();
-
 let popup = document.createElement('div');
 popup.className = 'popup-overlay pay-confirm-popup';
 popup.id = 'payConfirmPopup';
@@ -4879,10 +2731,6 @@ popup.innerHTML = `
 document.body.appendChild(popup);
 }, 2000);
 }
-
-// ============================================================
-// LOADING FOR PIN
-// ============================================================
 function showLoadingForPin() {
 showLoadingOverlay('Processing...');
 setTimeout(() => {
@@ -4890,10 +2738,6 @@ hideLoadingOverlay();
 showPinEntryPopup();
 }, 2000);
 }
-
-// ============================================================
-// PIN ENTRY POPUP (UPDATED - Forgot PIN centered & clickable)
-// ============================================================
 function showPinEntryPopup() {
 pinEntry = '';
 let popup = document.createElement('div');
@@ -4928,25 +2772,17 @@ popup.innerHTML = `
 `;
 document.body.appendChild(popup);
 }
-
 function pressPinKey(key) {
 if (key === 'back') {
-if (pinEntry.length > 0) {
-pinEntry = pinEntry.slice(0, -1);
-updatePinDots();
-}
+if (pinEntry.length > 0) { pinEntry = pinEntry.slice(0, -1); updatePinDots(); }
 return;
 }
-
 if (pinEntry.length < 4) {
 pinEntry += key;
 updatePinDots();
-
 if (pinEntry.length === 4) {
-// PIN complete - check it
 setTimeout(() => {
 document.getElementById('pinPopup').remove();
-// Check against user's saved PIN
 const savedPin = getUserPin();
 if (savedPin && savedPin === pinEntry) {
 showLoadingForTransfer();
@@ -4958,23 +2794,15 @@ showPinEntryPopup();
 }
 }
 }
-
 function updatePinDots() {
 for (let i = 1; i <= 4; i++) {
 const dot = document.getElementById('pinDot' + i);
 if (dot) {
-if (i <= pinEntry.length) {
-dot.classList.add('filled');
-} else {
-dot.classList.remove('filled');
+if (i <= pinEntry.length) dot.classList.add('filled');
+else dot.classList.remove('filled');
 }
 }
 }
-}
-
-// ============================================================
-// LOADING FOR TRANSFER (4 SECONDS)
-// ============================================================
 function showLoadingForTransfer() {
 showLoadingOverlay('Processing transfer...');
 setTimeout(() => {
@@ -4982,65 +2810,34 @@ hideLoadingOverlay();
 processTransfer();
 }, 4000);
 }
-
-// ============================================================
-// PROCESS TRANSFER (FINAL)
-// ============================================================
 function processTransfer() {
 const data = window._confirmData;
 const amountInput = document.getElementById('confirmAmountInput');
 const amount = parseInt(amountInput ? amountInput.value : 0);
 const remark = document.getElementById('remarkTextInput').value.trim() || '';
-
-// Deduct balance
 currentUser.balance -= amount;
-
 let tid = 'BNK' + Date.now() + Math.floor(Math.random() * 1000);
 let tx = {
-id: tid,
-type: 'Bank Transfer',
-amount: amount,
-date: new Date().toLocaleString(),
-dateObj: new Date(),
-status: 'Success',
+id: tid, type: 'Bank Transfer', amount: amount,
+date: new Date().toLocaleString(), dateObj: new Date(), status: 'Success',
 fullDetails: {
-transactionType: 'Bank Transfer',
-amount: amount,
-fees: 10,
-taxes: 0.75,
+transactionType: 'Bank Transfer', amount: amount, fees: 10, taxes: 0.75,
 sender: currentUser.firstname + ' ' + currentUser.surname,
-recipient: data.name,
-recipientAccount: data.accountNumber,
-recipientBank: data.bankName,
-transactionId: tid,
-note: 'Bank transfer to ' + data.bankName + (remark ? ' - ' + remark : '')
+recipient: data.name, recipientAccount: data.accountNumber, recipientBank: data.bankName,
+transactionId: tid, note: 'Bank transfer to ' + data.bankName + (remark ? ' - ' + remark : '')
 }
 };
 currentUser.transactions.unshift(tx);
 saveUsers();
-
 saveRecipientName(data.accountNumber, data.bankName, data.name);
-
-const recentItem = {
-bankName: data.bankName,
-accountNumber: data.accountNumber,
-accountName: data.name,
-date: new Date().toISOString()
-};
+const recentItem = { bankName: data.bankName, accountNumber: data.accountNumber, accountName: data.name, date: new Date().toISOString() };
 bankRecents = bankRecents.filter(r => !(r.accountNumber === data.accountNumber && r.bankName === data.bankName));
 bankRecents.unshift(recentItem);
 if (bankRecents.length > 10) bankRecents.pop();
 saveBankData();
-
 tempRecipientName = null;
-
-// Show success page
 showSuccessPage(amount, data.name, data.accountNumber, data.bankName, tid);
 }
-
-// ============================================================
-// SUCCESS PAGE
-// ============================================================
 function showSuccessPage(amount, name, accountNumber, bankName, tid) {
 document.getElementById('dynamicContent').innerHTML = `
 <div class="success-page">
@@ -5049,19 +2846,16 @@ document.getElementById('dynamicContent').innerHTML = `
 <span class="title">Transfer Successful</span>
 <button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
 </div>
-
 <div style="font-size:64px; text-align:center; margin-bottom:8px;">✅</div>
 <div class="success-title">Transfer successful</div>
 <div class="success-amount">₦${amount.toLocaleString()}</div>
 <div class="success-sub">The recipient account is expected to be credited within 5 minutes.</div>
-
 <div class="success-actions">
 <button class="btn btn-outline" onclick="shareReceipt('${tid}')">Share Receipt</button>
 <button class="btn btn-outline" onclick="showAddMoney()">Add Money</button>
 <button class="btn btn-outline" onclick="alert('Added to favourites!')">Add to favourites</button>
 <button class="btn btn-outline" onclick="showTransactionDetails('${tid}')">View Details</button>
 </div>
-
 <div class="bonus-section">
 <div class="bonus-title">Special Bonus For You</div>
 <div class="bonus-item">
@@ -5095,18 +2889,12 @@ document.getElementById('dynamicContent').innerHTML = `
 </div>
 </div>
 `;
-
 showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('dynamicContent').style.display = 'block';
 }
-
-// ============================================================
-// BANK SELECTION PAGE
-// ============================================================
 function showBankSelection() {
-const airtimeIcon = `<svg viewBox="0 0 24 24" width="20" height="20" stroke="#10b981" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>`;
-
+const airtimeIcon = `<svg viewBox="0 0 24 24" width="20" height="20" stroke="#16c99e" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6.5L12 2L2 6.5L12 11L22 6.5Z"/><path d="M2 6.5V12L12 16.5L22 12V6.5"/><path d="M2 12V17.5L12 22L22 17.5V12"/></svg>`;
 let bankListHtml = '';
 allBanks.forEach(bank => {
 bankListHtml += `
@@ -5116,7 +2904,6 @@ ${bank.name}
 </div>
 `;
 });
-
 let freqHtml = '';
 frequentlyUsed.forEach(bankName => {
 const bank = allBanks.find(b => b.name === bankName);
@@ -5129,7 +2916,6 @@ freqHtml += `
 `;
 }
 });
-
 document.getElementById('dynamicContent').innerHTML = `
 <div class="bank-selection-container">
 <div class="page-header">
@@ -5137,14 +2923,11 @@ document.getElementById('dynamicContent').innerHTML = `
 <span class="title">Select Bank</span>
 <button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
 </div>
-
 <input type="text" id="bankSearchInput" class="bank-search-input" placeholder="Search Bank Name" oninput="filterBanks()">
-
 <div class="freq-banks-title">Frequently Used Bank</div>
 <div class="freq-banks-grid">
 ${freqHtml}
 </div>
-
 <div id="allBanksContainer">
 <div class="all-banks-grid" id="banksGrid">
 ${bankListHtml}
@@ -5152,42 +2935,27 @@ ${bankListHtml}
 </div>
 </div>
 `;
-
 showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('dynamicContent').style.display = 'block';
 }
-
 function filterBanks() {
 const search = document.getElementById('bankSearchInput').value.toLowerCase();
 const grid = document.getElementById('banksGrid');
 if (!grid) return;
-
 const items = grid.querySelectorAll('.all-bank-item');
 items.forEach(item => {
 const name = item.textContent.toLowerCase();
-if (name.includes(search)) {
-item.style.display = 'flex';
-} else {
-item.style.display = 'none';
-}
+if (name.includes(search)) { item.style.display = 'flex'; }
+else { item.style.display = 'none'; }
 });
 }
-
 function selectBank(bankName) {
 const bank = allBanks.find(b => b.name === bankName);
-if (bank) {
-selectedBank = bank;
-renderBankTransferPage();
+if (bank) { selectedBank = bank; renderBankTransferPage(); }
 }
-}
-
-// ============================================================
-// SAVE RECIPIENT PAGE
-// ============================================================
 function openSaveRecipientPage() {
 let existingName = tempRecipientName || '';
-
 document.getElementById('dynamicContent').innerHTML = `
 <div class="save-recipient-container">
 <div class="page-header">
@@ -5195,7 +2963,6 @@ document.getElementById('dynamicContent').innerHTML = `
 <span class="title">Save Recipient Name</span>
 <button class="help-btn" onclick="showHelp()" style="visibility:hidden;"></button>
 </div>
-
 <div class="save-recipient-box">
 <label>Enter Recipient Name</label>
 <input type="text" id="recipientNameInput" placeholder="e.g. James Joseph" value="${existingName}">
@@ -5203,31 +2970,22 @@ document.getElementById('dynamicContent').innerHTML = `
 This name will be used for your next transfer
 </div>
 </div>
-
 <div class="save-recipient-actions">
 <button class="btn btn-outline" onclick="renderBankTransferPage()">Cancel</button>
 <button class="btn" onclick="saveRecipientAndGoBack()">Save</button>
 </div>
 </div>
 `;
-
 showPage('dashboardPage');
 document.getElementById('dashboardPage').classList.add('hidden');
 document.getElementById('dynamicContent').style.display = 'block';
 }
-
 function saveRecipientAndGoBack() {
 const input = document.getElementById('recipientNameInput');
 const name = input ? input.value.trim() : '';
-
-if (!name) {
-alert('Please enter a recipient name');
-return;
-}
-
+if (!name) { alert('Please enter a recipient name'); return; }
 tempRecipientName = name;
 renderBankTransferPage();
-
 setTimeout(() => {
 const input2 = document.getElementById('bankAccountInput');
 const accountNumber = input2 ? input2.value.replace(/\D/g, '') : '';
@@ -5236,27 +2994,16 @@ if (preview && accountNumber.length === 10 && selectedBank) {
 const nameEl = document.getElementById('bankPreviewName');
 if (nameEl) {
 let savedName = getSavedName(accountNumber, selectedBank.name);
-if (savedName) {
-nameEl.textContent = savedName;
-} else {
-nameEl.textContent = tempRecipientName;
-}
+if (savedName) { nameEl.textContent = savedName; }
+else { nameEl.textContent = tempRecipientName; }
 }
 preview.classList.add('show');
 }
 }, 100);
 }
-
-// ============================================================
-// HANDLE GET STARTED
-// ============================================================
 function handleGetStarted() {
 showSplashLoading('Loading...', () => showSignupPage(), 2500);
 }
-
-// ============================================================
-// INIT
-// ============================================================
 document.addEventListener('DOMContentLoaded', function() {
 loadUsers();
 loadBankData();
